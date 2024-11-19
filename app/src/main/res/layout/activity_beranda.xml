@@ -30,6 +30,6 @@
             android:layout_toEndOf="@+id/Tv_name_user"
             android:text="@string/name_users_bold"
             android:fontFamily="@font/poppins_semi_bold"
-            android:textSize="22dp"/>
+            android:textSize="20dp"/>
     </RelativeLayout>
 </LinearLayout>
