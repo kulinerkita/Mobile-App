@@ -32,5 +32,4 @@
         android:text="@string/desc_ob4"
         android:textColor="@color/color_beige"
         android:textSize="16sp" />
-
 </LinearLayout>

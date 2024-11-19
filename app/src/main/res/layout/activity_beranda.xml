@@ -5,22 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_marginStart="25dp"
     tools:context=".BerandaActivity">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="55dp"
-        android:layout_marginStart="20dp">
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="45dp">
 
         <TextView
             android:id="@+id/Tv_name_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/name_users"
             android:fontFamily="@font/poppins_medium"
-            android:textSize="22dp"/>
-
+            android:text="@string/name_users"
+            android:textSize="22sp"
+            tools:ignore="SpUsage,TextSizeCheck" />
 
         <TextView
             android:id="@+id/Tv_name_users"
@@ -30,6 +31,44 @@
             android:layout_toEndOf="@+id/Tv_name_user"
             android:text="@string/name_users_bold"
             android:fontFamily="@font/poppins_semi_bold"
-            android:textSize="20dp"/>
+            android:textSize="22sp"
+            tools:ignore="RelativeOverlap,SpUsage" />
+
+        <ImageView
+            android:id="@+id/iv_notification"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="3dp"
+            android:src="@drawable/ic_notification"
+            android:contentDescription="@string/notification_icon" />
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_toStartOf="@id/iv_notification"
+            android:layout_marginEnd="25dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_search"
+            android:contentDescription="@string/search_icon" />
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/Tv_upcoming"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:text="@string/upcoming_event"
+        android:textSize="20sp"
+        tools:ignore="TextSizeCheck" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/upcoming_event"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        tools:listitem="@layout/item_upcoming_event" />
 </LinearLayout>

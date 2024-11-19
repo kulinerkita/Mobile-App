@@ -41,4 +41,7 @@
     <!-- Beranda strings -->
     <string name="name_users">Hi,</string>
     <string name="name_users_bold">John Doe</string>
+    <string name="upcoming_event">Upcoming Event</string>
+    <string name="notification_icon">Notification icon</string>
+    <string name="search_icon">Search icon</string>
 </resources>
