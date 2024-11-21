@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.gms.google-services")
+    id("com.google.devtools.ksp") version "1.9.0-1.0.12"
 }
 
 android {
@@ -59,4 +60,8 @@ dependencies {
 
     // Import the Firebase BoM
     implementation(platform(libs.firebase.bom))
+
+    implementation (libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 }

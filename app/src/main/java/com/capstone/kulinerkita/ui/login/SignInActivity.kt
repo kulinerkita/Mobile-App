@@ -12,11 +12,18 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.capstone.kulinerkita.R
+import com.capstone.kulinerkita.data.KulinerKitaDatabase
 import com.capstone.kulinerkita.ui.home.BerandaActivity
 import com.capstone.kulinerkita.ui.onboarding.ActivityOnboardingLast
 import com.capstone.kulinerkita.ui.register.CreateAccountActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SignInActivity : AppCompatActivity() {
+    private lateinit var database: KulinerKitaDatabase
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +36,8 @@ class SignInActivity : AppCompatActivity() {
         val buttonBack = findViewById<ImageView>(R.id.Iv_backLogin)
         val footerText = findViewById<TextView>(R.id.signupTextView)
         val signInButton = findViewById<Button>(R.id.LoginButton)
+
+        database = KulinerKitaDatabase.getInstance(this)
 
         var isPasswordVisible = false
 
@@ -80,9 +89,20 @@ class SignInActivity : AppCompatActivity() {
                 passwordInput.error = "Password wajib diisi!"
                 passwordInput.requestFocus()
             } else {
-                Toast.makeText(this, "Login Berhasil", Toast.LENGTH_SHORT).show()
-                // Pindah ke halaman utama setelah login
-                startActivity(Intent(this, BerandaActivity::class.java))
+                CoroutineScope(Dispatchers.IO).launch {
+                    val user = database.userDao().loginUser(email, password)
+                    withContext(Dispatchers.Main) {
+                        if (user != null) {
+                            Toast.makeText(this@SignInActivity, "Login Berhasil", Toast.LENGTH_SHORT)
+                                .show()
+                            // Pindah ke halaman utama setelah login
+                            startActivity(Intent(this@SignInActivity, BerandaActivity::class.java))
+                        } else {
+                            Toast.makeText(this@SignInActivity, "Email atau password salah!", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+                }
             }
         }
     }
