@@ -7,10 +7,18 @@ import android.util.Patterns
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.capstone.kulinerkita.R
+import com.capstone.kulinerkita.data.KulinerKitaDatabase
+import com.capstone.kulinerkita.data.model.User
 import com.capstone.kulinerkita.ui.login.SignInActivity
 import com.capstone.kulinerkita.ui.onboarding.ActivityOnboardingLast
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CreateAccountActivity : AppCompatActivity() {
+    private lateinit var database: KulinerKitaDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
@@ -40,6 +48,8 @@ class CreateAccountActivity : AppCompatActivity() {
             passwordInput.setSelection(passwordInput.text.length)
         }
 
+        database = KulinerKitaDatabase.getInstance(this)
+
         // Sign-up button action
         signUpButton.setOnClickListener {
             val name = nameInput.text.toString().trim()
@@ -64,10 +74,29 @@ class CreateAccountActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            Toast.makeText(this, "Pendaftaran berhasil!", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, ActivityOnboardingLast::class.java)
-            startActivity(intent)
-            finish()
+            CoroutineScope(Dispatchers.IO).launch {
+                val user = User(0, name, email, password)
+                val userId = database.userDao().registerUser(user)
+                withContext(Dispatchers.Main) {
+                    if (userId > 0) {
+                        Toast.makeText(
+                            this@CreateAccountActivity,
+                            "Pendaftaran berhasil!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        val intent = Intent(this@CreateAccountActivity, ActivityOnboardingLast::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Toast.makeText(
+                            this@CreateAccountActivity,
+                            "Gagal mendaftar. Coba lagi.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
         }
 
         // Footer text action
