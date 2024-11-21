@@ -89,7 +89,6 @@ class SignInActivity : AppCompatActivity() {
                 passwordInput.error = "Password wajib diisi!"
                 passwordInput.requestFocus()
             } else {
-                // Verifikasi login dari database
                 CoroutineScope(Dispatchers.IO).launch {
                     val user = database.userDao().loginUser(email, password)
                     withContext(Dispatchers.Main) {
