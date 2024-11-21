@@ -14,20 +14,17 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="16dp"
-        android:fontFamily="@font/poppins_medium"
-        android:text="@string/tittle_ob3"
         android:textColor="@color/color_green"
-        android:textSize="25sp"
-        android:textStyle="bold" />
-
+        android:fontFamily="@font/poppins_semi_bold"
+        android:text="@string/tittle_ob3"
+        android:textSize="23sp"
+        android:gravity="center" />
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="79dp"
-        android:layout_marginBottom="50dp"
+        android:layout_height="108dp"
+        android:layout_marginBottom="56dp"
         android:gravity="center"
-        android:padding="16dp"
+        android:padding="30dp"
         android:fontFamily="@font/poppins_medium"
         android:text="@string/desc_ob3"
         android:textColor="@color/color_beige"

@@ -1,0 +1,71 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <ImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/onboarding5"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/welcomeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/welcome"
+        android:textSize="25sp"
+        android:layout_gravity="center"
+        android:textColor="@color/color_green"
+        android:fontFamily="@font/poppins_semi_bold" />
+
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/desc_ob5"
+        android:textSize="15sp"
+        android:textColor="#B2ACAC"
+        android:gravity="center"
+        android:fontFamily="@font/poppins_regular" />
+
+    <Button
+        android:id="@+id/signInButton"
+        android:layout_width="350dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="@string/sign_in"
+        android:layout_gravity="center"
+        android:backgroundTint="#54BF4C"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="40dp"
+        app:cornerRadius="20dp"
+        android:padding="12dp"
+        android:textSize="18sp"
+        android:fontFamily="@font/poppins_semi_bold"/>
+
+    <Button
+        android:id="@+id/signUpButton"
+        android:layout_width="350dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="@string/sign_up"
+        android:layout_gravity="center"
+        android:backgroundTint="#54BF4C"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="10dp"
+        app:cornerRadius="20dp"
+        android:padding="12dp"
+        android:textSize="18sp"
+        android:fontFamily="@font/poppins_semi_bold"/>
+</LinearLayout>

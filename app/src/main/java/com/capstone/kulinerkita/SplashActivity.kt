@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.capstone.kulinerkita.ui.onboarding.OnboardingActivity
 import kotlinx.coroutines.*
 
 class SplashActivity : AppCompatActivity() {

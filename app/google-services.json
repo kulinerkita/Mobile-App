@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1058367483881",
+    "project_id": "kulinerkita-a9a7f",
+    "storage_bucket": "kulinerkita-a9a7f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1058367483881:android:83ba68e30b9fe0e2cf6578",
+        "android_client_info": {
+          "package_name": "com.capstone.kulinerkita"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1058367483881-68t0m9euumdsr624645d4glrjsqgtd42.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.capstone.kulinerkita",
+            "certificate_hash": "89b2f9af4e0a6b3a30de79f64b4a061d46812607"
+          }
+        },
+        {
+          "client_id": "1058367483881-80dnftuiu0o0kdrororl57d0tkdv5co4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsmQ2XFfAoBVhkj6I6rN_6gCZ9XVohwak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1058367483881-80dnftuiu0o0kdrororl57d0tkdv5co4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

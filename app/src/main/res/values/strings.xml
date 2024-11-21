@@ -17,31 +17,35 @@
     <string name="create_your_account">Create Your Account</string>
     <string name="already_have_an_account">Already have an account? </string>
     <string name="sign_in"> Sign In</string>
-    <string name="sign_up_with_facebook">Sign Up with Facebook</string>
-    <string name="sign_up_with_google">Sign Up with Google</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
     <string name="google_icon">google icon</string>
     <string name="facebook_icon">facebook icon</string>
-    <string name="agree_with_terms_conditions"><![CDATA[Agree with Terms & Conditions]]></string>
+    <string name="agree_with_terms_conditions">Agree with</string>
+    <string name="terms_conditions">Terms &amp; Conditions</string>
     <string name="create_account">Create Account</string>
     <string name="fill_your_information_below">Fill your information below</string>
     <string name="name">Name</string>
-    <string name="name_hint">Jhon Doe</string>
+    <string name="name_hint">Enter Full Name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="sign_up">Sign Up</string>
-    <string name="already_have_an_account_sign_in">Already have an account? Sign In</string>
     <string name="welcome_back_message">Hi! Welcome back, you’re been missed</string>
-    <string name="email_hint">example@gmail.com</string>
-    <string name="password_hint">********</string>
+    <string name="email_hint">Enter Your Email</string>
+    <string name="password_hint">Enter Password</string>
     <string name="forgot_password">Forgot Password?</string>
-    <string name="sign_in_button">Sign In</string>
     <string name="no_account_message">Don’t have an account? </string>
     <string name="forgot_password_clicked">Forgot Password Clicked</string>
 
     <!-- Beranda strings -->
     <string name="name_users">Hi,</string>
     <string name="name_users_bold">John Doe</string>
-    <string name="upcoming_event">Upcoming Event</string>
+    <string name="culiner_kategori">Categories Culinary</string>
     <string name="notification_icon">Notification icon</string>
     <string name="search_icon">Search icon</string>
+    <string name="name_weather">Cuaca</string>
+    <string name="name_location">Location</string>
+    <string name="text_food">Food</string>
+    <string name="text_drink">Drink</string>
+    <string name="text_recomendation">Recommendation</string>
+    <string name="arrow_left">Back to</string>
 </resources>

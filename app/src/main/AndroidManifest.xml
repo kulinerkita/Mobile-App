@@ -2,18 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/logo"
+        android:icon="@mipmap/ic_launcher_kulinerkita"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/logo"
+        android:roundIcon="@mipmap/ic_launcher_kulinerkita_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.KulinerKita"
         tools:targetApi="31">
         <activity
-            android:name=".BerandaActivity"
+            android:name=".ui.home.BerandaActivity"
             android:exported="false" />
         <activity
             android:name=".SplashActivity"
@@ -25,11 +27,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".OnboardingActivity"
+            android:name=".ui.onboarding.OnboardingActivity"
             android:exported="true" />
-        <activity android:name=".CreateAccountActivity" />
-        <activity android:name=".SignInActivity" />
-        <activity android:name=".PreferencesActivity" />
+        <activity android:name=".ui.onboarding.ActivityOnboardingLast" />
+        <activity android:name=".ui.register.CreateAccountActivity" />
+        <activity android:name=".ui.login.SignInActivity" />
+        <activity android:name=".ui.preference.PreferencesActivity" />
     </application>
 
 </manifest>

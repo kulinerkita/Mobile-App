@@ -1,74 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_marginStart="25dp"
-    tools:context=".BerandaActivity">
+    android:background="@android:color/white"
+    android:fillViewport="true"
+    tools:context=".ui.home.BerandaActivity">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="45dp">
-
-        <TextView
-            android:id="@+id/Tv_name_user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_medium"
-            android:text="@string/name_users"
-            android:textSize="22sp"
-            tools:ignore="SpUsage,TextSizeCheck" />
-
-        <TextView
-            android:id="@+id/Tv_name_users"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_toEndOf="@+id/Tv_name_user"
-            android:text="@string/name_users_bold"
-            android:fontFamily="@font/poppins_semi_bold"
-            android:textSize="22sp"
-            tools:ignore="RelativeOverlap,SpUsage" />
-
-        <ImageView
-            android:id="@+id/iv_notification"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="3dp"
-            android:src="@drawable/ic_notification"
-            android:contentDescription="@string/notification_icon" />
-
-        <ImageView
-            android:id="@+id/iv_search"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_toStartOf="@id/iv_notification"
-            android:layout_marginEnd="25dp"
-            android:layout_marginTop="8dp"
-            android:src="@drawable/ic_search"
-            android:contentDescription="@string/search_icon" />
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/Tv_upcoming"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:fontFamily="@font/poppins_semi_bold"
-        android:text="@string/upcoming_event"
-        android:textSize="20sp"
-        tools:ignore="TextSizeCheck" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/upcoming_event"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        tools:listitem="@layout/item_upcoming_event" />
-</LinearLayout>
+        android:orientation="vertical"
+        android:paddingBottom="16dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="45dp">
+
+            <TextView
+                android:id="@+id/Tv_name_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/name_users"
+                android:textSize="22sp"
+                android:textColor="@color/black"
+                tools:ignore="SpUsage,TextSizeCheck" />
+
+            <TextView
+                android:id="@+id/Tv_name_users"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/Tv_name_user"
+                android:text="@string/name_users_bold"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:textSize="22sp"
+                android:textColor="@color/black"
+                tools:ignore="RelativeOverlap,SpUsage" />
+
+            <ImageView
+                android:id="@+id/iv_notification"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="3dp"
+                android:src="@drawable/ic_notification"
+                android:contentDescription="@string/notification_icon" />
+
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_toStartOf="@id/iv_notification"
+                android:layout_marginEnd="25dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_search"
+                android:contentDescription="@string/search_icon" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="20dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/Iv_weather"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_cloudy"
+                android:contentDescription="@string/name_weather" />
+
+            <TextView
+                android:id="@+id/Tv_weather"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/name_weather"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_medium"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp" />
+
+            <ImageView
+                android:id="@+id/Iv_location"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_location"
+                android:contentDescription="@string/name_location" />
+
+            <TextView
+                android:id="@+id/Tv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/name_location"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_medium"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/Tv_upcoming"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:text="@string/culiner_kategori"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            tools:ignore="TextSizeCheck" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp">
+
+            <ImageView
+                android:id="@+id/foodImage"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_food"
+                android:contentDescription="@string/text_food"/>
+
+            <TextView
+                android:id="@+id/Tv_food"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/foodImage"
+                android:layout_marginTop="6dp"
+                android:layout_marginStart="10dp"
+                android:text="@string/text_food"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_medium" />
+
+            <ImageView
+                android:id="@+id/drinkImage"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_drink"
+                android:layout_marginStart="40dp"
+                android:layout_toEndOf="@id/foodImage"
+                android:layout_marginTop="8dp"
+                android:contentDescription="@string/text_drink"/>
+
+            <TextView
+                android:id="@+id/Tv_drink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/drinkImage"
+                android:layout_marginTop="6dp"
+                android:layout_marginStart="60dp"
+                android:text="@string/text_drink"
+                android:layout_toEndOf="@id/Tv_food"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_medium" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/Tv_recomendation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:text="@string/text_recomendation"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            tools:ignore="TextSizeCheck" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
