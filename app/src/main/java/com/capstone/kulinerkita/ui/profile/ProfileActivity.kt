@@ -36,7 +36,7 @@ class ProfileActivity : AppCompatActivity() {
         val logoutMenu = findViewById<LinearLayout>(R.id.logoutMenu)
         logoutMenu.setOnClickListener {
             Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this, SignInActivity::class.java))
+            //startActivity(Intent(this, SignInActivity::class.java))
         }
 
         val userName = findViewById<TextView>(R.id.userName)
