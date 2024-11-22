@@ -15,8 +15,9 @@
         android:theme="@style/Theme.KulinerKita"
         tools:targetApi="31">
         <activity
-            android:name=".ui.home.BerandaActivity"
-            android:exported="false" />
+            android:name=".MainActivity"
+            android:exported="false"
+            android:label="@string/app_name" />
         <activity
             android:name=".SplashActivity"
             android:exported="true">
@@ -32,7 +33,6 @@
         <activity android:name=".ui.onboarding.ActivityOnboardingLast" />
         <activity android:name=".ui.register.CreateAccountActivity" />
         <activity android:name=".ui.login.SignInActivity" />
-        <activity android:name=".ui.preference.PreferencesActivity" />
     </application>
 
 </manifest>

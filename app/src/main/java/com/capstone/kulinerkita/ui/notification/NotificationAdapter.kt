@@ -1,4 +1,4 @@
-package com.capstone.kulinerkita.notification
+package com.capstone.kulinerkita.ui.notification
 
 import android.view.LayoutInflater
 import android.view.View

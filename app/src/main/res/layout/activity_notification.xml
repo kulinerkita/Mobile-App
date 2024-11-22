@@ -15,7 +15,7 @@
             android:id="@+id/backButton"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/back"
+            android:src="@drawable/ic_back"
             android:contentDescription="@string/back" />
 
 
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:gravity="center"
-            android:text="@string/notification"
+            android:text="@string/title_notifications"
             android:textSize="18sp" />
     </LinearLayout>
 

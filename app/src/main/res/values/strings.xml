@@ -13,7 +13,6 @@
     <string name="tittle_ob4">Zero Waste Food Practice</string>
     <string name="desc_ob4">Look for eateries that support sustainability with minimal plastic use and donated food.</string>
     <string name="desc_ob5">Discover authentic and eco-friendly culinary adventures in every corner of the city.</string>
-    <string name="or">Or</string>
     <string name="create_your_account">Create Your Account</string>
     <string name="already_have_an_account">Already have an account? </string>
     <string name="sign_in"> Sign In</string>
@@ -42,12 +41,18 @@
     <string name="culiner_kategori">Categories Culinary</string>
     <string name="notification_icon">Notification icon</string>
     <string name="search_icon">Search icon</string>
-    <string name="name_weather">Cuaca</string>
-    <string name="name_location">Location</string>
+    <string name="name_weather">25 Celcius</string>
+    <string name="name_location">Solo, Surakarta</string>
     <string name="text_food">Food</string>
     <string name="text_drink">Drink</string>
     <string name="text_recomendation">Recommendation</string>
     <string name="arrow_left">Back to</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_favorite">Favorite</string>"
+    <string name="title_news">News</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_home">Home</string>
+    <string name="hello_blank_fragment">This is a blank fragment</string>
 
     <!-- Profile strings -->
     <string name="profile">Profile</string>
@@ -68,12 +73,12 @@
 
     <!-- Notification strings -->
     <string name="notification">Notification</string>
-    <string name="reminder_title">Reminder!</string>
-    <string name="reminder_message">Congratulations! You have earned 1000 points for visiting 5 single-use plastic-free places.</string>
-    <string name="culinary_event_title">Culinary events in solo city!</string>
-    <string name="culinary_event_message">Event in solo city "Caring for cleanliness starts with food", interesting event and don't forget to attend!</string>
-    <string name="culinary_journey_title">A reminder for your culinary journey!</string>
+    <string name="reminder_title">Reminder</string>
+    <string name="reminder_message">Congratulations You have earned 1000 points for visiting 5 single use plastic free places.</string>
+    <string name="culinary_event_title">Culinary events in solo city</string>
+    <string name="culinary_event_message">Event in solo city Caring for cleanliness starts with food interesting event and dont forget to attend</string>
+    <string name="culinary_journey_title">A reminder for your culinary journey</string>
     <string name="culinary_journey_message">Enjoy your culinary journey and get your fill of solo culinary delights. Happy adventures!</string>
-    <string name="activate_reminder">Activate reminder!</string>
+    <string name="activate_reminder">Activate reminder</string>
     <string name="days_ago">1 days ago</string>
 </resources>

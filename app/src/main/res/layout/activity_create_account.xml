@@ -20,7 +20,7 @@
             android:layout_height="26dp"
             android:layout_marginTop="30dp"
             android:contentDescription="@string/arrow_left"
-            android:src="@drawable/back" />
+            android:src="@drawable/ic_back" />
 
         <TextView
             android:id="@+id/titleText"

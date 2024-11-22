@@ -11,9 +11,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.capstone.kulinerkita.MainActivity
 import com.capstone.kulinerkita.R
 import com.capstone.kulinerkita.data.KulinerKitaDatabase
-import com.capstone.kulinerkita.ui.home.BerandaActivity
+import com.capstone.kulinerkita.ui.home.HomeFragment
 import com.capstone.kulinerkita.ui.onboarding.ActivityOnboardingLast
 import com.capstone.kulinerkita.ui.register.CreateAccountActivity
 import kotlinx.coroutines.CoroutineScope
@@ -93,17 +94,19 @@ class SignInActivity : AppCompatActivity() {
                     val user = database.userDao().loginUser(email, password)
                     withContext(Dispatchers.Main) {
                         if (user != null) {
-                            Toast.makeText(this@SignInActivity, "Login Berhasil", Toast.LENGTH_SHORT)
-                                .show()
-                            // Pindah ke halaman utama setelah login
-                            startActivity(Intent(this@SignInActivity, BerandaActivity::class.java))
+                            Toast.makeText(this@SignInActivity, "Login Berhasil", Toast.LENGTH_SHORT).show()
+                            // Arahkan ke MainActivity setelah login berhasil
+                            val intent = Intent(this@SignInActivity, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+
                         } else {
-                            Toast.makeText(this@SignInActivity, "Email atau password salah!", Toast.LENGTH_SHORT)
-                                .show()
+                            Toast.makeText(this@SignInActivity, "Email atau password salah!", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
             }
         }
+
     }
 }
