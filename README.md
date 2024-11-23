@@ -15,7 +15,7 @@ this is [KulinerKita](https://github.com/kulinerkita/Mobile-App) MD Repository <
 </div>
 
 
-### 🎨 Desain UI/UX
+### 🎨 Design UI/UX
 ![Figma](https://img.shields.io/badge/Figma-F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)
 [Figma Link](https://www.figma.com/design/lhM7Vur3XxAoA4IyrA2TQR/KulinerKita?node-id=0-1&t=RBdEiPMdSUIhMuuP-1)
 
