@@ -86,4 +86,11 @@
     <string name="culinary_journey_message">Enjoy your culinary journey and get your fill of solo culinary delights. Happy adventures!</string>
     <string name="activate_reminder">Activate reminder</string>
     <string name="days_ago">1 days ago</string>
+
+    <!-- News strings -->
+    <string name="desc">Deskripsi singkat berita akan ditampilkan di sini.</string>
+    <string name="time">2 jam yang lalu</string>
+    <string name="news_title">Judul Berita</string>
+    <string name="news_image">Gambar Berita</string>
+
 </resources>
