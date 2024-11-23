@@ -32,11 +32,11 @@ this is [KulinerKita](https://github.com/kulinerkita/Mobile-App) MD Repository <
 * USB Cable (to Connect Android Device to your Computer)
 
 ## About
-### 🔥 Wrap Up
+### 🔥 Let's go
 We are a Mobile Development team, who created “KulinerKita”, an application built on Kotlin, utilizing Model-View-ViewModel (MVVM) architecture. This application helps users/tourists find authentic and eco-friendly local restaurants in the city of Surakarta, Solo. This application provides recommendations for nearby places to eat and food recommendations according to the current weather. The prominent feature of KulinerKita is the recommendation system and maps based on Machine Learning. This innovative feature, supported by our Cloud Computing team's cloud deployment model, simplifies the user experience. All local restaurant data is securely stored through an API developed by our Cloud Computing team, ensuring smooth operations and making KulinerKita a leader in bridging technology and sustainability.
 
-### 👓 Dependencies
-- [x] [Retrofit](https://square.github.io/retrofit/)
+### 🍽️ Dependencies
+- [x] [Retrofit](https://square.github.io/retrofit/).
 - [x] [Material](https://m3.material.io/)
 - [x] [Room Database](https://developer.android.com/reference/android/arch/persistence/room/RoomDatabase)
 - [x] [Navigation](https://developer.android.com/guide/navigation/)
