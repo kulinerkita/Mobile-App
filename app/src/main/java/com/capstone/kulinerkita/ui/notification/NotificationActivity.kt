@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.kulinerkita.R
 import com.capstone.kulinerkita.databinding.ActivityNotificationBinding
 
+@Suppress("DEPRECATION")
 class NotificationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNotificationBinding

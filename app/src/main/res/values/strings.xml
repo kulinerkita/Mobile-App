@@ -52,6 +52,11 @@
     <string name="title_news">News</string>
     <string name="title_profile">Profile</string>
     <string name="title_home">Home</string>
+    <string name="nama_restoran">Warteg Gang Mangga</string>
+    <string name="alamat_restoran">Jl. Letjen Suprapto No. 123, Solo</string>
+    <string name="categori_suhu">Dingin</string>
+    <string name="categori_eco_friendly">Eco-friendly</string>
+    <string name="rating">4.5</string>
     <string name="hello_blank_fragment">This is a blank fragment</string>
 
     <!-- Profile strings -->

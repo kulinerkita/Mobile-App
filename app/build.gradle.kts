@@ -59,6 +59,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation (libs.androidx.cardview)
     implementation (libs.material.v1100)
+    implementation (libs.github.glide)
 
     // Import the Firebase BoM
     implementation(platform(libs.firebase.bom))

@@ -4,13 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    android:padding="16dp">
+    android:padding="18dp">
 
     <!-- Back Arrow and Title -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="20dp"
         android:gravity="center_vertical">
 
         <ImageView
@@ -28,8 +29,8 @@
             android:gravity="center"
             android:text="@string/profile"
             android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textSize="15sp"
+            android:fontFamily="@font/poppins_semi_bold" />
     </LinearLayout>
 
     <!-- Profile Section -->
@@ -54,7 +55,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/jhon_doe"
-            android:textSize="16sp"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/black" />
 
@@ -63,6 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/example_email"
+            android:fontFamily="@font/poppins_regular"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -82,15 +85,17 @@
             android:gravity="center">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:src="@drawable/store_sign"
                 android:contentDescription="@string/visits" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:text="10 Kunjungan"
+                android:fontFamily="@font/poppins_medium"
                 android:textSize="14sp"
                 android:textColor="@color/black" />
         </LinearLayout>
@@ -103,15 +108,17 @@
             android:gravity="center">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:src="@drawable/zero_waste"
                 android:contentDescription="@string/membership" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:text="@string/kunjungan"
+                android:fontFamily="@font/poppins_medium"
                 android:textSize="14sp"
                 android:textColor="@color/black" />
         </LinearLayout>
@@ -135,8 +142,8 @@
             android:background="?attr/selectableItemBackground">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:src="@drawable/setting"
                 android:contentDescription="@string/settings" />
 
@@ -147,6 +154,7 @@
                 android:layout_weight="1"
                 android:text="@string/settings"
                 android:textSize="16sp"
+                android:fontFamily="@font/poppins_medium"
                 android:textColor="@color/black" />
 
             <ImageView
@@ -167,8 +175,8 @@
             android:background="?attr/selectableItemBackground">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/help"
                 android:contentDescription="@string/help" />
 
@@ -179,6 +187,7 @@
                 android:layout_weight="1"
                 android:text="@string/help"
                 android:textSize="16sp"
+                android:fontFamily="@font/poppins_medium"
                 android:textColor="@color/black" />
 
             <ImageView
@@ -199,8 +208,8 @@
             android:background="?attr/selectableItemBackground">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/logout"
                 android:contentDescription="@string/logout"
                 app:tint="@color/red" />
@@ -211,6 +220,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
                 android:text="@string/logout"
+                android:fontFamily="@font/poppins_medium"
                 android:textSize="16sp"
                 android:textColor="@color/red" />
             <ImageView

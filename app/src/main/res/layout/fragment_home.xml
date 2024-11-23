@@ -182,5 +182,11 @@
             android:textColor="@color/black"
             tools:ignore="TextSizeCheck" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/itemRestoran"
+            android:layout_width="match_parent"
+            android:layout_height="600dp"
+            android:layout_marginTop="5dp"
+            android:nestedScrollingEnabled="true" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
