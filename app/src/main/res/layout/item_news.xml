@@ -11,6 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/edittext_background"
         android:padding="12dp">
 
         <!-- Foto -->
@@ -21,6 +22,8 @@
             android:layout_alignParentEnd="true"
             android:layout_marginStart="16dp"
             android:scaleType="centerCrop"
+            android:background="@drawable/rounded_image"
+            android:clipToOutline="true"
             android:src="@drawable/food_1"
             android:contentDescription="@string/news_image" />
 
@@ -46,6 +49,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/poppins_regular"
+            android:textColor="@color/black"
             android:textSize="14sp"
             android:ellipsize="end"
             android:maxLines="3"
@@ -60,6 +64,7 @@
             android:layout_toStartOf="@id/imgNewsThumbnail"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/poppins_italic"
+            android:textColor="@color/black"
             android:textSize="12sp"
             android:text="@string/time" />
     </RelativeLayout>

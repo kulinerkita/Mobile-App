@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/welcome"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:layout_gravity="center"
         android:textColor="@color/color_green"
         android:fontFamily="@font/poppins_semi_bold" />

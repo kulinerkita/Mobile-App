@@ -49,7 +49,6 @@ class SignInActivity : AppCompatActivity() {
             }
         }
 
-
         val emailInput = findViewById<EditText>(R.id.emaillogin)
         val passwordInput = findViewById<EditText>(R.id.passwordInputLogin)
         val passwordToggle = findViewById<ImageView>(R.id.passwordToggleLogin)

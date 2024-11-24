@@ -1,0 +1,115 @@
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="180dp"
+    android:layout_height="218dp"
+    android:layout_marginBottom="25dp"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="15dp"
+    app:cardElevation="3dp"
+    app:cardBackgroundColor="@color/white"
+    tools:ignore="TextSizeCheck">
+
+    <!-- Gambar Profil -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <!-- Gambar Profil -->
+        <ImageView
+            android:id="@+id/imgProfile"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/rounded_image"
+            android:clipToOutline="true"
+            android:contentDescription="@string/name_kuliner"
+            android:scaleType="centerCrop"
+            android:src="@drawable/food_1"
+            tools:ignore="UnusedAttribute" />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="120dp"
+        tools:ignore="RedundantNamespace">
+
+        <!-- Nama Restoran -->
+        <TextView
+            android:id="@+id/tvRestaurantName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:text="@string/name_kuliner"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <!-- Alamat Restoran -->
+        <LinearLayout
+            android:id="@+id/content_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="10dp"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
+
+            <!-- Ikon Lokasi -->
+            <ImageView
+                android:id="@+id/iconLocation"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/ic_location" />
+
+            <!-- Alamat -->
+            <TextView
+                android:id="@+id/tvRestaurantAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/alamat_restoran"
+                android:textColor="@color/black"
+                android:textSize="10sp"
+                tools:ignore="SmallSp" />
+        </LinearLayout>
+
+        <!-- Kategori Restoran -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <!-- Kategori Suhu -->
+            <TextView
+                android:id="@+id/tvCategoriSuhu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:text="@string/categori_suhu"
+                android:textColor="@color/color_green"
+                android:textSize="10sp"
+                tools:ignore="SmallSp,TextContrastCheck" />
+
+            <!-- Kategori Eco -->
+            <TextView
+                android:id="@+id/tvCategoriEco"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:text="@string/categori_eco_friendly"
+                android:textColor="@color/color_green"
+                android:textSize="10sp"
+                tools:ignore="SmallSp,TextContrastCheck" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

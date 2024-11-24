@@ -6,5 +6,6 @@ data class Restaurant(
     val categorySuhu: String,
     val categoryEco: String,
     val ratings: String,
-    val imageResId: Int
+    val imageResId: Int,
+    val operationalHours: Map<String, String>
 )

@@ -11,4 +11,11 @@
     <color name="color_light_green2">#ECF4EB</color>
     <color name="red">#FF0000</color>
     <color name="yellow">#FFEB3B</color>
+    <color name="feedback_color">#B4B9C9</color>
+    <color name="line_color">#D9D9D9</color>
+
+    <color name="star_color">#FFC107</color> <!-- Warna bintang terisi -->
+    <color name="star_secondary">#FFD54F</color> <!-- Warna bintang setengah -->
+    <color name="star_background">#E0E0E0</color> <!-- Warna bintang kosong -->
+
 </resources>

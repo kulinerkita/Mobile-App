@@ -28,14 +28,23 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         // Data Dummy
-        restaurantList = listOf(
+        val restaurantList = listOf(
             Restaurant(
                 name = "Warung Sate",
                 address = "Jl. Kebon Jeruk, Jakarta",
                 categorySuhu = "Nyaman",
                 categoryEco = "Eco-Friendly",
                 ratings = "2.5",
-                imageResId = R.drawable.restoran_1
+                imageResId = R.drawable.restoran_1,
+                operationalHours = mapOf(
+                    "Senin" to "08:00 - 12:00",
+                    "Selasa" to "08:00 - 12:00",
+                    "Rabu" to "08:00 - 12:00",
+                    "Kamis" to "08:00 - 12:00",
+                    "Jumat" to "08:00 - 12:00",
+                    "Sabtu" to "08:00 - 12:00",
+                    "Minggu" to "08:00 - 12:00"
+                )
             ),
             Restaurant(
                 name = "Bakmi Naga",
@@ -43,7 +52,16 @@ class HomeFragment : Fragment() {
                 categorySuhu = "Sejuk",
                 categoryEco = "Eco-Friendly",
                 ratings = "4.5",
-                imageResId = R.drawable.restoran_1
+                imageResId = R.drawable.restoran_1,
+                operationalHours = mapOf(
+                    "Senin" to "08:00 - 12:00",
+                    "Selasa" to "08:00 - 12:00",
+                    "Rabu" to "08:00 - 12:00",
+                    "Kamis" to "08:00 - 12:00",
+                    "Jumat" to "08:00 - 12:00",
+                    "Sabtu" to "08:00 - 12:00",
+                    "Minggu" to "08:00 - 12:00"
+                )
             ),
             Restaurant(
                 name = "Soto Betawi",
@@ -51,7 +69,16 @@ class HomeFragment : Fragment() {
                 categorySuhu = "Hangat",
                 categoryEco = "Eco-Friendly",
                 ratings = "3.5",
-                imageResId = R.drawable.restoran_1
+                imageResId = R.drawable.restoran_1,
+                operationalHours = mapOf(
+                    "Senin" to "08:00 - 12:00",
+                    "Selasa" to "08:00 - 12:00",
+                    "Rabu" to "08:00 - 12:00",
+                    "Kamis" to "08:00 - 12:00",
+                    "Jumat" to "08:00 - 12:00",
+                    "Sabtu" to "08:00 - 12:00",
+                    "Minggu" to "08:00 - 12:00"
+                )
             ),
             Restaurant(
                 name = "Gudeg Jogja",
@@ -59,9 +86,19 @@ class HomeFragment : Fragment() {
                 categorySuhu = "Nyaman",
                 categoryEco = "Eco-Friendly",
                 ratings = "4.5",
-                imageResId = R.drawable.restoran_1
+                imageResId = R.drawable.restoran_1,
+                operationalHours = mapOf(
+                    "Senin" to "08:00 - 12:00",
+                    "Selasa" to "08:00 - 12:00",
+                    "Rabu" to "08:00 - 12:00",
+                    "Kamis" to "08:00 - 12:00",
+                    "Jumat" to "08:00 - 12:00",
+                    "Sabtu" to "08:00 - 12:00",
+                    "Minggu" to "08:00 - 12:00"
+                )
             )
         )
+
 
         // Setup RecyclerView
         adapter = HomeAdapter(restaurantList) {

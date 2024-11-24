@@ -29,7 +29,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/poppins_semi_bold"
             android:gravity="center"
-            android:text="@string/create_account"
+            android:text="@string/create_your_account"
             android:textColor="@color/color_green"
             android:textSize="25sp" />
 

@@ -17,7 +17,7 @@
         android:textColor="@color/color_green"
         android:fontFamily="@font/poppins_semi_bold"
         android:text="@string/tittle_ob2"
-        android:textSize="24sp"
+        android:textSize="25sp"
         android:gravity="center" />
 
     <TextView

@@ -1,0 +1,79 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="144dp"
+    android:layout_marginBottom="2dp"
+    android:padding="10dp"
+    android:background="@color/white">
+
+    <!-- Gambar Profil -->
+    <ImageView
+        android:id="@+id/imgUser"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/rounded_image_user"
+        android:clipToOutline="true"
+        android:contentDescription="@string/name_kuliner"
+        android:scaleType="centerCrop"
+        android:src="@drawable/food_1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="UnusedAttribute" />
+
+    <!-- Nama User -->
+    <TextView
+        android:id="@+id/Tv_nameUsers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:text="@string/name_user"
+        app:layout_constraintStart_toEndOf="@id/imgUser"
+        app:layout_constraintTop_toTopOf="@id/imgUser" />
+
+    <!-- Waktu Feedback -->
+    <TextView
+        android:id="@+id/Tv_waktuFeedback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:text="@string/days_ago_feedback"
+        android:textColor="@color/feedback_color"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/Tv_nameUsers"
+        tools:ignore="TextContrastCheck" />
+
+    <!-- Deskripsi Feedback -->
+    <TextView
+        android:id="@+id/Tv_deskripsiFeedback"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="11sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/desc_feedback"
+        app:layout_constraintTop_toBottomOf="@id/imgUser"
+        app:layout_constraintStart_toStartOf="@id/imgUser"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="VisualLintLongText" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@drawable/dashed_line"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintTop_toBottomOf="@id/Tv_deskripsiFeedback"
+        app:layout_constraintStart_toStartOf="@id/Tv_deskripsiFeedback"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
