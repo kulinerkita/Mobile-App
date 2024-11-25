@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.capstone.kulinerkita.R
+import com.capstone.kulinerkita.data.model.NewsHome
 import com.capstone.kulinerkita.data.model.Restaurant
 
 class HomeAdapter(
@@ -54,3 +55,43 @@ class HomeAdapter(
 
     override fun getItemCount(): Int = restaurantList.size
 }
+
+class NewsHomeAdapter(
+    private val newsList: List<NewsHome>,
+    private val onItemClick: (NewsHome) -> Unit
+) : RecyclerView.Adapter<NewsHomeAdapter.NewsViewHolder>() {
+
+    inner class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val imgNews: ImageView = itemView.findViewById(R.id.imgNewsThumbnail)
+        private val tvTitle: TextView = itemView.findViewById(R.id.Tv_newsJudul)
+
+        fun bind(news: NewsHome) {
+            // Set data ke view
+            Glide.with(itemView.context)
+                .load(news.imageUrl)
+                .into(imgNews)
+
+            tvTitle.text = news.title
+
+            // Klik item untuk detail
+            itemView.setOnClickListener {
+                onItemClick(news)
+            }
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_news_home, parent, false)
+        return NewsViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
+        holder.bind(newsList[position])
+    }
+
+    override fun getItemCount(): Int = newsList.size
+}
+
+
+

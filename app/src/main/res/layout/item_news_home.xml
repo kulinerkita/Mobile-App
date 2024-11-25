@@ -1,0 +1,53 @@
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="300dp"
+    android:layout_height="180dp"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="15dp"
+    app:cardElevation="3dp"
+    app:cardBackgroundColor="@color/white"
+    tools:ignore="TextSizeCheck">
+
+    <!-- Gambar Profil -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <!-- Gambar Profil -->
+        <ImageView
+            android:id="@+id/imgNewsThumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/news_home"
+            android:clipToOutline="true"
+            android:contentDescription="@string/news_judul"
+            android:scaleType="centerCrop"
+            android:src="@drawable/restoran_1"
+            tools:ignore="UnusedAttribute" />
+
+        <!-- Bayangan -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/shadow_drawable" />
+
+            <!-- Teks Rating -->
+            <TextView
+                android:id="@+id/Tv_newsJudul"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:layout_alignBottom="@id/imgNewsThumbnail"
+                android:layout_alignStart="@id/imgNewsThumbnail"
+                android:textSize="11sp"
+                android:text="@string/news_judul" />
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>

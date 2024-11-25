@@ -16,7 +16,7 @@
         android:scaleX="0.5"
         android:scaleY="0.5"
         android:numStars="5"
-        android:rating="4.5"
+        android:rating="3.5"
         android:stepSize="0.2"
         android:secondaryProgressTint="@color/color_light_green2"
         android:progressTint="@color/color_light_green"

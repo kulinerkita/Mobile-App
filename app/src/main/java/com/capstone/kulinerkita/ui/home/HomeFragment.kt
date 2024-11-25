@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.kulinerkita.R
+import com.capstone.kulinerkita.data.model.NewsHome
 import com.capstone.kulinerkita.data.model.Restaurant
 import com.capstone.kulinerkita.databinding.FragmentHomeBinding
 import com.capstone.kulinerkita.ui.detailResto.DetailRestoActivity
@@ -18,8 +20,8 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var restaurantList: List<Restaurant>
-    private lateinit var adapter: HomeAdapter
+    private lateinit var restaurantAdapter: HomeAdapter
+    private lateinit var newsAdapter: NewsHomeAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -99,16 +101,39 @@ class HomeFragment : Fragment() {
             )
         )
 
+        // data dummy news
+        val newsList = listOf(
+            NewsHome(
+                id = "1",
+                title = "Kuliner Tradisional Nusantara",
+                imageUrl = R.drawable.news_home
+            ),
+            NewsHome(
+                id = "2",
+                title = "Kuliner Tradisional Nusantara",
+                imageUrl = R.drawable.news_home
+            )
+        )
+
 
         // Setup RecyclerView
-        adapter = HomeAdapter(restaurantList) {
-            // Handle item click, misalnya navigasi ke detail
+        restaurantAdapter = HomeAdapter(restaurantList) {
+            // Handle restaurant item click
             startActivity(Intent(context, DetailRestoActivity::class.java))
+        }
+
+        newsAdapter = NewsHomeAdapter(newsList) {
+
+        }
+
+        binding.itemKulinerNews.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = newsAdapter
         }
 
         binding.itemRestoran.apply {
             layoutManager = GridLayoutManager(context, 2)
-            adapter = this@HomeFragment.adapter
+            adapter = restaurantAdapter
         }
 
         // Event Listeners
@@ -121,6 +146,7 @@ class HomeFragment : Fragment() {
         }
 
         Log.d("HomeFragment", "Restaurant list size: ${restaurantList.size}")
+        Log.d("HomeFragment", "News Di Home list size: ${newsList.size}")
 
         return binding.root
     }

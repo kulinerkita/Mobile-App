@@ -11,7 +11,7 @@
     <string name="tittle_ob3">Mendukung Ekonomi Lokal dan Ramah Lingkungan</string>
     <string name="desc_ob3">Dengan KulinerKita, setiap kunjungan berarti dukungan untuk UMKM dan komunitas lokal.</string>
     <string name="tittle_ob4">Praktik Makanan Tanpa Limbah</string>
-    <string name="desc_ob4"> Carilah tempat makan yang mendukung keberlanjutan dengan penggunaan plastik minimal dan makanan yang disumbangkan.</string>
+    <string name="desc_ob4"> Carilah tempat makan yang mendukung keberlanjutan dengan penggunaan plastik.</string>
     <string name="desc_ob5">Temukan petualangan kuliner autentik dan ramah lingkungan di setiap sudut kota.</string>
     <string name="create_your_account">Buat Akun Anda</string>
     <string name="already_have_an_account">Sudah memiliki akun?</string>
@@ -73,6 +73,7 @@
     <string name="jhon_doe">Jhon Doe</string>
     <string name="example_email">example@gmail.com</string>
     <string name="kunjungan">5 Kunjungan</string>
+    <string name="news_judul">Indonesia menjadi negara yang akan mengadakan event mengenai pengurangan limbah plastik</string>
 
     <!-- Notification strings -->
     <string name="notification">Notifikasi</string>
