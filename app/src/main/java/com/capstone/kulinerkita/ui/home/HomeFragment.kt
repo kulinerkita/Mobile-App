@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.kulinerkita.R
@@ -23,11 +24,15 @@ class HomeFragment : Fragment() {
     private lateinit var restaurantAdapter: HomeAdapter
     private lateinit var newsAdapter: NewsHomeAdapter
 
+    private val viewModel: HomeViewModel by viewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        fetchWeatherData()
 
         // Data Dummy
         val restaurantList = listOf(
@@ -149,6 +154,21 @@ class HomeFragment : Fragment() {
         Log.d("HomeFragment", "News Di Home list size: ${newsList.size}")
 
         return binding.root
+    }
+
+    private fun fetchWeatherData() {
+        val apiKey = "8c79ecf19f5084f74baa0c841a95214f"
+        val city = "Surakarta"
+
+        viewModel.fetchWeather(city, apiKey)
+
+        viewModel.weatherData.observe(viewLifecycleOwner) { weather ->
+            if (weather != null) {
+                binding.TvWeather.text = "${weather.main.temp}°C, ${weather.weather[0].description}"
+            } else {
+                binding.TvWeather.text = "Gagal mengambil data cuaca."
+            }
+        }
     }
 
     override fun onDestroyView() {

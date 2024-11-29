@@ -1,6 +1,7 @@
 [versions]
 agp = "8.5.1"
 cardview = "1.0.0"
+converterGson = "2.9.0"
 firebaseAuth = "23.1.0"
 firebaseBom = "33.6.0"
 glideVersion = "4.15.1"
@@ -19,6 +20,7 @@ materialVersion = "1.10.0"
 navigationFragmentKtx = "2.8.3"
 navigationUiKtx = "2.8.3"
 playServicesAuth = "21.2.0"
+retrofit = "2.9.0"
 roomRuntime = "2.6.1"
 lifecycleLivedataKtx = "2.8.7"
 lifecycleViewmodelKtx = "2.8.7"
@@ -47,6 +49,8 @@ androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit2-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
