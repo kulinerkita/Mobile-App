@@ -100,4 +100,7 @@
     <string name="name_user">Jhon Doe</string>
     <string name="days_ago_feedback">1 hari yang lalu</string>
     <string name="desc_feedback">Lorem ipsum dolor sit amet, consectetur adipisicing elit,sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+
+    <!-- Login With Google -->
+    <string name="default_web_client_id">1:1058367483881:android:83ba68e30b9fe0e2cf6578</string>
 </resources>

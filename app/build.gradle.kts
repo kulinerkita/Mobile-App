@@ -63,13 +63,15 @@ dependencies {
 
     // Import the Firebase BoM
     implementation(platform(libs.firebase.bom))
+    implementation (libs.firebase.auth.ktx)
+    implementation (libs.play.services.auth)
 
     // room database
     implementation (libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
-    //Reforfit
+    // Reforfit
     implementation (libs.retrofit)
     implementation (libs.retrofit2.converter.gson)
 }
