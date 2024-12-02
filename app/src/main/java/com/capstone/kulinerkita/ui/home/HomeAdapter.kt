@@ -12,7 +12,7 @@ import com.capstone.kulinerkita.data.model.NewsHome
 import com.capstone.kulinerkita.data.model.Restaurant
 
 class HomeAdapter(
-    private val restaurantList: List<Restaurant>,
+    private var restaurantList: MutableList<Restaurant>,
     private val onItemClick: (Restaurant) -> Unit
 ) : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
@@ -54,6 +54,12 @@ class HomeAdapter(
     }
 
     override fun getItemCount(): Int = restaurantList.size
+
+    fun updateData(newList: List<Restaurant>) {
+        restaurantList.clear()
+        restaurantList.addAll(newList)
+        notifyDataSetChanged()
+    }
 }
 
 class NewsHomeAdapter(
@@ -91,6 +97,7 @@ class NewsHomeAdapter(
     }
 
     override fun getItemCount(): Int = newsList.size
+
 }
 
 

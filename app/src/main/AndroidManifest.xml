@@ -37,6 +37,7 @@
         <activity android:name=".ui.onboarding.ActivityOnboardingLast" />
         <activity android:name=".ui.register.CreateAccountActivity" />
         <activity android:name=".ui.login.SignInActivity" />
+        <activity android:name=".ui.search.SearchActivity" />
 
         <receiver
             android:name=".NotificationReceiver"

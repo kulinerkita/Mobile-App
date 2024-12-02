@@ -15,6 +15,7 @@ import com.capstone.kulinerkita.data.model.NewsHome
 import com.capstone.kulinerkita.data.model.Restaurant
 import com.capstone.kulinerkita.databinding.FragmentHomeBinding
 import com.capstone.kulinerkita.ui.detailResto.DetailRestoActivity
+import com.capstone.kulinerkita.ui.search.SearchActivity
 
 class HomeFragment : Fragment() {
 
@@ -122,7 +123,7 @@ class HomeFragment : Fragment() {
 
 
         // Setup RecyclerView
-        restaurantAdapter = HomeAdapter(restaurantList) {
+        restaurantAdapter = HomeAdapter(restaurantList.toMutableList()) {
             // Handle restaurant item click
             startActivity(Intent(context, DetailRestoActivity::class.java))
         }
@@ -147,8 +148,11 @@ class HomeFragment : Fragment() {
         }
 
         binding.ivSearch.setOnClickListener {
-            // Handle Search Click
+            val intent = Intent(context, SearchActivity::class.java)
+            intent.putParcelableArrayListExtra("restaurantList", ArrayList(restaurantList))
+            startActivity(intent)
         }
+
 
         Log.d("HomeFragment", "Restaurant list size: ${restaurantList.size}")
         Log.d("HomeFragment", "News Di Home list size: ${newsList.size}")

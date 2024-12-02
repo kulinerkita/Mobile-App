@@ -103,4 +103,8 @@
 
     <!-- Login With Google -->
     <string name="default_web_client_id">1:1058367483881:android:83ba68e30b9fe0e2cf6578</string>
+
+    <!-- Search String -->
+    <string name="search_hint">Cari restoran...</string>
+    <string name="search_icon_desc">Search icon</string>
 </resources>
