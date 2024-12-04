@@ -27,20 +27,31 @@ import com.capstone.kulinerkita.MainActivity
 import com.capstone.kulinerkita.NotificationReceiver
 import com.capstone.kulinerkita.R
 import com.capstone.kulinerkita.data.KulinerKitaDatabase
+import com.capstone.kulinerkita.databinding.ActivitySignInBinding
 import com.capstone.kulinerkita.ui.onboarding.ActivityOnboardingLast
 import com.capstone.kulinerkita.ui.register.CreateAccountActivity
+import com.capstone.kulinerkita.utils.SessionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class SignInActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySignInBinding
     private lateinit var database: KulinerKitaDatabase
+    private lateinit var sessionManager: SessionManager
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_in)
+        binding = ActivitySignInBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        sessionManager = SessionManager(this)
+
+        if (sessionManager.isLoggedIn()) {
+            navigateToMainActivity()
+        }
 
         // Meminta izin untuk menampilkan notifikasi jika perangkat menggunakan Android 13 atau lebih tinggi
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -49,12 +60,8 @@ class SignInActivity : AppCompatActivity() {
             }
         }
 
-        val emailInput = findViewById<EditText>(R.id.emaillogin)
         val passwordInput = findViewById<EditText>(R.id.passwordInputLogin)
         val passwordToggle = findViewById<ImageView>(R.id.passwordToggleLogin)
-        val buttonBack = findViewById<ImageView>(R.id.Iv_backLogin)
-        val signInButton = findViewById<Button>(R.id.LoginButton)
-        val footerText = findViewById<TextView>(R.id.signupTextView)
 
         var isPasswordVisible = false
 
@@ -76,49 +83,44 @@ class SignInActivity : AppCompatActivity() {
         database = KulinerKitaDatabase.getInstance(this)
 
         // Sign In Button
-        signInButton.setOnClickListener {
-            val email = emailInput.text.toString().trim()
-            val password = passwordInput.text.toString().trim()
+        binding.LoginButton.setOnClickListener {
+            val email = binding.emaillogin.text.toString().trim()
+            val password = binding.passwordInputLogin.text.toString().trim()
 
             if (email.isEmpty()) {
-                emailInput.error = "Email wajib diisi!"
-                emailInput.requestFocus()
+                binding.emaillogin.error = "Email wajib diisi!"
+                binding.emaillogin.requestFocus()
             } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                emailInput.error = "Format email tidak valid!"
-                emailInput.requestFocus()
+                binding.emaillogin.error = "Format email tidak valid!"
+                binding.emaillogin.requestFocus()
             } else if (password.isEmpty()) {
-                passwordInput.error = "Password wajib diisi!"
-                passwordInput.requestFocus()
+                binding.passwordInputLogin.error = "Password wajib diisi!"
+                binding.passwordInputLogin.requestFocus()
             } else {
                 CoroutineScope(Dispatchers.IO).launch {
                     val user = database.userDao().loginUser(email, password)
                     withContext(Dispatchers.Main) {
                         if (user != null) {
+                            sessionManager.saveToken("fake_token_${user.id}")
                             Toast.makeText(this@SignInActivity, "Login Berhasil", Toast.LENGTH_SHORT).show()
-
-                            // Arahkan ke MainActivity setelah login berhasil
-                            val intent = Intent(this@SignInActivity, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
+                            navigateToMainActivity()
                         } else {
                             Toast.makeText(this@SignInActivity, "Email atau password salah!", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
             }
+        }
 
-            // Footer text action
-            footerText.setOnClickListener {
-                val intent = Intent(this, CreateAccountActivity::class.java)
-                startActivity(intent)
-            }
+        // Sign Up navigation
+        binding.signupTextView.setOnClickListener {
+            startActivity(Intent(this, CreateAccountActivity::class.java))
+        }
 
-            // back to onboarding last
-            buttonBack.setOnClickListener {
-                val intent = Intent(this, ActivityOnboardingLast::class.java)
-                startActivity(intent)
-                finish()
-            }
+        // Back button action
+        binding.IvBackLogin.setOnClickListener {
+            startActivity(Intent(this, ActivityOnboardingLast::class.java))
+            finish()
         }
     }
 
@@ -161,7 +163,6 @@ class SignInActivity : AppCompatActivity() {
         notificationManager.notify(1, notification)
     }
 
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -174,6 +175,12 @@ class SignInActivity : AppCompatActivity() {
                 Toast.makeText(this, "Permission denied to post notifications.", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun navigateToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
 
