@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:fillViewport="true"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.detailResto.DetailRestoActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -85,7 +85,7 @@
 
                 <!-- Teks Rating -->
                 <TextView
-                    android:id="@+id/Tv_ratingsDetail"
+                    android:id="@+id/tvratingsDetail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"

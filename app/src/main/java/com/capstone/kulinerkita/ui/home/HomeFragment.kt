@@ -1,5 +1,6 @@
 package com.capstone.kulinerkita.ui.home
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,11 +12,16 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.kulinerkita.R
+import com.capstone.kulinerkita.data.KulinerKitaDatabase
 import com.capstone.kulinerkita.data.model.NewsHome
 import com.capstone.kulinerkita.data.model.Restaurant
 import com.capstone.kulinerkita.databinding.FragmentHomeBinding
 import com.capstone.kulinerkita.ui.detailResto.DetailRestoActivity
-import com.capstone.kulinerkita.ui.search.SearchActivity
+import com.capstone.kulinerkita.utils.SessionManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeFragment : Fragment() {
 
@@ -24,16 +30,22 @@ class HomeFragment : Fragment() {
 
     private lateinit var restaurantAdapter: HomeAdapter
     private lateinit var newsAdapter: NewsHomeAdapter
+    private lateinit var sessionManager: SessionManager
+    private lateinit var database: KulinerKitaDatabase
 
     private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
+    ): View? {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
+        sessionManager = SessionManager(requireContext())
+        database = KulinerKitaDatabase.getInstance(requireContext())
+
         fetchWeatherData()
+        fetchUserData()
 
         // Data Dummy
         val restaurantList = listOf(
@@ -107,7 +119,7 @@ class HomeFragment : Fragment() {
             )
         )
 
-        // data dummy news
+        // Data Dummy untuk berita
         val newsList = listOf(
             NewsHome(
                 id = "1",
@@ -121,15 +133,14 @@ class HomeFragment : Fragment() {
             )
         )
 
-
         // Setup RecyclerView
         restaurantAdapter = HomeAdapter(restaurantList.toMutableList()) {
-            // Handle restaurant item click
+            // Handle restoran item click
             startActivity(Intent(context, DetailRestoActivity::class.java))
         }
 
         newsAdapter = NewsHomeAdapter(newsList) {
-
+            // Handle klik berita jika diperlukan
         }
 
         binding.itemKulinerNews.apply {
@@ -148,11 +159,8 @@ class HomeFragment : Fragment() {
         }
 
         binding.ivSearch.setOnClickListener {
-            val intent = Intent(context, SearchActivity::class.java)
-            intent.putParcelableArrayListExtra("restaurantList", ArrayList(restaurantList))
-            startActivity(intent)
+            // Handle Search Click
         }
-
 
         Log.d("HomeFragment", "Restaurant list size: ${restaurantList.size}")
         Log.d("HomeFragment", "News Di Home list size: ${newsList.size}")
@@ -160,6 +168,32 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
+    private fun fetchUserData() {
+        val token = sessionManager.getToken()
+        if (token != null && token.startsWith("fake_token_")) {
+            val userId = token.removePrefix("fake_token_").toIntOrNull()
+            userId?.let {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val user = database.userDao().loginUser(email = "", password = "")
+                    withContext(Dispatchers.Main) {
+                        // Pastikan binding tidak null saat mengaksesnya
+                        _binding?.let { safeBinding ->
+                            if (user != null) {
+                                safeBinding.TvNameUsers.text = "${user.name}!"
+                            } else {
+                                safeBinding.TvNameUsers.text = "Guest!"
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            _binding?.TvNameUsers?.text = "Guest!"
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
     private fun fetchWeatherData() {
         val apiKey = "8c79ecf19f5084f74baa0c841a95214f"
         val city = "Surakarta"
@@ -167,16 +201,19 @@ class HomeFragment : Fragment() {
         viewModel.fetchWeather(city, apiKey)
 
         viewModel.weatherData.observe(viewLifecycleOwner) { weather ->
-            if (weather != null) {
-                binding.TvWeather.text = "${weather.main.temp}°C, ${weather.weather[0].description}"
-            } else {
-                binding.TvWeather.text = "Gagal mengambil data cuaca."
+            _binding?.let { safeBinding ->
+                if (weather != null) {
+                    safeBinding.TvWeather.text = "${weather.main.temp}°C, ${weather.weather[0].description}"
+                } else {
+                    safeBinding.TvWeather.text = "Gagal mengambil data cuaca."
+                }
             }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _binding = null // Nullify binding untuk menghindari memory leaks
     }
 }
+

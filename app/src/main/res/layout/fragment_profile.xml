@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    android:padding="18dp">
+    android:paddingBottom="16dp">
 
     <!-- Back Arrow and Title -->
     <LinearLayout
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="20dp"
-        android:gravity="center_vertical">
+        android:layout_marginStart="20dp">
 
         <ImageView
             android:id="@+id/backButtonProfile"

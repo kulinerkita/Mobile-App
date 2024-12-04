@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.gms.google-services")
     id("com.google.devtools.ksp") version "1.9.0-1.0.12"
-    id ("kotlin-parcelize")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.capstone.kulinerkita"
-        minSdk = 26
+        minSdk = 24
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -64,15 +64,13 @@ dependencies {
 
     // Import the Firebase BoM
     implementation(platform(libs.firebase.bom))
-    implementation (libs.firebase.auth.ktx)
-    implementation (libs.play.services.auth)
 
     // room database
     implementation (libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
-    // Reforfit
+    //Reforfit
     implementation (libs.retrofit)
     implementation (libs.retrofit2.converter.gson)
 }

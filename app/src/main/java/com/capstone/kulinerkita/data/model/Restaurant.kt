@@ -12,4 +12,4 @@ data class Restaurant(
     val ratings: String,
     val imageResId: Int,
     val operationalHours: Map<String, String>
-): Parcelable
+) : Parcelable

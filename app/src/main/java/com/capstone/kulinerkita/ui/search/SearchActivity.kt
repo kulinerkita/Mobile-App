@@ -5,11 +5,11 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.kulinerkita.data.model.Restaurant
 import com.capstone.kulinerkita.databinding.ActivitySearchBinding
 import com.capstone.kulinerkita.ui.home.HomeAdapter
 
+@Suppress("DEPRECATION")
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
@@ -22,10 +22,10 @@ class SearchActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Dapatkan data restoran dari Intent
-        restaurantList = intent.getParcelableArrayListExtra<Restaurant>("restaurantList") ?: listOf()
+        restaurantList = intent.getParcelableArrayListExtra("restaurantList") ?: listOf()
 
         // Setup RecyclerView
-        restaurantAdapter = HomeAdapter(restaurantList.toMutableList()) { restaurant ->
+        restaurantAdapter = HomeAdapter(restaurantList.toMutableList()) {
             // Handle item click jika diperlukan
             // Misalnya: Buka DetailActivity
             // startActivity(Intent(this, DetailActivity::class.java).apply {

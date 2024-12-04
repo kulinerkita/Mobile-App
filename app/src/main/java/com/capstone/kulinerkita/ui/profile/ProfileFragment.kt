@@ -1,7 +1,6 @@
 package com.capstone.kulinerkita.ui.profile
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,15 +11,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.capstone.kulinerkita.R
-import com.capstone.kulinerkita.databinding.FragmentProfileBinding
-import com.capstone.kulinerkita.ui.login.SignInActivity
-import com.capstone.kulinerkita.utils.SessionManager
 
 @Suppress("DEPRECATION")
 class ProfileFragment : Fragment() {
-    private var _binding: FragmentProfileBinding? = null
-    private val binding get() = _binding!!
-    private lateinit var sessionManager: SessionManager
 
     @SuppressLint("MissingInflatedId", "SetTextI18n")
     override fun onCreateView(
@@ -28,10 +21,7 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate layout untuk Fragment
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        val view = binding.root
-
-        sessionManager = SessionManager(requireContext())
+        val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
         // Inisialisasi komponen UI
         val backButton = view.findViewById<ImageView>(R.id.backButtonProfile)
@@ -51,11 +41,11 @@ class ProfileFragment : Fragment() {
             // Navigasi ke HelpFragment (Opsional)
         }
 
-        binding.logoutMenu.setOnClickListener {
-            sessionManager.clearSession()
-            val intent = Intent(requireContext(), SignInActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish()
+        val logoutMenu = view.findViewById<LinearLayout>(R.id.logoutMenu)
+        logoutMenu.setOnClickListener {
+            Toast.makeText(requireContext(), "Logged out", Toast.LENGTH_SHORT).show()
+            // Navigasi ke SignInActivity
+            // startActivity(Intent(requireContext(), SignInActivity::class.java))
         }
 
         val userName = view.findViewById<TextView>(R.id.userName)

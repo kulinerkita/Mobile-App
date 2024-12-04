@@ -12,19 +12,15 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.util.Patterns
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.capstone.kulinerkita.MainActivity
-import com.capstone.kulinerkita.NotificationReceiver
 import com.capstone.kulinerkita.R
 import com.capstone.kulinerkita.data.KulinerKitaDatabase
 import com.capstone.kulinerkita.databinding.ActivitySignInBinding
@@ -47,18 +43,14 @@ class SignInActivity : AppCompatActivity() {
         binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sessionManager = SessionManager(this)
-
-        if (sessionManager.isLoggedIn()) {
-            navigateToMainActivity()
-        }
-
-        // Meminta izin untuk menampilkan notifikasi jika perangkat menggunakan Android 13 atau lebih tinggi
+        // Meminta izin untuk notifikasi Maps jika perangkat menggunakan Android 13 atau lebih tinggi
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1)
             }
         }
+
+        sessionManager = SessionManager(this)
 
         val passwordInput = findViewById<EditText>(R.id.passwordInputLogin)
         val passwordToggle = findViewById<ImageView>(R.id.passwordToggleLogin)
@@ -103,7 +95,7 @@ class SignInActivity : AppCompatActivity() {
                         if (user != null) {
                             sessionManager.saveToken("fake_token_${user.id}")
                             Toast.makeText(this@SignInActivity, "Login Berhasil", Toast.LENGTH_SHORT).show()
-                            navigateToMainActivity()
+                            showNotificationForMaps()
                         } else {
                             Toast.makeText(this@SignInActivity, "Email atau password salah!", Toast.LENGTH_SHORT).show()
                         }
@@ -124,8 +116,7 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
-    // Menampilkan notifikasi dengan dua tombol (Setuju dan Tidak Setuju)
-    private fun showNotification() {
+    private fun showNotificationForMaps() {
         val channelId = "kuliner_kita_channel"
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -139,15 +130,15 @@ class SignInActivity : AppCompatActivity() {
             notificationManager.createNotificationChannel(channel)
         }
 
-        val yesIntent = Intent(this, NotificationReceiver::class.java).apply {
+        val yesIntent = Intent(this, MainActivity::class.java).apply {
             putExtra("response", "yes")
         }
-        val noIntent = Intent(this, NotificationReceiver::class.java).apply {
+        val noIntent = Intent(this, MainActivity::class.java).apply {
             putExtra("response", "no")
         }
 
-        val yesPendingIntent: PendingIntent = PendingIntent.getBroadcast(this, 0, yesIntent, PendingIntent.FLAG_IMMUTABLE)
-        val noPendingIntent: PendingIntent = PendingIntent.getBroadcast(this, 1, noIntent, PendingIntent.FLAG_IMMUTABLE)
+        val yesPendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, yesIntent, PendingIntent.FLAG_IMMUTABLE)
+        val noPendingIntent: PendingIntent = PendingIntent.getActivity(this, 1, noIntent, PendingIntent.FLAG_IMMUTABLE)
 
         // Membuat notifikasi dengan dua tombol
         val notification: Notification = NotificationCompat.Builder(this, channelId)
@@ -168,19 +159,14 @@ class SignInActivity : AppCompatActivity() {
 
         if (requestCode == 1) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Izin diberikan, Anda dapat menampilkan notifikasi
-                showNotification()
+                // Izin diberikan, tampilkan notifikasi
+                showNotificationForMaps()
             } else {
-                // Izin ditolak, beri tahu pengguna atau sesuaikan fitur notifikasi
+                // Izin ditolak, beri tahu pengguna
                 Toast.makeText(this, "Permission denied to post notifications.", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun navigateToMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
 }
 
