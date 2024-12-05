@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.capstone.kulinerkita.R
 import com.capstone.kulinerkita.databinding.ActivityOnboardingBinding
+import com.capstone.kulinerkita.utils.SessionManager
 
 class OnboardingActivity : AppCompatActivity() {
 
@@ -19,6 +20,15 @@ class OnboardingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+          val sessionManager = SessionManager(this)
+
+        // Cek apakah onboarding sudah ditampilkan
+        if (sessionManager.isOnboardingShown()) {
+            navigateToLastActivity()
+            return
+        }
+
         binding = ActivityOnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -42,6 +52,10 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     private fun navigateToLastActivity() {
+        // Tandai bahwa onboarding sudah ditampilkan
+        val sessionManager = SessionManager(this)
+        sessionManager.setOnboardingShown(true)
+
         startActivity(Intent(this, ActivityOnboardingLast::class.java))
         finish()
     }

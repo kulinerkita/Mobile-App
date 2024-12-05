@@ -63,7 +63,9 @@ dependencies {
     implementation (libs.github.glide)
 
     // Import the Firebase BoM
-    implementation(platform(libs.firebase.bom))
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
 
     // room database
     implementation (libs.androidx.room.runtime)

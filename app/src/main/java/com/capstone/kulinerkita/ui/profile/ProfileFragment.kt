@@ -1,6 +1,7 @@
 package com.capstone.kulinerkita.ui.profile
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.capstone.kulinerkita.R
+import com.capstone.kulinerkita.ui.onboarding.ActivityOnboardingLast
+import com.capstone.kulinerkita.utils.SessionManager
 
 @Suppress("DEPRECATION")
 class ProfileFragment : Fragment() {
@@ -22,6 +25,9 @@ class ProfileFragment : Fragment() {
     ): View? {
         // Inflate layout untuk Fragment
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
+
+        // Inisialisasi SessionManager
+        val sessionManager = SessionManager(requireContext())
 
         // Inisialisasi komponen UI
         val backButton = view.findViewById<ImageView>(R.id.backButtonProfile)
@@ -43,9 +49,16 @@ class ProfileFragment : Fragment() {
 
         val logoutMenu = view.findViewById<LinearLayout>(R.id.logoutMenu)
         logoutMenu.setOnClickListener {
-            Toast.makeText(requireContext(), "Logged out", Toast.LENGTH_SHORT).show()
-            // Navigasi ke SignInActivity
-            // startActivity(Intent(requireContext(), SignInActivity::class.java))
+            // Hapus session
+            sessionManager.clearSession()
+
+            // Tampilkan pesan logout
+            Toast.makeText(requireContext(), "Logged out successfully", Toast.LENGTH_SHORT).show()
+
+            // Navigasi ke ActivityOnboardingLast
+            val intent = Intent(requireContext(), ActivityOnboardingLast::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
 
         val userName = view.findViewById<TextView>(R.id.userName)

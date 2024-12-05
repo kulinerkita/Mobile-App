@@ -1,14 +1,15 @@
+@file:Suppress("DEPRECATION")
+
 package com.capstone.kulinerkita.ui.login
 
-import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.text.InputType
@@ -16,10 +17,9 @@ import android.util.Patterns
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
 import com.capstone.kulinerkita.MainActivity
 import com.capstone.kulinerkita.R
 import com.capstone.kulinerkita.data.KulinerKitaDatabase
@@ -27,6 +27,15 @@ import com.capstone.kulinerkita.databinding.ActivitySignInBinding
 import com.capstone.kulinerkita.ui.onboarding.ActivityOnboardingLast
 import com.capstone.kulinerkita.ui.register.CreateAccountActivity
 import com.capstone.kulinerkita.utils.SessionManager
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -36,6 +45,9 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignInBinding
     private lateinit var database: KulinerKitaDatabase
     private lateinit var sessionManager: SessionManager
+    private lateinit var auth: FirebaseAuth
+
+    private lateinit var googleSignInClient: GoogleSignInClient
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,12 +55,12 @@ class SignInActivity : AppCompatActivity() {
         binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Meminta izin untuk notifikasi Maps jika perangkat menggunakan Android 13 atau lebih tinggi
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1)
-            }
-        }
+        auth = Firebase.auth
+        val gson = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        googleSignInClient = GoogleSignIn.getClient(this, gson)
 
         sessionManager = SessionManager(this)
 
@@ -94,15 +106,25 @@ class SignInActivity : AppCompatActivity() {
                     withContext(Dispatchers.Main) {
                         if (user != null) {
                             sessionManager.saveToken("fake_token_${user.id}")
-                            Toast.makeText(this@SignInActivity, "Login Berhasil", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@SignInActivity,
+                                "Login Berhasil",
+                                Toast.LENGTH_SHORT
+                            ).show()
                             showNotificationForMaps()
                         } else {
-                            Toast.makeText(this@SignInActivity, "Email atau password salah!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@SignInActivity,
+                                "Email atau password salah!",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 }
             }
         }
+
+        binding?.googleButton?.setOnClickListener{ signInWithGoogle() }
 
         // Sign Up navigation
         binding.signupTextView.setOnClickListener {
@@ -116,11 +138,48 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
+    private fun signInWithGoogle() {
+        val signInIntent = googleSignInClient.signInIntent
+        launcher.launch(signInIntent)
+    }
+
+    private val launcher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+        { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                handleResults(task)
+            }
+        }
+
+    private fun handleResults(task: Task<GoogleSignInAccount>) {
+        if (task.isSuccessful) {
+            val account: GoogleSignInAccount? = task.result
+            if (account!=null){
+                updateUI(account)
+        }
+    } else {
+        showToast(this, "Berhasil login")
+    }
+}
+
+    private fun updateUI(account: GoogleSignInAccount){
+        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+        auth.signInWithCredential(credential).addOnCompleteListener{
+        if (it.isSuccessful){
+            startActivity(Intent(this,MainActivity::class.java))
+            finish()
+        }
+            else {
+                showToast(this,"Tidak bisa login. Coba beberapa saat lagi")
+        }
+        }
+    }
+
     private fun showNotificationForMaps() {
         val channelId = "kuliner_kita_channel"
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        // Membuat channel notifikasi jika Android Oreo ke atas
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
@@ -140,7 +199,6 @@ class SignInActivity : AppCompatActivity() {
         val yesPendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, yesIntent, PendingIntent.FLAG_IMMUTABLE)
         val noPendingIntent: PendingIntent = PendingIntent.getActivity(this, 1, noIntent, PendingIntent.FLAG_IMMUTABLE)
 
-        // Membuat notifikasi dengan dua tombol
         val notification: Notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle("Enable Maps")
             .setContentText("Do you agree to turn on Maps?")
@@ -151,22 +209,11 @@ class SignInActivity : AppCompatActivity() {
             .addAction(0, "No", noPendingIntent)
             .build()
 
-        notificationManager.notify(1, notification)
+        notificationManager.notify(1001, notification)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (requestCode == 1) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Izin diberikan, tampilkan notifikasi
-                showNotificationForMaps()
-            } else {
-                // Izin ditolak, beri tahu pengguna
-                Toast.makeText(this, "Permission denied to post notifications.", Toast.LENGTH_SHORT).show()
-            }
-        }
+    private fun showToast(context: Context, message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
-
 }
 

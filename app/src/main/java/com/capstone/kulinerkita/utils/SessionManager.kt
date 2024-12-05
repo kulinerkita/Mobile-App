@@ -9,6 +9,7 @@ class SessionManager(context: Context) {
 
     companion object {
         private const val KEY_TOKEN = "user_token"
+        private const val KEY_ONBOARDING_SHOWN = "onboarding_shown"
     }
 
     fun saveToken(token: String) {
@@ -25,5 +26,13 @@ class SessionManager(context: Context) {
 
     fun clearSession() {
         preferences.edit().remove(KEY_TOKEN).apply()
+    }
+
+    fun setOnboardingShown(isShown: Boolean) {
+        preferences.edit().putBoolean(KEY_ONBOARDING_SHOWN, isShown).apply()
+    }
+
+    fun isOnboardingShown(): Boolean {
+        return preferences.getBoolean(KEY_ONBOARDING_SHOWN, false)
     }
 }

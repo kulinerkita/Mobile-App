@@ -171,13 +171,14 @@ class HomeFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun fetchUserData() {
         val token = sessionManager.getToken()
+        Log.d("HomeFragment", "Token yang disimpan: $token")
+
         if (token != null && token.startsWith("fake_token_")) {
             val userId = token.removePrefix("fake_token_").toIntOrNull()
-            userId?.let {
+            if (userId != null) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val user = database.userDao().loginUser(email = "", password = "")
+                    val user = database.userDao().getUserById(userId)
                     withContext(Dispatchers.Main) {
-                        // Pastikan binding tidak null saat mengaksesnya
                         _binding?.let { safeBinding ->
                             if (user != null) {
                                 safeBinding.TvNameUsers.text = "${user.name}!"
@@ -187,6 +188,8 @@ class HomeFragment : Fragment() {
                         }
                     }
                 }
+            } else {
+                _binding?.TvNameUsers?.text = "Guest!"
             }
         } else {
             _binding?.TvNameUsers?.text = "Guest!"

@@ -20,6 +20,8 @@ materialVersion = "1.10.0"
 navigationFragmentKtx = "2.8.3"
 navigationUiKtx = "2.8.3"
 playServicesAuth = "21.2.0"
+playServicesAuthVersion = "20.7.0"
+playServicesIdentityVersion = "20.0.0"
 retrofit = "2.9.0"
 roomRuntime = "2.6.1"
 lifecycleLivedataKtx = "2.8.7"
@@ -36,6 +38,8 @@ firebase-auth = { module = "com.google.firebase:firebase-auth", version.ref = "f
 firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 github-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glideVersion" }
+gms-play-services-identity = { module = "com.google.android.gms:play-services-identity", version.ref = "playServicesIdentityVersion" }
+google-firebase-auth = { module = "com.google.firebase:firebase-auth" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -50,6 +54,7 @@ androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+play-services-auth-v2070 = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuthVersion" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit2-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 

@@ -102,7 +102,7 @@
     <string name="desc_feedback">Lorem ipsum dolor sit amet, consectetur adipisicing elit,sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
 
     <!-- Login With Google -->
-    <string name="default_web_client_id">1:1058367483881:android:83ba68e30b9fe0e2cf6578</string>
+    <string name="default_web_client_id">1058367483881-80dnftuiu0o0kdrororl57d0tkdv5co4.apps.googleusercontent.com</string>
 
     <!-- Search String -->
     <string name="search_hint">Cari restoran...</string>
