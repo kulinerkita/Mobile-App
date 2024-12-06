@@ -20,11 +20,18 @@ import com.capstone.kulinerkita.data.model.Restaurant
 import com.capstone.kulinerkita.databinding.FragmentHomeBinding
 import com.capstone.kulinerkita.ui.detailResto.DetailRestoActivity
 import com.capstone.kulinerkita.utils.SessionManager
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@Suppress("DEPRECATION")
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
@@ -36,6 +43,8 @@ class HomeFragment : Fragment() {
     private lateinit var database: KulinerKitaDatabase
     private var restaurantList: List<Restaurant> = listOf()
     private lateinit var progressBar: ProgressBar
+    private lateinit var mGoogleSignInClient: GoogleSignInClient
+    private lateinit var mAuth: FirebaseAuth
 
     private val viewModel: HomeViewModel by viewModels()
 
@@ -44,6 +53,18 @@ class HomeFragment : Fragment() {
     ): View? {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        mAuth = FirebaseAuth.getInstance()
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+
+        // Fetch user data from FirebaseAuth
+        val username = arguments?.getString("username") ?: "Guest"
+        binding.TvNameUsers.text = "Welcome, $username!"
 
         sessionManager = SessionManager(requireContext())
         database = KulinerKitaDatabase.getInstance(requireContext())

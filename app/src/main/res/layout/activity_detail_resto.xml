@@ -1,218 +1,241 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:fillViewport="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.detailResto.DetailRestoActivity">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="16dp">
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:fillViewport="true">
 
-        <!-- Back Arrow and Title -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp">
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
 
-            <ImageView
-                android:id="@+id/backButtonDetail"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_back"
-                android:contentDescription="@string/back" />
-
-            <TextView
-                android:id="@+id/detailTitle"
-                android:layout_width="288dp"
+            <!-- Back Arrow and Title -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:gravity="center"
-                android:text="@string/name_detail"
-                android:textColor="@color/black"
-                android:textSize="15sp"
-                android:fontFamily="@font/poppins_semi_bold" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp">
 
-        <!-- Gambar Profil -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center">
+                <ImageView
+                    android:id="@+id/backButtonDetail"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_back"
+                    android:contentDescription="@string/back" />
+
+                <TextView
+                    android:id="@+id/detailTitle"
+                    android:layout_width="288dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:gravity="center"
+                    android:text="@string/name_detail"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppins_semi_bold" />
+            </LinearLayout>
 
             <!-- Gambar Profil -->
-            <ImageView
-                android:id="@+id/imgResto"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="360dp"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/rounded_image"
-                android:clipToOutline="true"
-                android:contentDescription="@string/nama_restoran"
-                android:scaleType="centerCrop"
-                android:src="@drawable/restoran_1"
-                tools:ignore="UnusedAttribute" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center">
 
-            <!-- Ikon Favorit -->
-            <ImageView
-                android:id="@+id/imgFavorite"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_margin="15dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:src="@drawable/favorite_line" />
+                <!-- Gambar Profil -->
+                <ImageView
+                    android:id="@+id/imgResto"
+                    android:layout_width="match_parent"
+                    android:layout_height="360dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/rounded_image"
+                    android:clipToOutline="true"
+                    android:contentDescription="@string/nama_restoran"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/restoran_1"
+                    tools:ignore="UnusedAttribute" />
 
-            <!-- Rating -->
+                <!-- Ikon Favorit -->
+                <ImageView
+                    android:id="@+id/imgFavorite"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_margin="15dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/favorite_line" />
+
+                <!-- Rating -->
+                <LinearLayout
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal"
+                    android:padding="6dp"
+                    android:background="@drawable/rating_background"
+                    android:layout_alignBottom="@id/imgResto"
+                    android:layout_alignStart="@id/imgResto"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="8dp">
+
+                    <!-- Teks Rating -->
+                    <TextView
+                        android:id="@+id/tvratingsDetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/poppins_semi_bold"
+                        android:textSize="16sp"
+                        android:text="@string/rating" />
+
+                    <!-- Ikon Rating -->
+                    <ImageView
+                        android:id="@+id/Iv_rating"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="4dp"
+                        android:tint="@color/yellow"
+                        android:src="@drawable/ic_star"
+                        tools:ignore="UseAppTint" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <!-- Nama Restoran -->
+            <TextView
+                android:id="@+id/tvRestaurantDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginEnd="15dp"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:text="@string/nama_restoran"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <!-- Alamat Restoran -->
             <LinearLayout
-                android:layout_width="100dp"
-                android:layout_height="35dp"
-                android:layout_margin="10dp"
+                android:id="@+id/detail_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="18dp"
                 android:orientation="horizontal"
-                android:padding="6dp"
-                android:background="@drawable/rating_background"
-                android:layout_alignBottom="@id/imgResto"
-                android:layout_alignStart="@id/imgResto"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="8dp">
+                tools:ignore="UseCompoundDrawables">
 
-                <!-- Teks Rating -->
+                <!-- Ikon Lokasi -->
+                <ImageView
+                    android:id="@+id/iconLocation"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_location" />
+
+                <!-- Alamat -->
                 <TextView
-                    android:id="@+id/tvratingsDetail"
+                    android:id="@+id/tvDetailAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="@string/alamat_restoran"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    tools:ignore="SmallSp" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvOperationalHours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                tools:listitem="@layout/item_operational_hours"/>
+
+            <!-- Kategori Restoran -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <!-- Kategori Suhu -->
+                <TextView
+                    android:id="@+id/tvCategoriSuhuDetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semi_bold"
+                    android:text="@string/categori_suhu"
+                    android:textColor="@color/color_green"
+                    android:textSize="14sp"
+                    tools:ignore="SmallSp,TextContrastCheck" />
+
+                <!-- Kategori Eco -->
+                <TextView
+                    android:id="@+id/tvCategoriEcoDetail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:textColor="@color/black"
                     android:fontFamily="@font/poppins_semi_bold"
-                    android:textSize="16sp"
-                    android:text="@string/rating" />
-
-                <!-- Ikon Rating -->
-                <ImageView
-                    android:id="@+id/Iv_rating"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="4dp"
-                    android:tint="@color/yellow"
-                    android:src="@drawable/ic_star"
-                    tools:ignore="UseAppTint" />
+                    android:text="@string/categori_eco_friendly"
+                    android:textColor="@color/color_green"
+                    android:textSize="14sp"
+                    tools:ignore="SmallSp,TextContrastCheck" />
             </LinearLayout>
-        </RelativeLayout>
 
-        <!-- Nama Restoran -->
-        <TextView
-            android:id="@+id/tvRestaurantDetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginStart="18dp"
-            android:layout_marginEnd="15dp"
-            android:fontFamily="@font/poppins_semi_bold"
-            android:text="@string/nama_restoran"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-
-        <!-- Alamat Restoran -->
-        <LinearLayout
-            android:id="@+id/detail_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="18dp"
-            android:orientation="horizontal"
-            tools:ignore="UseCompoundDrawables">
-
-            <!-- Ikon Lokasi -->
-            <ImageView
-                android:id="@+id/iconLocation"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="4dp"
-                android:src="@drawable/ic_location" />
-
-            <!-- Alamat -->
             <TextView
-                android:id="@+id/tvDetailAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="18dp"
+                android:textColor="@color/black"
+                android:text="@string/title_kulian"
+                android:textSize="16dp"
+                android:fontFamily="@font/poppins_semi_bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/item_kulinerDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
-                android:fontFamily="@font/poppins_regular"
-                android:text="@string/alamat_restoran"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                tools:ignore="SmallSp" />
-        </LinearLayout>
+                android:layout_marginTop="5dp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvOperationalHours"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            tools:listitem="@layout/item_operational_hours"/>
-
-        <!-- Kategori Restoran -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal">
-
-            <!-- Kategori Suhu -->
-            <TextView
-                android:id="@+id/tvCategoriSuhuDetail"
-                android:layout_width="wrap_content"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/item_feedbackDetail"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_semi_bold"
-                android:text="@string/categori_suhu"
-                android:textColor="@color/color_green"
-                android:textSize="14sp"
-                tools:ignore="SmallSp,TextContrastCheck" />
+                android:layout_marginTop="15dp"
+                tools:listitem="@layout/item_feedback"/>
 
-            <!-- Kategori Eco -->
-            <TextView
-                android:id="@+id/tvCategoriEcoDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:fontFamily="@font/poppins_semi_bold"
-                android:text="@string/categori_eco_friendly"
-                android:textColor="@color/color_green"
-                android:textSize="14sp"
-                tools:ignore="SmallSp,TextContrastCheck" />
         </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="18dp"
-            android:textColor="@color/black"
-            android:text="@string/title_kulian"
-            android:textSize="16dp"
-            android:fontFamily="@font/poppins_semi_bold" />
+    <Button
+        android:id="@+id/ButtonCek_lokasi"
+        android:layout_width="325dp"
+        android:layout_height="57dp"
+        android:layout_marginBottom="20dp"
+        app:cornerRadius="20dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:text="@string/cek_lokasi"
+        android:textSize="18sp"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:backgroundTint="@color/color_green"
+        android:textColor="@android:color/white"
+        android:elevation="4dp" />
+</FrameLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/item_kulinerDetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/item_feedbackDetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            tools:listitem="@layout/item_feedback"/>
 
-    </LinearLayout>
-</androidx.core.widget.NestedScrollView>

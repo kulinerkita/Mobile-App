@@ -1,7 +1,9 @@
 package com.capstone.kulinerkita.ui.detailResto
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.capstone.kulinerkita.MapsActivity
 import com.capstone.kulinerkita.data.model.Restaurant
 import com.capstone.kulinerkita.databinding.ActivityDetailRestoBinding
 
@@ -34,6 +36,12 @@ class DetailRestoActivity : AppCompatActivity() {
         // Tombol kembali
         binding.backButtonDetail.setOnClickListener {
             finish()
+        }
+
+        //tombol cek maps
+        binding.ButtonCekLokasi.setOnClickListener {
+            val intent = Intent(this, MapsActivity::class.java)
+            startActivity(intent)
         }
     }
 }

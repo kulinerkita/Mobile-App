@@ -163,18 +163,25 @@ class SignInActivity : AppCompatActivity() {
     }
 }
 
-    private fun updateUI(account: GoogleSignInAccount){
+    private fun updateUI(account: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-        auth.signInWithCredential(credential).addOnCompleteListener{
-        if (it.isSuccessful){
-            startActivity(Intent(this,MainActivity::class.java))
-            finish()
-        }
-            else {
-                showToast(this,"Tidak bisa login. Coba beberapa saat lagi")
-        }
+        auth.signInWithCredential(credential).addOnCompleteListener {
+            if (it.isSuccessful) {
+                val user = auth.currentUser
+                val username = user?.displayName ?: "User"
+
+                // Mengarahkan ke MainActivity dengan membawa username
+                val intent = Intent(this, MainActivity::class.java).apply {
+                    putExtra("username", username)
+                }
+                startActivity(intent)
+                finish()
+            } else {
+                showToast(this, "Tidak bisa login. Coba beberapa saat lagi")
+            }
         }
     }
+
 
     private fun showNotificationForMaps() {
         val channelId = "kuliner_kita_channel"

@@ -9,6 +9,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.capstone.kulinerkita.databinding.ActivityMain2Binding
+import com.capstone.kulinerkita.ui.home.HomeFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,8 +24,24 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMain2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navView: BottomNavigationView = binding.navView
+        // Ambil username dari Intent
+        val username = intent.getStringExtra("username")
 
+        // Kirim username ke HomeFragment jika ada
+        if (username != null) {
+            val homeFragment = HomeFragment().apply {
+                arguments = Bundle().apply {
+                    putString("username", username)
+                }
+            }
+
+            // Menambahkan HomeFragment ke fragment_container
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment_activity_main2, homeFragment)
+                .commit()
+        }
+
+        val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_activity_main2)
 
         AppBarConfiguration(
@@ -38,7 +55,9 @@ class MainActivity : AppCompatActivity() {
 
         navView.setupWithNavController(navController)
 
-        // Navigasi langsung ke Home Fragment
-        navController.navigate(R.id.navigation_home)
+        // Navigasi langsung ke HomeFragment saat aplikasi dibuka
+        if (username == null) {
+            navController.navigate(R.id.navigation_home)
+        }
     }
 }
