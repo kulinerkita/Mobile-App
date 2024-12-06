@@ -17,18 +17,17 @@ class DetailRestoActivity : AppCompatActivity() {
 
         // Ambil data dari Intent
         val restaurant = intent.getParcelableExtra<Restaurant>("EXTRA_RESTAURANT")
-
         // Tampilkan data
         restaurant?.let {
             binding.tvRestaurantDetail.text = it.name
             binding.tvDetailAddress.text = it.address
-            binding.tvCategoriSuhuDetail.text = it.categorySuhu
-            binding.tvCategoriEcoDetail.text = it.categoryEco
-            binding.tvratingsDetail.text = it.ratings
+            binding.tvCategoriSuhuDetail.text = it.categorizeWeather
+            binding.tvCategoriEcoDetail.text = it.ecoFriendly.toString()
+            binding.tvratingsDetail.text = it.rating
             binding.imgResto.setImageResource(it.imageResId)
 
             // Setup RecyclerView untuk jam operasional
-            val operationalHoursAdapter = OperationalHoursAdapter(it.operationalHours)
+            val operationalHoursAdapter = OperationalHoursAdapter(it.operatingHours)
             binding.rvOperationalHours.adapter = operationalHoursAdapter
         }
 

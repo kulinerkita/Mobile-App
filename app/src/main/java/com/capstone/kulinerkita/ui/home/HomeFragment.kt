@@ -7,10 +7,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.capstone.kulinerkita.API.RestaurantApiClient
 import com.capstone.kulinerkita.R
 import com.capstone.kulinerkita.data.KulinerKitaDatabase
 import com.capstone.kulinerkita.data.model.NewsHome
@@ -32,6 +34,8 @@ class HomeFragment : Fragment() {
     private lateinit var newsAdapter: NewsHomeAdapter
     private lateinit var sessionManager: SessionManager
     private lateinit var database: KulinerKitaDatabase
+    private var restaurantList: List<Restaurant> = listOf()
+    private lateinit var progressBar: ProgressBar
 
     private val viewModel: HomeViewModel by viewModels()
 
@@ -43,81 +47,12 @@ class HomeFragment : Fragment() {
 
         sessionManager = SessionManager(requireContext())
         database = KulinerKitaDatabase.getInstance(requireContext())
+        progressBar = binding.progressBar
 
         fetchWeatherData()
         fetchUserData()
 
-        // Data Dummy
-        val restaurantList = listOf(
-            Restaurant(
-                name = "Warung Sate",
-                address = "Jl. Kebon Jeruk, Jakarta",
-                categorySuhu = "Nyaman",
-                categoryEco = "Eco-Friendly",
-                ratings = "2.5",
-                imageResId = R.drawable.restoran_1,
-                operationalHours = mapOf(
-                    "Senin" to "08:00 - 12:00",
-                    "Selasa" to "08:00 - 12:00",
-                    "Rabu" to "08:00 - 12:00",
-                    "Kamis" to "08:00 - 12:00",
-                    "Jumat" to "08:00 - 12:00",
-                    "Sabtu" to "08:00 - 12:00",
-                    "Minggu" to "08:00 - 12:00"
-                )
-            ),
-            Restaurant(
-                name = "Bakmi Naga",
-                address = "Jl. Gajah Mada, Jakarta",
-                categorySuhu = "Sejuk",
-                categoryEco = "Eco-Friendly",
-                ratings = "4.5",
-                imageResId = R.drawable.restoran_1,
-                operationalHours = mapOf(
-                    "Senin" to "08:00 - 12:00",
-                    "Selasa" to "08:00 - 12:00",
-                    "Rabu" to "08:00 - 12:00",
-                    "Kamis" to "08:00 - 12:00",
-                    "Jumat" to "08:00 - 12:00",
-                    "Sabtu" to "08:00 - 12:00",
-                    "Minggu" to "08:00 - 12:00"
-                )
-            ),
-            Restaurant(
-                name = "Soto Betawi",
-                address = "Jl. Sudirman, Jakarta",
-                categorySuhu = "Hangat",
-                categoryEco = "Eco-Friendly",
-                ratings = "3.5",
-                imageResId = R.drawable.restoran_1,
-                operationalHours = mapOf(
-                    "Senin" to "08:00 - 12:00",
-                    "Selasa" to "08:00 - 12:00",
-                    "Rabu" to "08:00 - 12:00",
-                    "Kamis" to "08:00 - 12:00",
-                    "Jumat" to "08:00 - 12:00",
-                    "Sabtu" to "08:00 - 12:00",
-                    "Minggu" to "08:00 - 12:00"
-                )
-            ),
-            Restaurant(
-                name = "Gudeg Jogja",
-                address = "Jl. Malioboro, Yogyakarta",
-                categorySuhu = "Nyaman",
-                categoryEco = "Eco-Friendly",
-                ratings = "4.5",
-                imageResId = R.drawable.restoran_1,
-                operationalHours = mapOf(
-                    "Senin" to "08:00 - 12:00",
-                    "Selasa" to "08:00 - 12:00",
-                    "Rabu" to "08:00 - 12:00",
-                    "Kamis" to "08:00 - 12:00",
-                    "Jumat" to "08:00 - 12:00",
-                    "Sabtu" to "08:00 - 12:00",
-                    "Minggu" to "08:00 - 12:00"
-                )
-            )
-        )
+        progressBar.visibility = View.VISIBLE
 
         // Data Dummy untuk berita
         val newsList = listOf(
@@ -134,9 +69,17 @@ class HomeFragment : Fragment() {
         )
 
         // Setup RecyclerView
-        restaurantAdapter = HomeAdapter(restaurantList.toMutableList()) {
-            // Handle restoran item click
-            startActivity(Intent(context, DetailRestoActivity::class.java))
+        restaurantAdapter = HomeAdapter(restaurantList.toMutableList()) { selectedRestaurant ->
+            val intent = Intent(context, DetailRestoActivity::class.java)
+            intent.putExtra("RESTAURANT_ID", selectedRestaurant.id)
+            startActivity(intent)
+        }
+
+        fetchRestaurantData()
+
+        binding.itemRestoran.apply {
+            layoutManager = GridLayoutManager(context, 2)
+            adapter = restaurantAdapter
         }
 
         newsAdapter = NewsHomeAdapter(newsList) {
@@ -213,6 +156,33 @@ class HomeFragment : Fragment() {
             }
         }
     }
+
+    private fun fetchRestaurantData() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = RestaurantApiClient.RestaurantApi.getRestaurants()
+                if (response.isSuccessful) {
+                    val restaurants = response.body() ?: listOf()
+
+                    withContext(Dispatchers.Main) {
+                        restaurantAdapter.updateData(restaurants)
+                        progressBar.visibility = View.GONE
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        progressBar.visibility = View.GONE
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("HomeFragment", "Error fetching restaurant data", e)
+                withContext(Dispatchers.Main) {
+                    progressBar.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

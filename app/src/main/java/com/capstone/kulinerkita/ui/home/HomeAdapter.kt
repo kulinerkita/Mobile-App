@@ -32,9 +32,9 @@ class HomeAdapter(
 
             tvRestaurantName.text = restaurant.name
             tvRestaurantAddress.text = restaurant.address
-            tvCategorySuhu.text = restaurant.categorySuhu
-            tvCategoryEco.text = restaurant.categoryEco
-            tvRating.text = restaurant.ratings
+            tvCategorySuhu.text = restaurant.categorizeWeather
+            tvCategoryEco.text = restaurant.ecoFriendly.toString()
+            tvRating.text = restaurant.rating
 
             // Klik item untuk detail
             itemView.setOnClickListener {

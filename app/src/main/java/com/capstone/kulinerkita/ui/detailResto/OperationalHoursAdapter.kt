@@ -3,9 +3,10 @@ package com.capstone.kulinerkita.ui.detailResto
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.capstone.kulinerkita.data.model.OperatingHours
 import com.capstone.kulinerkita.databinding.ItemOperationalHoursBinding
 
-class OperationalHoursAdapter(private val operationalHours: Map<String, String>) :
+class OperationalHoursAdapter(private val operationalHours: OperatingHours) :
     RecyclerView.Adapter<OperationalHoursAdapter.ViewHolder>() {
 
     class ViewHolder(private val binding: ItemOperationalHoursBinding) :
@@ -23,10 +24,10 @@ class OperationalHoursAdapter(private val operationalHours: Map<String, String>)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val day = operationalHours.keys.toList()[position]
-        val time = operationalHours[day] ?: "-"
+        val day = operationalHours.hours.keys.toList()[position]
+        val time = operationalHours.hours[day] ?: "-"
         holder.bind(day, time)
     }
 
-    override fun getItemCount(): Int = operationalHours.size
+    override fun getItemCount(): Int = operationalHours.hours.size
 }
