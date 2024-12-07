@@ -1,6 +1,5 @@
 package com.capstone.kulinerkita.ui.search
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.capstone.kulinerkita.data.model.Restaurant
 import com.capstone.kulinerkita.databinding.ActivitySearchBinding
-import com.capstone.kulinerkita.ui.detailResto.DetailRestoActivity
 import com.capstone.kulinerkita.ui.home.HomeAdapter
 
 @Suppress("DEPRECATION")
@@ -27,11 +25,12 @@ class SearchActivity : AppCompatActivity() {
         restaurantList = intent.getParcelableArrayListExtra("restaurantList") ?: listOf()
 
         // Setup RecyclerView
-        restaurantAdapter = HomeAdapter(restaurantList.toMutableList()) { selectedRestaurant ->
-            // Buka DetailActivity dengan data restoran
-            startActivity(Intent(this, DetailRestoActivity::class.java).apply {
-                putExtra("restaurant", selectedRestaurant)
-            })
+        restaurantAdapter = HomeAdapter(restaurantList.toMutableList()) {
+            // Handle item click jika diperlukan
+            // Misalnya: Buka DetailActivity
+            // startActivity(Intent(this, DetailActivity::class.java).apply {
+            //     putExtra("restaurant", restaurant)
+            // })
         }
 
         binding.rvSearchResults.apply {

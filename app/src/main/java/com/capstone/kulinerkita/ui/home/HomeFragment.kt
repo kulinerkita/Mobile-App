@@ -19,12 +19,13 @@ import com.capstone.kulinerkita.data.model.NewsHome
 import com.capstone.kulinerkita.data.model.Restaurant
 import com.capstone.kulinerkita.databinding.FragmentHomeBinding
 import com.capstone.kulinerkita.ui.detailResto.DetailRestoActivity
-import com.capstone.kulinerkita.ui.kategori.CategoriseActivity
 import com.capstone.kulinerkita.utils.SessionManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -118,22 +119,11 @@ class HomeFragment : Fragment() {
 
         // Event Listeners
         binding.ivNotification.setOnClickListener {
+            // Handle Notification Click
         }
 
         binding.ivSearch.setOnClickListener {
             // Handle Search Click
-        }
-
-        binding.foodImage.setOnClickListener {
-            val intent = Intent(context, CategoriseActivity::class.java)
-            intent.putExtra("CATEGORY", "Makanan")  // Kategori Makanan
-            startActivity(intent)
-        }
-
-        binding.drinkImage.setOnClickListener {
-            val intent = Intent(context, CategoriseActivity::class.java)
-            intent.putExtra("CATEGORY", "Minuman")  // Kategori Minuman
-            startActivity(intent)
         }
 
         Log.d("HomeFragment", "Restaurant list size: ${restaurantList.size}")

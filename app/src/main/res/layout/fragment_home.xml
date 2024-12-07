@@ -197,6 +197,17 @@
             android:layout_gravity="center"
             android:visibility="gone" />
 
+        <TextView
+            android:id="@+id/tvNoResults"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tidak ada hasil yang ditemukan"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:textSize="16sp" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/itemRestoran"
             android:layout_width="match_parent"

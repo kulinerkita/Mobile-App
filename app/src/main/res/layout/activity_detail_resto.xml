@@ -77,16 +77,19 @@
 
                 <!-- Rating -->
                 <LinearLayout
-                    android:layout_width="100dp"
-                    android:layout_height="35dp"
-                    android:layout_margin="10dp"
-                    android:orientation="horizontal"
-                    android:padding="6dp"
-                    android:background="@drawable/rating_background"
-                    android:layout_alignBottom="@id/imgResto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignStart="@id/imgResto"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginBottom="8dp">
+                    android:layout_alignBottom="@id/imgResto"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/rating_background"
+                    android:orientation="horizontal"
+                    android:padding="6dp">
 
                     <!-- Teks Rating -->
                     <TextView
@@ -94,10 +97,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:textColor="@color/black"
                         android:fontFamily="@font/poppins_semi_bold"
-                        android:textSize="16sp"
-                        android:text="@string/rating" />
+                        android:text="@string/rating"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
 
                     <!-- Ikon Rating -->
                     <ImageView
@@ -105,8 +108,8 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginStart="4dp"
-                        android:tint="@color/yellow"
                         android:src="@drawable/ic_star"
+                        android:tint="@color/yellow"
                         tools:ignore="UseAppTint" />
                 </LinearLayout>
             </RelativeLayout>
@@ -153,8 +156,18 @@
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     tools:ignore="SmallSp" />
-            </LinearLayout>
 
+            </LinearLayout>
+            <TextView
+                android:id="@+id/tvOperatingHours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:fontFamily="@font/poppins_regular"
+                android:text="00.00"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                tools:ignore="SmallSp" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvOperationalHours"
                 android:layout_width="match_parent"
@@ -194,7 +207,36 @@
                     android:textColor="@color/color_green"
                     android:textSize="14sp"
                     tools:ignore="SmallSp,TextContrastCheck" />
+
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Phone Number"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/tvPriceRange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Rp.MinPrice - Rp.MaxPrice"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
 
             <TextView
                 android:layout_width="wrap_content"
