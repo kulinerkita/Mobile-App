@@ -153,6 +153,7 @@
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     tools:ignore="SmallSp" />
+
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -194,7 +195,36 @@
                     android:textColor="@color/color_green"
                     android:textSize="14sp"
                     tools:ignore="SmallSp,TextContrastCheck" />
+
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Phone Number"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/tvPriceRange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Rp.MinPrice - Rp.MaxPrice"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
 
             <TextView
                 android:layout_width="wrap_content"

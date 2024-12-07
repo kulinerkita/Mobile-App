@@ -19,6 +19,7 @@ import com.capstone.kulinerkita.data.model.NewsHome
 import com.capstone.kulinerkita.data.model.Restaurant
 import com.capstone.kulinerkita.databinding.FragmentHomeBinding
 import com.capstone.kulinerkita.ui.detailResto.DetailRestoActivity
+import com.capstone.kulinerkita.ui.search.SearchActivity
 import com.capstone.kulinerkita.utils.SessionManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -91,8 +92,9 @@ class HomeFragment : Fragment() {
 
         // Setup RecyclerView
         restaurantAdapter = HomeAdapter(restaurantList.toMutableList()) { selectedRestaurant ->
-            val intent = Intent(context, DetailRestoActivity::class.java)
-            intent.putExtra("RESTAURANT_ID", selectedRestaurant.id)
+            val intent = Intent(requireContext(), DetailRestoActivity::class.java)
+            intent.putParcelableArrayListExtra("RESTAURANT_LIST", ArrayList(restaurantList))
+            intent.putExtra("SELECTED_RESTAURANT_ID", selectedRestaurant.id.toString())
             startActivity(intent)
         }
 
@@ -123,7 +125,8 @@ class HomeFragment : Fragment() {
         }
 
         binding.ivSearch.setOnClickListener {
-            // Handle Search Click
+            val intent = Intent(context, SearchActivity::class.java)
+            startActivity(intent)
         }
 
         Log.d("HomeFragment", "Restaurant list size: ${restaurantList.size}")
@@ -186,12 +189,15 @@ class HomeFragment : Fragment() {
                     val restaurants = response.body() ?: listOf()
 
                     withContext(Dispatchers.Main) {
+                        restaurantList = restaurants
                         restaurantAdapter.updateData(restaurants)
                         progressBar.visibility = View.GONE
+                        Log.d("HomeFragment", "Data restoran berhasil diambil: ${restaurants.size}")
                     }
                 } else {
                     withContext(Dispatchers.Main) {
                         progressBar.visibility = View.GONE
+                        Log.e("HomeFragment", "Response gagal, status code: ${response.code()}")
                     }
                 }
             } catch (e: Exception) {
@@ -202,8 +208,6 @@ class HomeFragment : Fragment() {
             }
         }
     }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()
