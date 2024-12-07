@@ -15,6 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KulinerKita"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.kategori.CategoriesKulinerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.kategori.CategoriseActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

@@ -115,7 +115,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            tools:listitem="@layout/item_news_home"
             android:layout_marginTop="12dp" />
 
         <TextView

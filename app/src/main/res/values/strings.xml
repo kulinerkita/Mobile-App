@@ -109,4 +109,6 @@
     <string name="search_icon_desc">Search icon</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="cek_lokasi">Cek Lokasi</string>
+    <string name="name_notif">Notifikasi</string>
+    <string name="name_kategori">Kategori</string>
 </resources>

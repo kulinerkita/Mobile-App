@@ -6,7 +6,7 @@
     android:fillViewport="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.news.NewsFragment">
+    tools:context=".ui.kategori.CategoriesKulinerActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,29 +23,37 @@
             android:layout_marginStart="20dp">
 
             <ImageView
-                android:id="@+id/backButtonNews"
+                android:id="@+id/backButtonKuliner"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_back"
                 android:contentDescription="@string/back" />
 
             <TextView
-                android:id="@+id/NewsTitle"
+                android:id="@+id/KategoriTitle"
                 android:layout_width="288dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:gravity="center"
-                android:text="@string/name_news"
+                android:text="@string/name_kategori"
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:fontFamily="@font/poppins_semi_bold" />
         </LinearLayout>
 
+        <ProgressBar
+            android:id="@+id/progressKuliner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
         <!-- RecyclerView untuk Menampilkan Daftar Berita -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewNews"
+            android:id="@+id/itemRestoran"
             android:layout_width="match_parent"
             android:layout_marginTop="18dp"
+            tools:listitem="@layout/item_restoran"
             android:layout_height="wrap_content" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
