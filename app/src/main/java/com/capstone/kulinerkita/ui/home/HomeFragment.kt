@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -25,8 +26,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -92,9 +91,20 @@ class HomeFragment : Fragment() {
 
         // Setup RecyclerView
         restaurantAdapter = HomeAdapter(restaurantList.toMutableList()) { selectedRestaurant ->
+            if (restaurantList.isEmpty()) {
+                Log.e("HomeFragment", "Cannot send Intent, restaurantList is empty!")
+                Toast.makeText(context, "Data restoran belum tersedia. Silakan tunggu!", Toast.LENGTH_SHORT).show()
+                return@HomeAdapter
+            }
+
             val intent = Intent(context, DetailRestoActivity::class.java)
-            intent.putExtra("RESTAURANT_ID", selectedRestaurant.id)
+            intent.putParcelableArrayListExtra("RESTAURANT_LIST", ArrayList(restaurantList))
+            intent.putExtra("SELECTED_RESTAURANT_ID", selectedRestaurant.id.toString())
+
+            Log.d("HomeFragment", "Sending Restaurant List: ${restaurantList.size}")
+            Log.d("HomeFragment", "Sending Selected ID: ${selectedRestaurant.id}")
             startActivity(intent)
+
         }
 
         fetchRestaurantData()
@@ -198,26 +208,37 @@ class HomeFragment : Fragment() {
                 if (response.isSuccessful) {
                     val restaurants = response.body() ?: listOf()
 
+                    // Pastikan data restoran berhasil diterima
+                    Log.d("HomeFragment", "Fetched Restaurants: ${restaurants.size}")
+                    if (restaurants.isEmpty()) {
+                        Log.e("HomeFragment", "Data restoran kosong!")
+                    }
                     withContext(Dispatchers.Main) {
-                        restaurantAdapter.updateData(restaurants)
+                        // Perbarui data ke variabel `restaurantList`
+                        restaurantList = restaurants
+                        restaurantAdapter.updateData(restaurantList)
+
+                        // Log untuk memastikan data telah diperbarui
+                        Log.d("HomeFragment", "Restaurant list updated: ${restaurantList.size}")
                         progressBar.visibility = View.GONE
                     }
+
+
                 } else {
                     withContext(Dispatchers.Main) {
+                        // Jika response tidak berhasil, sembunyikan progress bar
                         progressBar.visibility = View.GONE
                     }
                 }
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Error fetching restaurant data", e)
                 withContext(Dispatchers.Main) {
+                    // Jika terjadi error saat fetch data, sembunyikan progress bar
                     progressBar.visibility = View.GONE
                 }
             }
         }
     }
-
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null // Nullify binding untuk menghindari memory leaks

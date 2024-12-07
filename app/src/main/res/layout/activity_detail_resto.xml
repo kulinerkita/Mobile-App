@@ -156,18 +156,8 @@
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     tools:ignore="SmallSp" />
-
             </LinearLayout>
-            <TextView
-                android:id="@+id/tvOperatingHours"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
-                android:fontFamily="@font/poppins_regular"
-                android:text="00.00"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                tools:ignore="SmallSp" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvOperationalHours"
                 android:layout_width="match_parent"
