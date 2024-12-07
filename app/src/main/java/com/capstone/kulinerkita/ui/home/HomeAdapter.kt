@@ -32,8 +32,8 @@ class HomeAdapter(
 
             tvRestaurantName.text = restaurant.name
             tvRestaurantAddress.text = restaurant.address
-            tvCategorySuhu.text = restaurant.categorizeWeather
-            tvCategoryEco.text = restaurant.ecoFriendly.toString()
+            tvCategorySuhu.text = restaurant.categorize_weather
+            tvCategoryEco.text = restaurant.eco_friendly.toString()
             tvRating.text = restaurant.rating
 
             // Klik item untuk detail

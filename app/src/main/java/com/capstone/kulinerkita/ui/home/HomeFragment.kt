@@ -1,6 +1,7 @@
 package com.capstone.kulinerkita.ui.home
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -26,6 +27,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -91,20 +93,10 @@ class HomeFragment : Fragment() {
 
         // Setup RecyclerView
         restaurantAdapter = HomeAdapter(restaurantList.toMutableList()) { selectedRestaurant ->
-            if (restaurantList.isEmpty()) {
-                Log.e("HomeFragment", "Cannot send Intent, restaurantList is empty!")
-                Toast.makeText(context, "Data restoran belum tersedia. Silakan tunggu!", Toast.LENGTH_SHORT).show()
-                return@HomeAdapter
-            }
-
+            // Kirim ID restoran ke DetailRestoActivity
             val intent = Intent(context, DetailRestoActivity::class.java)
-            intent.putParcelableArrayListExtra("RESTAURANT_LIST", ArrayList(restaurantList))
-            intent.putExtra("SELECTED_RESTAURANT_ID", selectedRestaurant.id.toString())
-
-            Log.d("HomeFragment", "Sending Restaurant List: ${restaurantList.size}")
-            Log.d("HomeFragment", "Sending Selected ID: ${selectedRestaurant.id}")
+            intent.putExtra("SELECTED_RESTAURANT_ID", selectedRestaurant.id)
             startActivity(intent)
-
         }
 
         fetchRestaurantData()
@@ -208,40 +200,44 @@ class HomeFragment : Fragment() {
                 if (response.isSuccessful) {
                     val restaurants = response.body() ?: listOf()
 
-                    // Pastikan data restoran berhasil diterima
-                    Log.d("HomeFragment", "Fetched Restaurants: ${restaurants.size}")
-                    if (restaurants.isEmpty()) {
-                        Log.e("HomeFragment", "Data restoran kosong!")
-                    }
+                    // Simpan data ke SharedPreferences
+                    saveRestaurantsToCache(restaurants)
+
                     withContext(Dispatchers.Main) {
-                        // Perbarui data ke variabel `restaurantList`
                         restaurantList = restaurants
                         restaurantAdapter.updateData(restaurantList)
 
-                        // Log untuk memastikan data telah diperbarui
-                        Log.d("HomeFragment", "Restaurant list updated: ${restaurantList.size}")
                         progressBar.visibility = View.GONE
                     }
-
-
                 } else {
                     withContext(Dispatchers.Main) {
-                        // Jika response tidak berhasil, sembunyikan progress bar
-                        progressBar.visibility = View.GONE
+                        Toast.makeText(context, "Gagal memuat data restoran!", Toast.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Error fetching restaurant data", e)
                 withContext(Dispatchers.Main) {
-                    // Jika terjadi error saat fetch data, sembunyikan progress bar
-                    progressBar.visibility = View.GONE
+                    Toast.makeText(context, "Terjadi kesalahan!", Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
+
+    private fun saveRestaurantsToCache(restaurants: List<Restaurant>) {
+        val sharedPreferences = requireContext().getSharedPreferences("AppCache", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
+        // Konversi daftar restoran ke JSON
+        val gson = Gson()
+        val restaurantListJson = gson.toJson(restaurants)
+
+        // Simpan ke SharedPreferences
+        editor.putString("RESTAURANT_LIST", restaurantListJson)
+        editor.apply()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null // Nullify binding untuk menghindari memory leaks
     }
 }
-

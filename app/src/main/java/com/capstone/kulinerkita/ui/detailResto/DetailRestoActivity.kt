@@ -1,17 +1,16 @@
 package com.capstone.kulinerkita.ui.detailResto
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.kulinerkita.MapsActivity
 import com.capstone.kulinerkita.data.model.Restaurant
 import com.capstone.kulinerkita.databinding.ActivityDetailRestoBinding
-import java.text.DecimalFormat
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
-@Suppress("DEPRECATION")
 class DetailRestoActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailRestoBinding
@@ -20,70 +19,44 @@ class DetailRestoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailRestoBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        try {
-            // Ambil data dari Intent
-            val restaurantList = intent.getParcelableArrayListExtra<Restaurant>("RESTAURANT_LIST")
-            val selectedRestaurantId = intent.getStringExtra("SELECTED_RESTAURANT_ID")
-
-            Log.d("DetailResto", "Restaurant List Received: $restaurantList")
-            Log.d("DetailResto", "Selected Restaurant ID Received: $selectedRestaurantId")
-
-            if (restaurantList.isNullOrEmpty()) {
-                Log.e("DetailResto", "Restaurant List is null or empty!")
-            }
-            if (selectedRestaurantId.isNullOrEmpty()) {
-                Log.e("DetailResto", "Selected Restaurant ID is null or empty!")
-            }
-
-            // Temukan restoran yang dipilih berdasarkan ID
-            Log.d("DetailResto", "Received ID: $selectedRestaurantId")
-            val selectedRestaurant = restaurantList!!.find { it.id == selectedRestaurantId!!.toIntOrNull() }
-            if (selectedRestaurant == null) {
-                Log.e("DetailResto", "Restoran dengan ID $selectedRestaurantId tidak ditemukan")
-            }
-
-            if (selectedRestaurant == null) {
-                Log.e("DetailResto", "Restoran tidak ditemukan dengan ID: $selectedRestaurantId")
+        val selectedRestaurantId = intent.getIntExtra("SELECTED_RESTAURANT_ID", -1)
+        if (selectedRestaurantId != -1) {
+            val selectedRestaurant = getRestaurantFromCache(selectedRestaurantId)
+            if (selectedRestaurant != null) {
+                bindRestaurantData(selectedRestaurant)
+            } else {
                 Toast.makeText(this, "Restoran tidak ditemukan!", Toast.LENGTH_SHORT).show()
                 finish()
-                return
             }
-
-            // Tampilkan data restoran di UI
-            bindRestaurantData(selectedRestaurant)
-        } catch (e: Exception) {
-            Log.e("DetailResto", "Error pada DetailRestoActivity", e)
-            Toast.makeText(this, "Terjadi kesalahan!", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "ID restoran tidak valid!", Toast.LENGTH_SHORT).show()
             finish()
         }
     }
 
-    private fun bindRestaurantData(restaurant: Restaurant) {
-        try {
-            binding.imgResto.setImageResource(restaurant.imageResId)
-            binding.tvRestaurantDetail.text = restaurant.name
-            binding.tvDetailAddress.text = restaurant.address
-            binding.tvPhone.text = restaurant.phoneNumber ?: "Tidak tersedia"
+    private fun getRestaurantFromCache(restaurantId: Int): Restaurant? {
+        val sharedPreferences = getSharedPreferences("AppCache", Context.MODE_PRIVATE)
+        val restaurantListJson = sharedPreferences.getString("RESTAURANT_LIST", null)
 
-            val format = DecimalFormat("#,###")
-            binding.tvPriceRange.text =
-                "Rp${format.format(restaurant.minPrice)} - Rp${format.format(restaurant.maxPrice)}"
+        return if (restaurantListJson != null) {
+            // Konversi JSON kembali ke List<Restaurant>
+            val gson = Gson()
+            val type = object : TypeToken<List<Restaurant>>() {}.type
+            val restaurantList: List<Restaurant> = gson.fromJson(restaurantListJson, type)
 
-            binding.tvCategoriEcoDetail.text =
-                if (restaurant.ecoFriendly) "Eco-Friendly" else "Non-Eco-Friendly"
-            binding.tvCategoriSuhuDetail.text = restaurant.categorizeWeather ?: "Tidak Diketahui"
-            binding.tvratingsDetail.text = restaurant.rating?.let { "$it (${restaurant.reviews} reviews)" } ?: "Rating tidak tersedia"
-            // Tampilkan jam operasional jika tersedia
-            val operationalHours = restaurant.operatingHours
-            if (operationalHours != null) {
-                val adapter = OperationalHoursAdapter(operationalHours)
-                binding.rvOperationalHours.layoutManager = LinearLayoutManager(this)
-                binding.rvOperationalHours.adapter = adapter
-            }
-        } catch (e: Exception) {
-            Log.e("DetailResto", "Error binding data restoran", e)
+            // Cari restoran berdasarkan ID
+            restaurantList.find { it.id == restaurantId }
+        } else {
+            null
         }
+    }
+
+    private fun bindRestaurantData(restaurant: Restaurant) {
+        binding.tvRestaurantDetail.text = restaurant.name
+        binding.tvDetailAddress.text = restaurant.address
+        binding.tvPhone.text = restaurant.phone_number ?: "Tidak tersedia"
+        binding.tvPriceRange.text = "Rp${restaurant.minPrice} - Rp${restaurant.maxPrice}"
+
 
         // Tombol kembali
         binding.backButtonDetail.setOnClickListener {
