@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -36,6 +38,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
+import android.provider.Settings
 
 class HomeFragment : Fragment() {
 
@@ -131,6 +134,84 @@ class HomeFragment : Fragment() {
         fetchUserData()
     }
 
+    private fun requestLocationPermission() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED) {
+
+            // If permission is not granted, request it
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
+        } else {
+            // Permission already granted, fetch location
+            checkAndFetchLocation()
+        }
+    }
+
+    // Function to check if location services are enabled and fetch location
+    private fun checkAndFetchLocation() {
+        val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val isLocationEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+
+        if (isLocationEnabled) {
+            fetchCurrentLocation()
+        } else {
+            // Prompt user to enable location services
+            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            startActivityForResult(intent, LOCATION_SETTINGS_REQUEST_CODE)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun fetchCurrentLocation() {
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            if (location != null) {
+                val geocoder = Geocoder(requireContext(), Locale.getDefault())
+                val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+                val address = addresses?.get(0)
+
+                val city = address?.locality ?: "Unknown City"
+                val district = address?.subAdminArea ?: "Unknown District"
+
+                binding.TvLocation.text = "$district, $city"
+            } else {
+                Toast.makeText(requireContext(), "Unable to fetch location", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    // Handle the permission result
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, check if location services are enabled and fetch location
+                checkAndFetchLocation()
+            } else {
+                // Permission denied, show a message
+                Toast.makeText(requireContext(), "Location permission is required to fetch your location.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    // Handle result of enabling location services
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == LOCATION_SETTINGS_REQUEST_CODE) {
+            checkAndFetchLocation()  // Re-check if location is enabled after user changes setting
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // Request location permission when fragment is started
+        requestLocationPermission()
+    }
+
     private fun fetchRestaurantData() {
         Log.d("HomeFragment", "fetchRestaurantData: Mengambil data restoran dari API")
         CoroutineScope(Dispatchers.IO).launch {
@@ -214,36 +295,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    @SuppressLint("MissingPermission")
-    private fun fetchCurrentLocation(onLocationRetrieved: (Double, Double) -> Unit) {
-        Log.d("HomeFragment", "fetchCurrentLocation: Mengambil lokasi pengguna")
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            LocationServices.getFusedLocationProviderClient(requireContext())
-                .lastLocation.addOnSuccessListener { location: Location? ->
-                    if (location != null) {
-                        Log.d(
-                            "HomeFragment",
-                            "fetchCurrentLocation: Lokasi ditemukan: ${location.latitude}, ${location.longitude}"
-                        )
-                        onLocationRetrieved(location.latitude, location.longitude)
-                    } else {
-                        Log.e("HomeFragment", "fetchCurrentLocation: Lokasi tidak ditemukan")
-                    }
-                }
-        } else {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                1
-            )
-            Log.d("HomeFragment", "fetchCurrentLocation: Meminta izin lokasi")
-        }
-    }
-
     private fun saveRestaurantsToCache(restaurants: List<Restaurant>) {
         val sharedPreferences = requireContext().getSharedPreferences("AppCache", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -272,5 +323,15 @@ class HomeFragment : Fragment() {
         } else {
             listOf()
         }
+    }
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+        private const val LOCATION_SETTINGS_REQUEST_CODE = 2
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null // Nullify binding untuk menghindari memory leaks
     }
 }

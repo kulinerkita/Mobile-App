@@ -87,7 +87,7 @@ class SearchActivity : AppCompatActivity() {
 
             // Navigasi ke DetailActivity dan kirim data restoran
             val intent = Intent(this, DetailRestoActivity::class.java)
-            intent.putExtra("SELECTED_RESTAURANT", restaurant)
+            intent.putExtra("SELECTED_RESTAURANT_ID", restaurant.id)
             startActivity(intent)
         }
 
