@@ -6,17 +6,19 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.kulinerkita.MapsActivity
+import com.capstone.kulinerkita.R
+import com.capstone.kulinerkita.data.model.Categorise
 import com.capstone.kulinerkita.data.model.Restaurant
 import com.capstone.kulinerkita.databinding.ActivityDetailRestoBinding
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import java.text.DecimalFormat
+import com.capstone.kulinerkita.ui.kategori.CategoriseAdapter
 
+@Suppress("DEPRECATION")
 class DetailRestoActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailRestoBinding
-    private var selectedRestaurant: Restaurant? = null // Tambahkan properti untuk restoran yang dipilih
+    private var selectedRestaurant: Restaurant? = null
     private val TAG = "DetailRestoActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,9 +26,20 @@ class DetailRestoActivity : AppCompatActivity() {
         binding = ActivityDetailRestoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val selectedRestaurantId = intent.getIntExtra("SELECTED_RESTAURANT_ID", -1)
-        Log.d(TAG, "Selected Restaurant ID: $selectedRestaurantId")
+        Log.d(TAG, "Activity Created")
 
+        // Ambil data dari intent
+        val selectedCategorise: Categorise? = intent.getParcelableExtra("SELECTED_CATEGORISE")
+        if (selectedCategorise == null) {
+            Log.e(TAG, "Categorise tidak diterima! Menggunakan data dummy.")
+            setupRecyclerView(getDummyCategories()) // Gunakan data dummy
+        } else {
+            Log.d(TAG, "Categorise diterima: ${selectedCategorise.namaCategorise}")
+            setupRecyclerView(listOf(selectedCategorise))
+        }
+
+        // Ambil ID restoran jika tersedia
+        val selectedRestaurantId = intent.getIntExtra("SELECTED_RESTAURANT_ID", -1)
         if (selectedRestaurantId != -1) {
             selectedRestaurant = getRestaurantFromCache(selectedRestaurantId)
             if (selectedRestaurant != null) {
@@ -37,10 +50,6 @@ class DetailRestoActivity : AppCompatActivity() {
                 Toast.makeText(this, "Restoran tidak ditemukan!", Toast.LENGTH_SHORT).show()
                 finish()
             }
-        } else {
-            Log.e(TAG, "Invalid Restaurant ID: $selectedRestaurantId")
-            Toast.makeText(this, "ID restoran tidak valid!", Toast.LENGTH_SHORT).show()
-            finish()
         }
 
         // Tombol kembali
@@ -48,7 +57,7 @@ class DetailRestoActivity : AppCompatActivity() {
             finish()
         }
 
-        // Tombol cek maps
+        // Tombol cek lokasi
         binding.ButtonCekLokasi.setOnClickListener {
             val restaurant = selectedRestaurant
             if (restaurant != null) {
@@ -71,8 +80,8 @@ class DetailRestoActivity : AppCompatActivity() {
         Log.d(TAG, "Restaurant List JSON: ${restaurantListJson?.substring(0, 100) ?: "null"}")
 
         return if (restaurantListJson != null) {
-            val gson = Gson()
-            val type = object : TypeToken<List<Restaurant>>() {}.type
+            val gson = com.google.gson.Gson()
+            val type = object : com.google.gson.reflect.TypeToken<List<Restaurant>>() {}.type
             val restaurantList: List<Restaurant> = gson.fromJson(restaurantListJson, type)
             Log.d(TAG, "Total Restaurants in Cache: ${restaurantList.size}")
 
@@ -94,26 +103,46 @@ class DetailRestoActivity : AppCompatActivity() {
         binding.tvRestaurantDetail.text = restaurant.name
         binding.tvDetailAddress.text = restaurant.address
         binding.tvPhone.text = restaurant.phone_number ?: "Tidak tersedia"
-
-        val format = DecimalFormat("#,###")
-        binding.tvPriceRange.text =
-            "Rp${format.format(restaurant.min_price)} - Rp${format.format(restaurant.max_price)}"
-
+        binding.tvPriceRange.text = "Rp. ${restaurant.min_price} - Rp. ${restaurant.max_price}"
         binding.tvCategoriEcoDetail.text =
             if (restaurant.eco_friendly == 1) "Eco-Friendly" else "Non-Eco-Friendly"
-
         binding.tvCategoriSuhuDetail.text = restaurant.categorize_weather ?: "Tidak Diketahui"
         binding.tvratingsDetail.text =
             restaurant.rating?.let { "$it (${restaurant.reviews} reviews)" } ?: "Rating tidak tersedia"
+    }
 
-        val operationalHours = restaurant.operating_hours
-        if (operationalHours != null) {
-            Log.d(TAG, "Operating Hours: ${operationalHours.opening_time} - ${operationalHours.closing_time}")
-            val hoursText = "Buka: ${operationalHours.opening_time} - Tutup: ${operationalHours.closing_time}"
-            binding.tvOperationalHours.text = hoursText
-        } else {
-            Log.e(TAG, "Operating Hours are null")
-            binding.tvOperationalHours.text = "Waktu operasional tidak tersedia"
+    private fun setupRecyclerView(categoriseList: List<Categorise>) {
+        Log.d(TAG, "Setting up RecyclerView with ${categoriseList.size} items")
+
+        val categoriseAdapter = CategoriseAdapter(categoriseList) { categorise ->
+            Toast.makeText(this, "Clicked: ${categorise.namaCategorise}", Toast.LENGTH_SHORT).show()
         }
+
+        binding.itemKulinerDetail.apply {
+            layoutManager = LinearLayoutManager(this@DetailRestoActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = categoriseAdapter
+        }
+    }
+
+    private fun getDummyCategories(): List<Categorise> {
+        return listOf(
+            Categorise(1, "Wedang Uwuh", "Minuman", R.drawable.wedang_uwuh),
+            Categorise(2, "Timlo", "Makanan", R.drawable.timlo),
+            Categorise(3, "Tahok", "Makanan", R.drawable.tahok),
+            Categorise(4, "Soto", "Makanan", R.drawable.soto),
+            Categorise(5, "Serabi", "Makanan", R.drawable.serabi),
+            Categorise(6, "Selat", "Makanan", R.drawable.selat),
+            Categorise(7, "Sego Liwet", "Makanan", R.drawable.sego_liwet),
+            Categorise(8, "Sate Kere", "Makanan", R.drawable.sate_kere),
+            Categorise(9, "Sate Buntel", "Makanan", R.drawable.sate_buntel),
+            Categorise(10, "Lenjongan", "Makanan", R.drawable.lenjongan),
+            Categorise(11, "Gudeg", "Makanan", R.drawable.gudeg),
+            Categorise(12, "Gendar Pecel", "Makanan", R.drawable.gendar_pecel),
+            Categorise(13, "Wedang Asle", "Minuman", R.drawable.wedang_asle),
+            Categorise(14, "Es Kapal", "Minuman", R.drawable.es_kapal),
+            Categorise(15, "Es Gempol Pleret", "Minuman", R.drawable.es_gempol_pleret),
+            Categorise(16, "Es Dawet Telasih", "Minuman", R.drawable.es_dawet_telasih),
+            Categorise(17, "Brambang Asem", "Makanan", R.drawable.brambang_asem)
+        )
     }
 }

@@ -243,7 +243,8 @@
                 android:id="@+id/item_kulinerDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp" />
+                android:layout_marginTop="5dp"
+                tools:listitem="@layout/item_kuliner" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/item_feedbackDetail"
@@ -269,6 +270,3 @@
         android:textColor="@android:color/white"
         android:elevation="4dp" />
 </FrameLayout>
-
-
-
