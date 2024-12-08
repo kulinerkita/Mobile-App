@@ -75,7 +75,7 @@ class DetailRestoActivity : AppCompatActivity() {
 
         val format = DecimalFormat("#,###")
         binding.tvPriceRange.text =
-            "Rp${format.format(restaurant.minPrice)} - Rp${format.format(restaurant.maxPrice)}"
+            "Rp${format.format(restaurant.min_price)} - Rp${format.format(restaurant.max_price)}"
 
         binding.tvCategoriEcoDetail.text =
             if (restaurant.eco_friendly == 1) "Eco-Friendly" else "Non-Eco-Friendly"
