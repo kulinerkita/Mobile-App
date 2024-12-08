@@ -2,6 +2,7 @@ package com.capstone.kulinerkita
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -31,10 +32,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        val latitude = intent.getDoubleExtra("LATITUDE", 0.0)
+        val longitude = intent.getDoubleExtra("LONGITUDE", 0.0)
+
+        Log.d("MapsActivity", "Received Coordinates: Lat = $latitude, Lng = $longitude")
+
+        // Periksa apakah koordinat valid
+        if (latitude != 0.0 && longitude != 0.0) {
+            val location = LatLng(latitude, longitude)
+            mMap.addMarker(MarkerOptions().position(location).title("Lokasi Restoran"))
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))  // Zoom level 15
+        } else {
+            Log.e("MapsActivity", "Invalid Coordinates Received.")
+            // Tampilkan lokasi default atau pesan kesalahan
+            val defaultLocation = LatLng(0.0, 0.0)
+            mMap.addMarker(MarkerOptions().position(defaultLocation).title("Lokasi Tidak Diketahui"))
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 5f))
+        }
+
+        // Enable map controls
         mMap.uiSettings.isZoomControlsEnabled = true
         mMap.uiSettings.isIndoorLevelPickerEnabled = true
         mMap.uiSettings.isCompassEnabled = true

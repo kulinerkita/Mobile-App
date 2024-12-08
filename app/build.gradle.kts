@@ -77,4 +77,8 @@ dependencies {
     //Reforfit
     implementation (libs.retrofit)
     implementation (libs.retrofit2.converter.gson)
+
+    //Maps
+    implementation (libs.play.services.maps)
+
 }

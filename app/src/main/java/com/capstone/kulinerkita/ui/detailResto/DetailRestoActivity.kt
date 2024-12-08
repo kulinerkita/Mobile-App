@@ -16,6 +16,7 @@ import java.text.DecimalFormat
 class DetailRestoActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailRestoBinding
+    private var selectedRestaurant: Restaurant? = null // Tambahkan properti untuk restoran yang dipilih
     private val TAG = "DetailRestoActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,10 +28,10 @@ class DetailRestoActivity : AppCompatActivity() {
         Log.d(TAG, "Selected Restaurant ID: $selectedRestaurantId")
 
         if (selectedRestaurantId != -1) {
-            val selectedRestaurant = getRestaurantFromCache(selectedRestaurantId)
+            selectedRestaurant = getRestaurantFromCache(selectedRestaurantId)
             if (selectedRestaurant != null) {
-                Log.d(TAG, "Selected Restaurant: ${selectedRestaurant.name}")
-                bindRestaurantData(selectedRestaurant)
+                Log.d(TAG, "Selected Restaurant: ${selectedRestaurant!!.name}")
+                bindRestaurantData(selectedRestaurant!!)
             } else {
                 Log.e(TAG, "Restaurant not found in cache for ID: $selectedRestaurantId")
                 Toast.makeText(this, "Restoran tidak ditemukan!", Toast.LENGTH_SHORT).show()
@@ -40,6 +41,27 @@ class DetailRestoActivity : AppCompatActivity() {
             Log.e(TAG, "Invalid Restaurant ID: $selectedRestaurantId")
             Toast.makeText(this, "ID restoran tidak valid!", Toast.LENGTH_SHORT).show()
             finish()
+        }
+
+        // Tombol kembali
+        binding.backButtonDetail.setOnClickListener {
+            finish()
+        }
+
+        // Tombol cek maps
+        binding.ButtonCekLokasi.setOnClickListener {
+            val restaurant = selectedRestaurant
+            if (restaurant != null) {
+                Log.d(TAG, "Navigating to MapsActivity with Lat: ${restaurant.latitude}, Lng: ${restaurant.longitude}")
+                val intent = Intent(this, MapsActivity::class.java).apply {
+                    putExtra("LATITUDE", restaurant.latitude)
+                    putExtra("LONGITUDE", restaurant.longitude)
+                }
+                startActivity(intent)
+            } else {
+                Log.e(TAG, "SelectedRestaurant is null when trying to navigate to Maps")
+                Toast.makeText(this, "Data lokasi tidak tersedia!", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -92,21 +114,6 @@ class DetailRestoActivity : AppCompatActivity() {
         } else {
             Log.e(TAG, "Operating Hours are null")
             binding.tvOperationalHours.text = "Waktu operasional tidak tersedia"
-        }
-
-        // Tombol kembali
-        binding.backButtonDetail.setOnClickListener {
-            finish()
-        }
-
-        // Tombol cek maps
-        binding.ButtonCekLokasi.setOnClickListener {
-            Log.d(TAG, "Navigating to MapsActivity with Lat: ${restaurant.latitude}, Lng: ${restaurant.longitude}")
-            val intent = Intent(this, MapsActivity::class.java).apply {
-                putExtra("LATITUDE", restaurant.latitude)
-                putExtra("LONGITUDE", restaurant.longitude)
-            }
-            startActivity(intent)
         }
     }
 }
