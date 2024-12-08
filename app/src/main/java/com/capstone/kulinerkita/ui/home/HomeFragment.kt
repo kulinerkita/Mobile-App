@@ -3,6 +3,9 @@ package com.capstone.kulinerkita.ui.home
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Geocoder
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,11 +13,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.kulinerkita.API.RestaurantApiClient
+import androidx.core.content.ContextCompat
+import android.location.LocationManager
 import com.capstone.kulinerkita.R
 import com.capstone.kulinerkita.data.KulinerKitaDatabase
 import com.capstone.kulinerkita.data.model.NewsHome
@@ -26,12 +32,16 @@ import com.capstone.kulinerkita.utils.SessionManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Calendar
+import java.util.Locale
+import android.provider.Settings
 
 @Suppress("DEPRECATION")
 class HomeFragment : Fragment() {
@@ -147,7 +157,80 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    @SuppressLint("SetTextI18n")
+    private fun requestLocationPermission() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
+        } else {
+            checkAndFetchLocation()
+        }
+    }
+
+    private fun checkAndFetchLocation() {
+        val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val isLocationEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+
+        if (isLocationEnabled) {
+            fetchCurrentLocation()
+        } else {
+            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            startActivityForResult(intent, LOCATION_SETTINGS_REQUEST_CODE)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun fetchCurrentLocation() {
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            if (location != null) {
+                val geocoder = Geocoder(requireContext(), Locale.getDefault())
+                val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+                val address = addresses?.get(0)
+
+                val city = address?.locality ?: "Unknown City"
+                val district = address?.subAdminArea ?: "Unknown District"
+
+                binding.TvLocation.text = "$district, $city"
+            } else {
+                Toast.makeText(requireContext(), "Unable to fetch location", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    // Handle the permission result
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, check if location services are enabled and fetch location
+                checkAndFetchLocation()
+            } else {
+                // Permission denied, show a message
+                Toast.makeText(requireContext(), "Location permission is required to fetch your location.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    // Handle result of enabling location services
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == LOCATION_SETTINGS_REQUEST_CODE) {
+            checkAndFetchLocation()  // Re-check if location is enabled after user changes setting
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // Request location permission when fragment is started
+        requestLocationPermission()
+    }
+
     private fun fetchUserData() {
         val token = sessionManager.getToken()
         Log.d("HomeFragment", "Token yang disimpan: $token")
@@ -160,18 +243,25 @@ class HomeFragment : Fragment() {
                     withContext(Dispatchers.Main) {
                         _binding?.let { safeBinding ->
                             if (user != null) {
-                                safeBinding.TvNameUsers.text = "${user.name}!"
+                                // Dynamic greeting based on time
+                                val greeting = when (Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) {
+                                    in 5..10 -> "Selamat Pagi"
+                                    in 11..14 -> "Selamat Siang"
+                                    in 15..18 -> "Selamat Sore"
+                                    else -> "Selamat Malam"
+                                }
+                                safeBinding.TvNameUsers.text = "$greeting, ${user.name}!"
                             } else {
-                                safeBinding.TvNameUsers.text = "Guest!"
+                                safeBinding.TvNameUsers.text = "Hello, Guest!"
                             }
                         }
                     }
                 }
             } else {
-                _binding?.TvNameUsers?.text = "Guest!"
+                _binding?.TvNameUsers?.text = "Hello, Guest!"
             }
         } else {
-            _binding?.TvNameUsers?.text = "Guest!"
+            _binding?.TvNameUsers?.text = "Hello, Guest!"
         }
     }
 
@@ -236,8 +326,14 @@ class HomeFragment : Fragment() {
         editor.apply()
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null // Nullify binding untuk menghindari memory leaks
+    }
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+        private const val LOCATION_SETTINGS_REQUEST_CODE = 2
     }
 }

@@ -22,6 +22,7 @@ navigationUiKtx = "2.8.3"
 playServicesAuth = "21.2.0"
 playServicesAuthVersion = "20.7.0"
 playServicesIdentityVersion = "20.0.0"
+playServicesLocation = "21.2.0"
 retrofit = "2.9.0"
 roomRuntime = "2.6.1"
 lifecycleLivedataKtx = "2.8.7"
@@ -57,6 +58,7 @@ play-services-auth = { module = "com.google.android.gms:play-services-auth", ver
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 play-services-auth-v2070 = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuthVersion" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit2-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }

@@ -4,13 +4,8 @@ package com.capstone.kulinerkita.ui.login
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.util.Patterns
@@ -19,7 +14,6 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import com.capstone.kulinerkita.MainActivity
 import com.capstone.kulinerkita.R
 import com.capstone.kulinerkita.data.KulinerKitaDatabase
@@ -46,7 +40,6 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var database: KulinerKitaDatabase
     private lateinit var sessionManager: SessionManager
     private lateinit var auth: FirebaseAuth
-
     private lateinit var googleSignInClient: GoogleSignInClient
 
     @SuppressLint("MissingInflatedId")
@@ -86,7 +79,6 @@ class SignInActivity : AppCompatActivity() {
 
         database = KulinerKitaDatabase.getInstance(this)
 
-        // Sign In Button
         binding.LoginButton.setOnClickListener {
             val email = binding.emaillogin.text.toString().trim()
             val password = binding.passwordInputLogin.text.toString().trim()
@@ -105,13 +97,18 @@ class SignInActivity : AppCompatActivity() {
                     val user = database.userDao().loginUser(email, password)
                     withContext(Dispatchers.Main) {
                         if (user != null) {
+                            // Simpan token atau data session jika perlu
                             sessionManager.saveToken("fake_token_${user.id}")
-                            Toast.makeText(
-                                this@SignInActivity,
-                                "Login Berhasil",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            showNotificationForMaps()
+                            Toast.makeText(this@SignInActivity, "Login Berhasil", Toast.LENGTH_SHORT).show()
+
+                            val intent = Intent(this@SignInActivity, MainActivity::class.java).apply {
+                                // Jika perlu, kirimkan data seperti nama pengguna
+                                putExtra("username", user.name)
+                            }
+
+                            // Mulai MainActivity
+                            startActivity(intent)
+                            finish()
                         } else {
                             Toast.makeText(
                                 this@SignInActivity,
@@ -182,42 +179,6 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun showNotificationForMaps() {
-        val channelId = "kuliner_kita_channel"
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                channelId,
-                "KulinerKita Notifications",
-                NotificationManager.IMPORTANCE_HIGH
-            )
-            notificationManager.createNotificationChannel(channel)
-        }
-
-        val yesIntent = Intent(this, MainActivity::class.java).apply {
-            putExtra("response", "yes")
-        }
-        val noIntent = Intent(this, MainActivity::class.java).apply {
-            putExtra("response", "no")
-        }
-
-        val yesPendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, yesIntent, PendingIntent.FLAG_IMMUTABLE)
-        val noPendingIntent: PendingIntent = PendingIntent.getActivity(this, 1, noIntent, PendingIntent.FLAG_IMMUTABLE)
-
-        val notification: Notification = NotificationCompat.Builder(this, channelId)
-            .setContentTitle("Enable Maps")
-            .setContentText("Do you agree to turn on Maps?")
-            .setSmallIcon(R.drawable.notification_off)
-            .setAutoCancel(true)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .addAction(0, "Yes", yesPendingIntent)
-            .addAction(0, "No", noPendingIntent)
-            .build()
-
-        notificationManager.notify(1001, notification)
-    }
 
     private fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()

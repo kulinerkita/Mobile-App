@@ -1,9 +1,13 @@
 package com.capstone.kulinerkita
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
+import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
-
+import android.provider.Settings
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -23,37 +27,63 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
+        // Periksa status layanan lokasi
+        if (!isLocationEnabled()) {
+            showLocationSettingsDialog()
+        } else {
+            // Ambil data dari Intent
+            val latitude = intent.getDoubleExtra("LATITUDE", 0.0)
+            val longitude = intent.getDoubleExtra("LONGITUDE", 0.0)
+            val restaurantName = intent.getStringExtra("RESTAURANT_NAME") ?: "Lokasi Restoran"
+
+            // Inisialisasi MapFragment
+            val mapFragment = supportFragmentManager
+                .findFragmentById(R.id.map) as SupportMapFragment
+            mapFragment.getMapAsync {
+                onMapReady(it, LatLng(latitude, longitude), restaurantName)
+            }
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
+        // Fungsi ini tetap digunakan untuk inisialisasi GoogleMap
         mMap = googleMap
+    }
 
-        val latitude = intent.getDoubleExtra("LATITUDE", 0.0)
-        val longitude = intent.getDoubleExtra("LONGITUDE", 0.0)
+    private fun onMapReady(map: GoogleMap, location: LatLng, title: String) {
+        mMap = map
 
-        Log.d("MapsActivity", "Received Coordinates: Lat = $latitude, Lng = $longitude")
+        // Tambahkan marker pada lokasi restoran
+        mMap.addMarker(MarkerOptions().position(location).title(title))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
 
-        // Periksa apakah koordinat valid
-        if (latitude != 0.0 && longitude != 0.0) {
-            val location = LatLng(latitude, longitude)
-            mMap.addMarker(MarkerOptions().position(location).title("Lokasi Restoran"))
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))  // Zoom level 15
-        } else {
-            Log.e("MapsActivity", "Invalid Coordinates Received.")
-            // Tampilkan lokasi default atau pesan kesalahan
-            val defaultLocation = LatLng(0.0, 0.0)
-            mMap.addMarker(MarkerOptions().position(defaultLocation).title("Lokasi Tidak Diketahui"))
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 5f))
-        }
-
-        // Enable map controls
+        // Konfigurasi UI tambahan
         mMap.uiSettings.isZoomControlsEnabled = true
-        mMap.uiSettings.isIndoorLevelPickerEnabled = true
         mMap.uiSettings.isCompassEnabled = true
-        mMap.uiSettings.isMapToolbarEnabled = true
+    }
+
+    // Periksa apakah lokasi diaktifkan
+    private fun isLocationEnabled(): Boolean {
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+    }
+
+    // Tampilkan dialog untuk mengarahkan pengguna ke pengaturan lokasi
+    private fun showLocationSettingsDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Location Services Disabled")
+            .setMessage("Location is required to view the map. Please enable location services.")
+            .setPositiveButton("Go to Settings") { _, _ ->
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+                Toast.makeText(this, "Location services are required to use this feature.", Toast.LENGTH_SHORT).show()
+                finish() // Tutup aktivitas jika lokasi tidak diaktifkan
+            }
+            .setCancelable(false)
+            .show()
     }
 }

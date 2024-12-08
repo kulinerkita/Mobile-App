@@ -22,25 +22,14 @@
             android:layout_marginTop="45dp">
 
             <TextView
-                android:id="@+id/Tv_name_user"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_medium"
-                android:text="@string/name_hai"
-                android:textSize="22sp"
-                android:textColor="@color/black"
-                tools:ignore="SpUsage,TextSizeCheck" />
-
-            <TextView
                 android:id="@+id/Tv_name_users"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_toEndOf="@+id/Tv_name_user"
-                android:text="@string/name_users_bold"
                 android:fontFamily="@font/poppins_semi_bold"
-                android:textSize="22sp"
+                android:text="@string/name_users_bold"
                 android:textColor="@color/black"
+                android:textSize="17sp"
                 tools:ignore="RelativeOverlap,SpUsage" />
 
             <ImageView
@@ -67,7 +56,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="14dp"
             android:layout_marginStart="20dp"
             android:orientation="horizontal"
             android:gravity="center_vertical">
@@ -84,11 +73,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/name_weather"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/poppins_medium"
                 android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp" />
+                tools:ignore="SmallSp" />
 
             <ImageView
                 android:id="@+id/Iv_location"
@@ -103,11 +92,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/name_location"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/poppins_medium"
                 android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp" />
+                tools:ignore="SmallSp" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

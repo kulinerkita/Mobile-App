@@ -40,8 +40,8 @@
     <string name="culiner_kategori">Kategori Kuliner</string>
     <string name="notification_icon">Notification icon</string>
     <string name="search_icon">Search icon</string>
-    <string name="name_weather">25 Celcius</string>
-    <string name="name_location">Solo, Surakarta</string>
+    <string name="name_weather">Cuaca Tidak Tersedia</string>
+    <string name="name_location">Lokasi Tidak Tersedia</string>
     <string name="text_food">Makanan</string>
     <string name="text_drink">Minuman</string>
     <string name="text_recomendation">Rekomendasi</string>

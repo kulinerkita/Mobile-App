@@ -69,6 +69,7 @@ class DetailRestoActivity : AppCompatActivity() {
                 val intent = Intent(this, MapsActivity::class.java).apply {
                     putExtra("LATITUDE", restaurant.latitude)
                     putExtra("LONGITUDE", restaurant.longitude)
+                    putExtra("RESTAURANT_NAME", restaurant.name)
                 }
                 startActivity(intent)
             } else {
