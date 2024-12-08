@@ -31,7 +31,7 @@ class HomeAdapter(
                 .into(imgProfile)
 
             tvRestaurantName.text = restaurant.name
-            tvRestaurantAddress.text = restaurant.address
+            tvRestaurantAddress.text = getShortenedAddress(restaurant.address)
             tvCategorySuhu.text = restaurant.categorize_weather
             tvCategoryEco.text = restaurant.eco_friendly.toString()
             tvRating.text = restaurant.rating
@@ -41,6 +41,13 @@ class HomeAdapter(
                 onItemClick(restaurant)
             }
         }
+    }
+
+    // Fungsi untuk mempersingkat alamat
+    private fun getShortenedAddress(address: String): String {
+        // Split alamat berdasarkan koma (",")
+        val parts = address.split(", ")
+        return if (parts.size >= 2) "${parts[0]}, ${parts[1]}" else address
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
