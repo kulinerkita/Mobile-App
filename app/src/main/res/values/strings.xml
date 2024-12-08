@@ -100,6 +100,7 @@
     <string name="name_user">Jhon Doe</string>
     <string name="days_ago_feedback">1 hari yang lalu</string>
     <string name="desc_feedback">Lorem ipsum dolor sit amet, consectetur adipisicing elit,sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+    <string name="OperationalHours">Jam Operasional</string>
 
     <!-- Login With Google -->
     <string name="default_web_client_id">1058367483881-80dnftuiu0o0kdrororl57d0tkdv5co4.apps.googleusercontent.com</string>

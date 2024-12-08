@@ -24,7 +24,7 @@ class OperationalHoursAdapter(private val operationalHours: OperatingHours) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind("Hari", "${operationalHours.openingTime} - ${operationalHours.closingTime}")
+        holder.bind("Hari", "${operationalHours.opening_time} - ${operationalHours.closing_time}")
     }
 
     override fun getItemCount(): Int = 1

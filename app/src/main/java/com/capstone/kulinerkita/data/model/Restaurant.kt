@@ -28,6 +28,6 @@ data class Restaurant(
 
 @Parcelize
 data class OperatingHours(
-    val openingTime: String,
-    val closingTime: String
+    val opening_time: String,
+    val closing_time: String
 ) : Parcelable
