@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.kulinerkita.MapsActivity
 import com.capstone.kulinerkita.R
 import com.capstone.kulinerkita.data.model.Categorise
+import com.capstone.kulinerkita.data.model.Feedback
 import com.capstone.kulinerkita.data.model.Restaurant
 import com.capstone.kulinerkita.databinding.ActivityDetailRestoBinding
 import com.capstone.kulinerkita.ui.kategori.CategoriseAdapter
@@ -37,6 +38,9 @@ class DetailRestoActivity : AppCompatActivity() {
             Log.d(TAG, "Categorise diterima: ${selectedCategorise.namaCategorise}")
             setupRecyclerView(listOf(selectedCategorise))
         }
+
+        // Memanggil fungsi untuk menampilkan feedback
+        setupFeedbackRecyclerView(getDummyFeedback())
 
         // Ambil ID restoran jika tersedia
         val selectedRestaurantId = intent.getIntExtra("SELECTED_RESTAURANT_ID", -1)
@@ -145,4 +149,39 @@ class DetailRestoActivity : AppCompatActivity() {
             Categorise(17, "Brambang Asem", "Makanan", R.drawable.brambang_asem)
         )
     }
+
+    private fun setupFeedbackRecyclerView(feedbackList: List<Feedback>) {
+        val feedbackAdapter = FeedbackAdapter(feedbackList)
+        binding.itemFeedbackDetail.apply {
+            layoutManager = LinearLayoutManager(this@DetailRestoActivity)
+            adapter = feedbackAdapter
+        }
+    }
+
+    private fun getDummyFeedback(): List<Feedback> {
+        return listOf(
+            Feedback(
+                userName = "John Doe",
+                userImage = R.drawable.food_1, // Gambar pengguna (contoh)
+                feedbackTime = "2 days ago",
+                feedbackDescription = "Makanannya enak, pelayanannya cepat, suasana nyaman!",
+                rating = 4.5f
+            ),
+            Feedback(
+                userName = "Jane Smith",
+                userImage = R.drawable.food_1, // Gambar pengguna (contoh)
+                feedbackTime = "1 week ago",
+                feedbackDescription = "Soto yang disajikan sangat autentik, akan kembali lagi!",
+                rating = 5.0f
+            ),
+            Feedback(
+                userName = "Mark Johnson",
+                userImage = R.drawable.food_1, // Gambar pengguna (contoh)
+                feedbackTime = "3 days ago",
+                feedbackDescription = "Cukup baik, tetapi perlu perbaikan di area kebersihan.",
+                rating = 3.0f
+            )
+        )
+    }
+
 }
