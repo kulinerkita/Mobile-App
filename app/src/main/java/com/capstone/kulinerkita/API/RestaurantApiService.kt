@@ -16,6 +16,6 @@ interface RestaurantApiService {
         @Query("weather") categorizeWeather: String? = null // Parameter weather bisa null
     ): Response<List<Restaurant>>
 
-    @GET("restaurants/{id}")
-    suspend fun getRestaurantById(@Path("id") id: Int): Response<Restaurant>
+    @GET("restaurants/search")
+    suspend fun getRestaurantsByCategory(@Query("categoryId") categoryId: Int): Response<List<Restaurant>>
 }

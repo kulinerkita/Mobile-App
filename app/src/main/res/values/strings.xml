@@ -113,4 +113,7 @@
     <string name="name_notif">Notifikasi</string>
     <string name="name_kategori">Kategori</string>
     <string name="phone_number">Phone Number</string>
+    <string name="tambah_lokasi">Tambah Lokasi</string>
+    <string name="title_activity_maps_navigation">MapsNavigationActivity</string>
+    <string name="koneksi_internet">Tidak Ada Koneksi Internet</string>
 </resources>

@@ -48,7 +48,6 @@
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <!-- RecyclerView untuk Menampilkan Daftar Berita -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/itemRestoran"
             android:layout_width="match_parent"

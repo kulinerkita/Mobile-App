@@ -175,9 +175,8 @@ class HomeFragment : Fragment() {
                 val address = addresses?.get(0)
 
                 val city = address?.locality ?: "Unknown City"
-                val district = address?.subAdminArea ?: "Unknown District"
 
-                binding.TvLocation.text = "$district, $city"
+                binding.TvLocation.text = "$city"
             } else {
                 Toast.makeText(requireContext(), "Unable to fetch location", Toast.LENGTH_SHORT).show()
             }
@@ -253,7 +252,7 @@ class HomeFragment : Fragment() {
         viewModel.weatherData.observe(viewLifecycleOwner) { weather ->
             _binding?.let { safeBinding ->
                 if (weather != null) {
-                    safeBinding.TvWeather.text = "${weather.main.temp}°C, ${weather.weather[0].description}"
+                    safeBinding.TvWeather.text = "${weather.main.temp}°C"
                 } else {
                     safeBinding.TvWeather.text = "Gagal mengambil data cuaca."
                 }

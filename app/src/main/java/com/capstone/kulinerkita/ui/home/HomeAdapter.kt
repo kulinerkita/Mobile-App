@@ -32,7 +32,7 @@ class HomeAdapter(
             tvRestaurantName.text = restaurant.name
             tvRestaurantAddress.text = getShortenedAddress(restaurant.address)
             tvCategorySuhu.text = restaurant.categorize_weather
-            tvCategoryEco.text = if (restaurant.eco_friendly == 1) "Eco Friendly" else "Not Eco Friendly"
+            tvCategoryEco.text = if (restaurant.eco_friendly == 1) "Eco Friendly" else "Non-Eco-Friendly"
             tvRating.text = restaurant.rating
 
             // Klik item untuk detail

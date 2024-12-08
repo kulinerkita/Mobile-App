@@ -7,7 +7,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.capstone.kulinerkita.MapsActivity
+import com.capstone.kulinerkita.ui.maps.MapsActivity
 import com.capstone.kulinerkita.R
 import com.capstone.kulinerkita.data.model.Categorise
 import com.capstone.kulinerkita.data.model.Feedback
@@ -74,6 +74,12 @@ class DetailRestoActivity : AppCompatActivity() {
                     putExtra("LATITUDE", restaurant.latitude)
                     putExtra("LONGITUDE", restaurant.longitude)
                     putExtra("RESTAURANT_NAME", restaurant.name)
+                    putExtra("RESTAURANT_ID", restaurant.id)
+                    putExtra("RESTAURANT_ADDRESS", restaurant.address)
+                    putExtra("RESTAURANT_ECO_FRIENDLY", restaurant.eco_friendly)
+                    putExtra("CATEGORY_ID", restaurant.category_id)
+                    putExtra("RESTAURANT_WEATHER", restaurant.categorize_weather)
+                    putExtra("RESTAURANT_RATING", restaurant.rating)
                 }
                 startActivity(intent)
             } ?: Toast.makeText(this, "Lokasi tidak tersedia!", Toast.LENGTH_SHORT).show()

@@ -1,5 +1,9 @@
 package com.capstone.kulinerkita
 
+import android.content.Context
+import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +27,15 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMain2Binding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Cek koneksi internet
+        if (!isInternetAvailable()) {
+            // Navigasi ke activity_no_internet jika tidak ada koneksi
+            val intent = Intent(this, NoInternetActivity::class.java)
+            startActivity(intent)
+            finish()
+            return
+        }
 
         // Ambil username dari Intent
         val username = intent.getStringExtra("username")
@@ -59,5 +72,13 @@ class MainActivity : AppCompatActivity() {
         if (username == null) {
             navController.navigate(R.id.navigation_home)
         }
+    }
+
+    // Fungsi untuk mengecek koneksi internet
+    private fun isInternetAvailable(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork
+        val capabilities = connectivityManager.getNetworkCapabilities(network)
+        return capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 }
