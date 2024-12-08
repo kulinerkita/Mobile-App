@@ -23,7 +23,8 @@ data class Restaurant(
     val eco_friendly: Int,
     val rating: String?,
     val reviews: Int?,
-    val operating_hours: OperatingHours?
+    val operating_hours: OperatingHours?,
+    val placeId: String?
 ) : Parcelable
 
 @Parcelize

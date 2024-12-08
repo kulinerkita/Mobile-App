@@ -1,5 +1,6 @@
 package com.capstone.kulinerkita.ui.home
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,9 +27,7 @@ class HomeAdapter(
 
         fun bind(restaurant: Restaurant) {
             // Set data ke view
-            Glide.with(itemView.context)
-                .load(restaurant.imageResId)
-                .into(imgProfile)
+            imgProfile.setImageResource(R.drawable.restoran_1)
 
             tvRestaurantName.text = restaurant.name
             tvRestaurantAddress.text = getShortenedAddress(restaurant.address)
@@ -62,8 +61,9 @@ class HomeAdapter(
 
     override fun getItemCount(): Int = restaurantList.size
 
-    fun updateData(newList: List<Restaurant>) {
-        restaurantList = newList
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateData(newData: List<Restaurant>) {
+        restaurantList = newData
         notifyDataSetChanged()
     }
 }

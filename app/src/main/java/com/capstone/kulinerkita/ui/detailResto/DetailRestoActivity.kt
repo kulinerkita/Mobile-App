@@ -14,11 +14,15 @@ import com.capstone.kulinerkita.data.model.Feedback
 import com.capstone.kulinerkita.data.model.Restaurant
 import com.capstone.kulinerkita.databinding.ActivityDetailRestoBinding
 import com.capstone.kulinerkita.ui.kategori.CategoriseAdapter
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.api.net.PlacesClient
 
-@Suppress("DEPRECATION")
 class DetailRestoActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailRestoBinding
+    private lateinit var placesClient: PlacesClient
     private var selectedRestaurant: Restaurant? = null
     private val TAG = "DetailRestoActivity"
 
@@ -28,92 +32,75 @@ class DetailRestoActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         Log.d(TAG, "Activity Created")
-
-        // Ambil data dari intent
-        val selectedCategorise: Categorise? = intent.getParcelableExtra("SELECTED_CATEGORISE")
-        if (selectedCategorise == null) {
-            Log.e(TAG, "Categorise tidak diterima! Menggunakan data dummy.")
-            setupRecyclerView(getDummyCategories()) // Gunakan data dummy
-        } else {
-            Log.d(TAG, "Categorise diterima: ${selectedCategorise.namaCategorise}")
-            setupRecyclerView(listOf(selectedCategorise))
+        // Inisialisasi Google Places API
+        if (!Places.isInitialized()) {
+            Log.d(TAG, "Menginisialisasi Google Places API")
+            Places.initialize(applicationContext, "AIzaSyC5z7pB1rtnC_cgB0ErIbi8pwk0y2b9zbY")
         }
+        placesClient = Places.createClient(this)
+        Log.d(TAG, "Google Places API Client diinisialisasi")
 
-        // Memanggil fungsi untuk menampilkan feedback
-        setupFeedbackRecyclerView(getDummyFeedback())
+        // Ambil data kategori dari Intent
+        val selectedCategorise: Categorise? = intent.getParcelableExtra("SELECTED_CATEGORISE")
+        selectedCategorise?.let {
+            setupRecyclerView(listOf(it))
+        } ?: setupRecyclerView(getDummyCategories()) // Jika tidak ada, gunakan data dummy
 
-        // Ambil ID restoran jika tersedia
+        // Ambil ID restoran dari Intent dan ambil data dari cache
         val selectedRestaurantId = intent.getIntExtra("SELECTED_RESTAURANT_ID", -1)
         if (selectedRestaurantId != -1) {
             selectedRestaurant = getRestaurantFromCache(selectedRestaurantId)
-            if (selectedRestaurant != null) {
-                Log.d(TAG, "Selected Restaurant: ${selectedRestaurant!!.name}")
-                bindRestaurantData(selectedRestaurant!!)
-            } else {
-                Log.e(TAG, "Restaurant not found in cache for ID: $selectedRestaurantId")
-                Toast.makeText(this, "Restoran tidak ditemukan!", Toast.LENGTH_SHORT).show()
-                finish()
+            selectedRestaurant?.let { restaurant ->
+                Log.d(TAG, "Restoran ditemukan: ${restaurant.name}")
+                bindRestaurantData(restaurant)
+
+                if (restaurant.placeId.isNullOrEmpty()) {
+                    Log.e(TAG, "placeId tidak ditemukan untuk restoran ini")
+                } else {
+                    Log.d(TAG, "Mengambil ulasan untuk placeId: ${restaurant.placeId}")
+                    fetchFeedbackFromGoogleMaps(restaurant.placeId)
+                }
             }
+
         }
 
         // Tombol kembali
-        binding.backButtonDetail.setOnClickListener {
-            finish()
-        }
+        binding.backButtonDetail.setOnClickListener { finish() }
 
         // Tombol cek lokasi
         binding.ButtonCekLokasi.setOnClickListener {
-            val restaurant = selectedRestaurant
-            if (restaurant != null) {
-                Log.d(TAG, "Navigating to MapsActivity with Lat: ${restaurant.latitude}, Lng: ${restaurant.longitude}")
+            selectedRestaurant?.let { restaurant ->
                 val intent = Intent(this, MapsActivity::class.java).apply {
                     putExtra("LATITUDE", restaurant.latitude)
                     putExtra("LONGITUDE", restaurant.longitude)
                     putExtra("RESTAURANT_NAME", restaurant.name)
                 }
                 startActivity(intent)
-            } else {
-                Log.e(TAG, "SelectedRestaurant is null when trying to navigate to Maps")
-                Toast.makeText(this, "Data lokasi tidak tersedia!", Toast.LENGTH_SHORT).show()
-            }
+            } ?: Toast.makeText(this, "Lokasi tidak tersedia!", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun getRestaurantFromCache(restaurantId: Int): Restaurant? {
         val sharedPreferences = getSharedPreferences("AppCache", Context.MODE_PRIVATE)
         val restaurantListJson = sharedPreferences.getString("RESTAURANT_LIST", null)
-        Log.d(TAG, "Restaurant List JSON: ${restaurantListJson?.substring(0, 100) ?: "null"}")
+        Log.d(TAG, "Restaurant List JSON: ${restaurantListJson?.take(100)}")
 
         return if (restaurantListJson != null) {
             val gson = com.google.gson.Gson()
             val type = object : com.google.gson.reflect.TypeToken<List<Restaurant>>() {}.type
             val restaurantList: List<Restaurant> = gson.fromJson(restaurantListJson, type)
-            Log.d(TAG, "Total Restaurants in Cache: ${restaurantList.size}")
-
-            val restaurant = restaurantList.find { it.id == restaurantId }
-            if (restaurant != null) {
-                Log.d(TAG, "Restaurant Found: ${restaurant.name}")
-            } else {
-                Log.e(TAG, "No Restaurant matches the ID: $restaurantId")
-            }
-            restaurant
-        } else {
-            Log.e(TAG, "Restaurant List JSON is null")
-            null
-        }
+            restaurantList.find { it.id == restaurantId }
+        } else null
     }
 
     private fun bindRestaurantData(restaurant: Restaurant) {
-        Log.d(TAG, "Binding data for Restaurant: ${restaurant.name}")
         binding.tvRestaurantDetail.text = restaurant.name
         binding.tvDetailAddress.text = restaurant.address
         binding.tvPhone.text = restaurant.phone_number ?: "Tidak tersedia"
         binding.tvPriceRange.text = "Rp. ${restaurant.min_price} - Rp. ${restaurant.max_price}"
-        binding.tvCategoriEcoDetail.text =
-            if (restaurant.eco_friendly == 1) "Eco-Friendly" else "Non-Eco-Friendly"
+        binding.tvCategoriEcoDetail.text = if (restaurant.eco_friendly == 1) "Eco-Friendly" else "Non-Eco-Friendly"
         binding.tvCategoriSuhuDetail.text = restaurant.categorize_weather ?: "Tidak Diketahui"
-        binding.tvratingsDetail.text =
-            restaurant.rating?.let { "$it (${restaurant.reviews} reviews)" } ?: "Rating tidak tersedia"
+        binding.tvratingsDetail.text = restaurant.rating?.let { "$it (${restaurant.reviews} reviews)" } ?: "Rating tidak tersedia"
 
         // Menampilkan jam buka dan tutup
         binding.tvOperationalHours.text = restaurant.operating_hours?.let {
@@ -122,15 +109,47 @@ class DetailRestoActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView(categoriseList: List<Categorise>) {
-        Log.d(TAG, "Setting up RecyclerView with ${categoriseList.size} items")
-
         val categoriseAdapter = CategoriseAdapter(categoriseList) { categorise ->
             Toast.makeText(this, "Clicked: ${categorise.namaCategorise}", Toast.LENGTH_SHORT).show()
         }
-
         binding.itemKulinerDetail.apply {
             layoutManager = LinearLayoutManager(this@DetailRestoActivity, LinearLayoutManager.HORIZONTAL, false)
             adapter = categoriseAdapter
+        }
+    }
+
+    private fun fetchFeedbackFromGoogleMaps(placeId: String) {
+        Log.d(TAG, "fetchFeedbackFromGoogleMaps: Memulai dengan placeId = $placeId")
+        val placeFields = listOf(Place.Field.ID, Place.Field.NAME) // Tambahkan field yang valid
+        val request = FetchPlaceRequest.newInstance(placeId, placeFields)
+
+        placesClient.fetchPlace(request)
+            .addOnSuccessListener { response ->
+                val place = response.place
+                val feedbackList = listOf(
+                    
+                    Feedback(
+                        userName = "Review Placeholder",
+                        userImage = R.drawable.profile, // Placeholder image
+                        feedbackTime = "Baru saja",
+                        feedbackDescription = "Ulasan tidak tersedia. Silakan cek di Google Maps.",
+                        rating = place.rating?.toFloat() ?: 0.0f
+                    )
+                )
+                setupFeedbackRecyclerView(feedbackList)
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, "Gagal mengambil ulasan: ${exception.message}")
+                Toast.makeText(this, "Gagal memuat ulasan.", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun setupFeedbackRecyclerView(feedbackList: List<Feedback>) {
+        Log.d(TAG, "Setting up Feedback RecyclerView dengan ${feedbackList.size} ulasan")
+        val feedbackAdapter = FeedbackAdapter(feedbackList)
+        binding.itemFeedbackDetail.apply {
+            layoutManager = LinearLayoutManager(this@DetailRestoActivity)
+            adapter = feedbackAdapter
         }
     }
 
@@ -155,39 +174,4 @@ class DetailRestoActivity : AppCompatActivity() {
             Categorise(17, "Brambang Asem", "Makanan", R.drawable.brambang_asem)
         )
     }
-
-    private fun setupFeedbackRecyclerView(feedbackList: List<Feedback>) {
-        val feedbackAdapter = FeedbackAdapter(feedbackList)
-        binding.itemFeedbackDetail.apply {
-            layoutManager = LinearLayoutManager(this@DetailRestoActivity)
-            adapter = feedbackAdapter
-        }
-    }
-
-    private fun getDummyFeedback(): List<Feedback> {
-        return listOf(
-            Feedback(
-                userName = "John Doe",
-                userImage = R.drawable.food_1, // Gambar pengguna (contoh)
-                feedbackTime = "2 days ago",
-                feedbackDescription = "Makanannya enak, pelayanannya cepat, suasana nyaman!",
-                rating = 4.5f
-            ),
-            Feedback(
-                userName = "Jane Smith",
-                userImage = R.drawable.food_1, // Gambar pengguna (contoh)
-                feedbackTime = "1 week ago",
-                feedbackDescription = "Soto yang disajikan sangat autentik, akan kembali lagi!",
-                rating = 5.0f
-            ),
-            Feedback(
-                userName = "Mark Johnson",
-                userImage = R.drawable.food_1, // Gambar pengguna (contoh)
-                feedbackTime = "3 days ago",
-                feedbackDescription = "Cukup baik, tetapi perlu perbaikan di area kebersihan.",
-                rating = 3.0f
-            )
-        )
-    }
-
 }

@@ -57,6 +57,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.play.services.maps)
+    implementation(libs.play.services.places)
+    implementation(libs.places)
+    implementation(libs.play.services.fitness)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -65,9 +68,10 @@ dependencies {
     implementation (libs.github.glide)
 
     // Import the Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
-    implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.android.gms:play-services-auth:21.2.0")
+    implementation(libs.firebase.bom.v3370)
+    implementation(libs.com.google.firebase.firebase.auth)
+    implementation(libs.play.services.auth)
+    implementation (libs.firebase.auth)
 
     // room database
     implementation (libs.androidx.room.runtime)
