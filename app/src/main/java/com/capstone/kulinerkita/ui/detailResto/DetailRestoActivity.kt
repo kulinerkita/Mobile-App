@@ -113,6 +113,11 @@ class DetailRestoActivity : AppCompatActivity() {
         binding.tvCategoriSuhuDetail.text = restaurant.categorize_weather ?: "Tidak Diketahui"
         binding.tvratingsDetail.text =
             restaurant.rating?.let { "$it (${restaurant.reviews} reviews)" } ?: "Rating tidak tersedia"
+
+        // Menampilkan jam buka dan tutup
+        binding.tvOperationalHours.text = restaurant.operating_hours?.let {
+            "Jam Operasional: ${it.opening_time} - ${it.closing_time}"
+        } ?: "Jam Operasional tidak tersedia"
     }
 
     private fun setupRecyclerView(categoriseList: List<Categorise>) {

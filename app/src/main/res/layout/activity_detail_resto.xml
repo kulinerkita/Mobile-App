@@ -119,7 +119,7 @@
                 android:id="@+id/tvRestaurantDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="26dp"
                 android:layout_marginStart="18dp"
                 android:layout_marginEnd="15dp"
                 android:fontFamily="@font/poppins_semi_bold"
@@ -158,22 +158,97 @@
                     tools:ignore="SmallSp" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvOperationalHours"
-                android:layout_width="match_parent"
+            <!-- jam Restoran -->
+            <LinearLayout
+                android:id="@+id/detail_jam"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                tools:listitem="@layout/item_operational_hours"
-                android:text="@string/OperationalHours"/>
+                android:layout_marginTop="24dp"
+                android:layout_marginStart="18dp"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/iconJam"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_clock" />
+
+                <TextView
+                    android:id="@+id/tvOperationalHours"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="@color/black"
+                    tools:listitem="@layout/item_operational_hours"
+                    android:text="@string/OperationalHours"/>
+            </LinearLayout>
+
+            <!-- telepon Restoran -->
+            <LinearLayout
+                android:id="@+id/detail_telepon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="18dp"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/icontelepon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_phone" />
+
+                <TextView
+                    android:id="@+id/tvPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phone_number"
+                    android:layout_marginStart="8dp"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <!-- harga Restoran -->
+            <LinearLayout
+                android:id="@+id/detail_harga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="18dp"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/iconharga"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_money" />
+
+                <TextView
+                    android:id="@+id/tvPriceRange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Rp.MinPrice - Rp.MaxPrice"
+                    android:layout_marginStart="8dp"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="@color/black" />
+            </LinearLayout>
 
             <!-- Kategori Restoran -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="18dp"
                 android:orientation="horizontal">
 
                 <!-- Kategori Suhu -->
@@ -200,34 +275,6 @@
                     tools:ignore="SmallSp,TextContrastCheck" />
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="18dp"
-                android:layout_marginTop="12dp"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/tvPhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Phone Number"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:textColor="@color/black" />
-
-                <TextView
-                    android:id="@+id/tvPriceRange"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Rp.MinPrice - Rp.MaxPrice"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:textColor="@color/black" />
-            </LinearLayout>
-
 
             <TextView
                 android:layout_width="wrap_content"
