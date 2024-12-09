@@ -26,7 +26,6 @@ class FavoriteAdapter(
             tvName.text = item.name
             tvAddress.text = item.address
             tvRating.text = item.rating.toString()
-
             itemView.setOnClickListener {
                 onItemClick(item)
             }
