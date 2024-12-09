@@ -24,7 +24,8 @@ data class Restaurant(
     val rating: String?,
     val reviews: Int?,
     val operating_hours: OperatingHours?,
-    val placeId: String?
+    val placeId: String?,
+    val isFavorite: Boolean = false
 ) : Parcelable
 
 @Parcelize

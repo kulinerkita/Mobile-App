@@ -1,33 +1,42 @@
 package com.capstone.kulinerkita.ui.favorite
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.capstone.kulinerkita.R
 import com.capstone.kulinerkita.data.model.FavoriteItem
 import com.capstone.kulinerkita.databinding.ItemFavoriteBinding
 
-class FavoriteAdapter(private val items: List<FavoriteItem>) :
-    RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>() {
+class FavoriteAdapter(
+    private val favoriteItems: List<FavoriteItem>
+) : RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>() {
 
-    inner class FavoriteViewHolder(private val binding: ItemFavoriteBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class FavoriteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val imgProfile: ImageView = itemView.findViewById(R.id.imgProfile)
+        private val tvName: TextView = itemView.findViewById(R.id.tvRestaurantName)
+        private val tvAddress: TextView = itemView.findViewById(R.id.tvRestaurantAddress)
+        private val tvRating: TextView = itemView.findViewById(R.id.Tv_ratings)
 
         fun bind(item: FavoriteItem) {
-            binding.imgProfile.setImageResource(item.image)
-            binding.tvRestaurantName.text = item.name
-            binding.tvRestaurantAddress.text = item.address
-            binding.TvRatings.text = item.rating.toString()
+            imgProfile.setImageResource(item.image)
+            tvName.text = item.name
+            tvAddress.text = item.address
+            tvRating.text = item.rating.toString()
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
-        val binding = ItemFavoriteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return FavoriteViewHolder(binding)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_restoran, parent, false)
+        return FavoriteViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: FavoriteViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(favoriteItems[position])
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int = favoriteItems.size
 }

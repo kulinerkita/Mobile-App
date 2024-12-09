@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.capstone.kulinerkita.data.model.FavoriteItem
 import com.capstone.kulinerkita.databinding.FragmentFavoriteBinding
+
 import org.json.JSONArray
 
 class FavoriteFragment : Fragment() {
@@ -47,14 +48,13 @@ class FavoriteFragment : Fragment() {
 
         for (i in 0 until jsonArray.length()) {
             val jsonObject = jsonArray.getJSONObject(i)
-
             favoriteItems.add(
                 FavoriteItem(
+                    id = jsonObject.getInt("id"),
                     image = jsonObject.getInt("image"),
                     name = jsonObject.getString("name"),
                     address = jsonObject.getString("address"),
-                    rating = jsonObject.getDouble("rating"),
-                    categories = listOf()
+                    rating = jsonObject.getDouble("rating")
                 )
             )
         }
