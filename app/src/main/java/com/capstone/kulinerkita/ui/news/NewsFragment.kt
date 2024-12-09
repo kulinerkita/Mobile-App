@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.capstone.kulinerkita.R
-import com.capstone.kulinerkita.data.model.NewsItem
 import com.capstone.kulinerkita.data.model.articles
 import com.capstone.kulinerkita.databinding.FragmentNewsBinding
 
@@ -27,8 +25,9 @@ class NewsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Gunakan `articles` sebagai data
-        val newsAdapter = NewsAdapter(articles)
+        val sortedArticles = articles.sortedByDescending { it.time }
+
+        val newsAdapter = NewsAdapter(sortedArticles)
         binding.recyclerViewNews.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = newsAdapter

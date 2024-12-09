@@ -1,9 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
     android:layout_margin="8dp"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
@@ -11,10 +9,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/edittext_background"
         android:padding="12dp">
 
-        <!-- Foto -->
+        <!-- Gambar Artikel -->
         <ImageView
             android:id="@+id/imgNewsThumbnail"
             android:layout_width="100dp"
@@ -24,10 +21,9 @@
             android:scaleType="centerCrop"
             android:background="@drawable/rounded_image"
             android:clipToOutline="true"
-            android:src="@drawable/food_1"
             android:contentDescription="@string/news_image" />
 
-        <!-- Judul Berita -->
+        <!-- Judul Artikel -->
         <TextView
             android:id="@+id/tvNewsTitle"
             android:layout_width="match_parent"
@@ -37,9 +33,11 @@
             android:fontFamily="@font/poppins_semi_bold"
             android:textSize="16sp"
             android:textColor="@color/black"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:text="@string/news_title" />
 
-        <!-- Deskripsi Singkat -->
+        <!-- Deskripsi Artikel -->
         <TextView
             android:id="@+id/tvNewsDescription"
             android:layout_width="match_parent"
@@ -55,7 +53,7 @@
             android:maxLines="3"
             android:text="@string/desc" />
 
-        <!-- Waktu Upload -->
+        <!-- Waktu Artikel -->
         <TextView
             android:id="@+id/tvNewsTimestamp"
             android:layout_width="wrap_content"
