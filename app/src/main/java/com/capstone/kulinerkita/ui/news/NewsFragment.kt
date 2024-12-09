@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.kulinerkita.R
 import com.capstone.kulinerkita.data.model.NewsItem
+import com.capstone.kulinerkita.data.model.articles
 import com.capstone.kulinerkita.databinding.FragmentNewsBinding
 
 class NewsFragment : Fragment() {
@@ -26,22 +27,8 @@ class NewsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dummyNews = listOf(
-            NewsItem(
-                "Berita 1",
-                "Deskripsi singkat berita pertama.",
-                R.drawable.food_1,
-                "2 jam yang lalu"
-            ),
-            NewsItem(
-                "Berita 2",
-                "Deskripsi singkat berita kedua.",
-                R.drawable.food_1,
-                "1 hari yang lalu"
-            )
-        )
-
-        val newsAdapter = NewsAdapter(dummyNews)
+        // Gunakan `articles` sebagai data
+        val newsAdapter = NewsAdapter(articles)
         binding.recyclerViewNews.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = newsAdapter

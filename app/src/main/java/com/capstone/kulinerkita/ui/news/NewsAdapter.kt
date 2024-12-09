@@ -1,28 +1,34 @@
 package com.capstone.kulinerkita.ui.news
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.capstone.kulinerkita.R
-import com.capstone.kulinerkita.data.model.NewsItem
+import com.capstone.kulinerkita.data.model.Article
 import com.capstone.kulinerkita.databinding.ItemNewsBinding
 
-class NewsAdapter(private val newsList: List<NewsItem>) :
+class NewsAdapter(private val newsList: List<Article>) :
     RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
     inner class NewsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ItemNewsBinding.bind(view)
-        fun bind(news: NewsItem) {
-            binding.tvNewsTitle.text = news.title
-            binding.tvNewsDescription.text = news.description
-            binding.imgNewsThumbnail.setImageResource(news.thumbnail)
-            binding.tvNewsTimestamp.text = news.timestamp
+        fun bind(article: Article) {
+            binding.tvNewsTitle.text = article.title
+            binding.tvNewsDescription.text = article.description
+
+            binding.root.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse(article.url)
+                }
+                binding.root.context.startActivity(intent)
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_news, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(com.capstone.kulinerkita.R.layout.item_news, parent, false)
         return NewsViewHolder(view)
     }
 
