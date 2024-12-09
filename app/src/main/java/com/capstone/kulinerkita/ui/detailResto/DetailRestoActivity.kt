@@ -188,21 +188,29 @@ class DetailRestoActivity : AppCompatActivity() {
     }
 
     private fun toggleFavorite(restaurant: Restaurant) {
-        Log.d(TAG, "Toggling favorite for restaurant: ${restaurant.name}")
         val sharedPref = getSharedPreferences("FAVORITES", Context.MODE_PRIVATE)
         val editor = sharedPref.edit()
 
         // Ambil daftar favorit saat ini
         val jsonString = sharedPref.getString("FAVORITE_LIST", "[]")
         val jsonArray = JSONArray(jsonString)
-        Log.d(TAG, "Current favorite list: $jsonString")
 
-        // Periksa apakah restoran sudah ada di daftar favorit
+        // Log data JSON untuk debugging
+        Log.d("FavoriteDebug", "Current JSON Array: $jsonArray")
+
         val index = (0 until jsonArray.length()).indexOfFirst {
-            jsonArray.getJSONObject(it).getInt("id") == restaurant.id
+            try {
+                val idString = jsonArray.getJSONObject(it).getString("id") // Ambil id sebagai String
+                val id = idString.toIntOrNull() // Konversi ke Int
+                Log.d("FavoriteDebug", "Comparing: $id with ${restaurant.id}")
+                id == restaurant.id
+            } catch (e: Exception) {
+                Log.e("FavoriteDebug", "Error parsing ID: ${e.message}")
+                false
+            }
         }
-        Log.d(TAG, "Restaurant index in favorite list: $index")
 
+        // Tambahkan atau hapus berdasarkan index
         if (index == -1) {
             // Tambahkan ke favorit
             val jsonObject = JSONObject()
@@ -210,12 +218,11 @@ class DetailRestoActivity : AppCompatActivity() {
             jsonObject.put("name", restaurant.name)
             jsonObject.put("address", restaurant.address)
             jsonObject.put("rating", restaurant.rating)
-            jsonObject.put("image", R.drawable.restoran_1)
+            jsonObject.put("image", R.drawable.restoran_1) // Gambar placeholder
             jsonArray.put(jsonObject)
 
             binding.imgFavorite.setImageResource(R.drawable.favorite_bold) // Ikon berubah menjadi bold
             Toast.makeText(this, "Ditambahkan ke Favorit", Toast.LENGTH_SHORT).show()
-            Log.d(TAG, "Restaurant added to favorites.")
         } else {
             // Hapus dari favorit
             val updatedArray = JSONArray()
@@ -224,19 +231,15 @@ class DetailRestoActivity : AppCompatActivity() {
                     updatedArray.put(jsonArray.getJSONObject(i))
                 }
             }
-
-            // Simpan updatedArray ke SharedPreferences
             editor.putString("FAVORITE_LIST", updatedArray.toString())
             editor.apply()
 
-            binding.imgFavorite.setImageResource(R.drawable.favorite_line)
+            binding.imgFavorite.setImageResource(R.drawable.favorite_line) // Ikon kembali ke outline
             Toast.makeText(this, "Dihapus dari Favorit", Toast.LENGTH_SHORT).show()
-            Log.d(TAG, "Restaurant removed from favorites.")
         }
 
         // Simpan daftar favorit ke SharedPreferences
         editor.putString("FAVORITE_LIST", jsonArray.toString())
         editor.apply()
-        Log.d(TAG, "Favorite list saved to SharedPreferences.")
     }
 }

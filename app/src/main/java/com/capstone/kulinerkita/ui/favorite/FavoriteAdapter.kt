@@ -11,7 +11,8 @@ import com.capstone.kulinerkita.data.model.FavoriteItem
 import com.capstone.kulinerkita.databinding.ItemFavoriteBinding
 
 class FavoriteAdapter(
-    private val favoriteItems: List<FavoriteItem>
+    private val favoriteItems: List<FavoriteItem>,
+    private val onItemClick: (FavoriteItem) -> Unit
 ) : RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>() {
 
     inner class FavoriteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -25,6 +26,10 @@ class FavoriteAdapter(
             tvName.text = item.name
             tvAddress.text = item.address
             tvRating.text = item.rating.toString()
+
+            itemView.setOnClickListener {
+                onItemClick(item)
+            }
         }
     }
 
