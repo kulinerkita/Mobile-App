@@ -77,6 +77,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         binding.ButtonCekLokasi.setOnClickListener {
             val intent = Intent(this, MapsNavigationActivity::class.java)
+            intent.putExtra("RESTAURANT_LOCATION", LatLng(latitude, longitude)) // Data restoran
+            intent.putExtra("RESTAURANT_NAME", restaurantName)
+            intent.putExtra("RESTAURANT_ADDRESS", restaurantAddress) // Alamat restoran
             startActivity(intent)
         }
 

@@ -1,9 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.maps.MapsNavigationActivity" />
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/white"
+    tools:context=".ui.maps.MapsActivity">
+
+    <android.widget.ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Fragment for displaying Google Maps -->
+            <fragment
+                android:id="@+id/map_navigation"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="0dp"
+                android:layout_height="450dp"
+                map:layout_constraintTop_toTopOf="parent"
+                map:layout_constraintStart_toStartOf="parent"
+                map:layout_constraintEnd_toEndOf="parent" />
+
+            <ImageView
+                android:id="@+id/backMaps"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/circle_bg"
+                android:padding="8dp"
+                android:src="@drawable/ic_back"
+                android:contentDescription="@string/back"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <!-- Alamat saat ini-->
+            <LinearLayout
+                android:id="@+id/maps_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginEnd="12dp"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables"
+                map:layout_constraintTop_toBottomOf="@id/map_navigation"
+                map:layout_constraintStart_toStartOf="@id/map_navigation">
+
+                <!-- Ikon Lokasi -->
+                <ImageView
+                    android:id="@+id/iconLocation"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_lokasi_saat" />
+
+                <!-- Alamat -->
+                <TextView
+                    android:id="@+id/tvLokasiSaat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/poppins_semi_bold"
+                    android:text="@string/alamat_restoran"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    tools:ignore="SmallSp" />
+            </LinearLayout>
+
+            <!-- Garis Pembatas -->
+            <View
+                android:id="@+id/divider_line"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginEnd="20dp"
+                android:background="@android:color/darker_gray"
+                map:layout_constraintTop_toBottomOf="@id/maps_address"
+                map:layout_constraintStart_toStartOf="@id/maps_address"
+                map:layout_constraintEnd_toEndOf="@id/maps_address" />
+
+            <!-- Alamat restoran-->
+            <LinearLayout
+                android:id="@+id/maps_addresss"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginEnd="12dp"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables"
+                map:layout_constraintTop_toBottomOf="@id/maps_address"
+                map:layout_constraintStart_toStartOf="@id/map_navigation">
+
+                <!-- Ikon Lokasi -->
+                <ImageView
+                    android:id="@+id/iconLocationn"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_lokasi_resto" />
+
+                <!-- Alamat -->
+                <TextView
+                    android:id="@+id/tvLokasiResto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/poppins_semi_bold"
+                    android:text="@string/alamat_restoran"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    tools:ignore="SmallSp" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </android.widget.ScrollView>
+
+    <Button
+        android:id="@+id/ButtonMulai_lokasi"
+        android:layout_width="325dp"
+        android:layout_height="57dp"
+        android:layout_marginBottom="20dp"
+        app:cornerRadius="20dp"
+        android:text="@string/mulai_lokasi"
+        android:textSize="18sp"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:backgroundTint="@color/color_green"
+        android:textColor="@android:color/white"
+        android:elevation="4dp"
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

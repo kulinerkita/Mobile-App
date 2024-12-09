@@ -79,12 +79,29 @@ class ProfileFragment : Fragment() {
             }
         }
 
+        // Ambil Token dari SessionManager
+        val token = sessionManager.getToken()
+
+        // Cek apakah token ada, jika ada ambil informasi pengguna
         val userName = view.findViewById<TextView>(R.id.userName)
         val userEmail = view.findViewById<TextView>(R.id.userEmail)
 
-        // Set nama dan email pengguna
-        userName.text = "Jhon Doe"
-        userEmail.text = "example@gmail.com"
+        if (token != null) {
+            // Dapatkan data pengguna menggunakan FirebaseAuth atau Google Sign-In
+            val currentUser = mAuth.currentUser // Jika menggunakan Firebase
+            if (currentUser != null) {
+                userName.text = currentUser.displayName ?: "Nama tidak tersedia"
+                userEmail.text = currentUser.email ?: "Email tidak tersedia"
+            } else {
+                // Handle jika pengguna tidak ditemukan
+                userName.text = "Nama tidak ditemukan"
+                userEmail.text = "Email tidak ditemukan"
+            }
+        } else {
+            // Handle jika token tidak ditemukan (user belum login)
+            userName.text = "User belum login"
+            userEmail.text = "User belum login"
+        }
 
         return view
     }
