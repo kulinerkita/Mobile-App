@@ -30,7 +30,7 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
         }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewFavorite)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = favoriteAdapter
 
         loadFavorites()
