@@ -6,10 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.capstone.kulinerkita.ui.maps.MapsActivity
 import com.capstone.kulinerkita.R
+import com.capstone.kulinerkita.data.FavoriteDatabase
 import com.capstone.kulinerkita.data.model.Categorise
+import com.capstone.kulinerkita.data.model.FavoriteItem
 import com.capstone.kulinerkita.data.model.Feedback
 import com.capstone.kulinerkita.data.model.Restaurant
 import com.capstone.kulinerkita.databinding.ActivityDetailRestoBinding
@@ -18,8 +21,9 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.json.JSONArray
-import org.json.JSONObject
 
 class DetailRestoActivity : AppCompatActivity() {
 
@@ -208,44 +212,35 @@ class DetailRestoActivity : AppCompatActivity() {
         return false
     }
 
-
     private fun toggleFavorite(restaurant: Restaurant) {
-        val sharedPref = getSharedPreferences("FAVORITES", Context.MODE_PRIVATE)
-        val editor = sharedPref.edit()
+        val db = FavoriteDatabase.getInstance(this)
+        val favoriteDao = db.favoriteDao()
 
-        val jsonString = sharedPref.getString("FAVORITE_LIST", "[]")
-        val jsonArray = JSONArray(jsonString)
+        lifecycleScope.launch(Dispatchers.IO) {
+            val existingFavorite = favoriteDao.getFavoriteById(restaurant.id)
 
-        val index = (0 until jsonArray.length()).indexOfFirst {
-            val idString = jsonArray.getJSONObject(it).getString("id")
-            val id = idString.toIntOrNull()
-            id == restaurant.id
-        }
+            if (existingFavorite == null) {
+                // Tambahkan ke favorit
+                val newFavorite = FavoriteItem(
+                    id = restaurant.id,
+                    name = restaurant.name,
+                    address = restaurant.address,
+                    rating = restaurant.rating,
+                    image = R.drawable.restoran_1
+                )
+                favoriteDao.addFavorite(newFavorite)
 
-        if (index == -1) {
-            val jsonObject = JSONObject()
-            jsonObject.put("id", restaurant.id)
-            jsonObject.put("name", restaurant.name)
-            jsonObject.put("address", restaurant.address)
-            jsonObject.put("rating", restaurant.rating)
-            jsonObject.put("image", R.drawable.restoran_1) // Placeholder image
-            jsonArray.put(jsonObject)
+                runOnUiThread {
+                    Toast.makeText(this@DetailRestoActivity, "Ditambahkan ke Favorit", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                // Hapus dari favorit
+                favoriteDao.removeFavorite(existingFavorite)
 
-            binding.imgFavorite.setImageResource(R.drawable.favorite_bold)
-            Toast.makeText(this, "Ditambahkan ke Favorit", Toast.LENGTH_SHORT).show()
-        } else {
-            val updatedArray = JSONArray()
-            for (i in 0 until jsonArray.length()) {
-                if (i != index) {
-                    updatedArray.put(jsonArray.getJSONObject(i))
+                runOnUiThread {
+                    Toast.makeText(this@DetailRestoActivity, "Dihapus dari Favorit", Toast.LENGTH_SHORT).show()
                 }
             }
-            editor.putString("FAVORITE_LIST", updatedArray.toString())
-            binding.imgFavorite.setImageResource(R.drawable.favorite_line)
-            Toast.makeText(this, "Dihapus dari Favorit", Toast.LENGTH_SHORT).show()
         }
-
-        editor.putString("FAVORITE_LIST", jsonArray.toString())
-        editor.apply()
     }
 }
