@@ -198,19 +198,27 @@ class DetailRestoActivity : AppCompatActivity() {
     }
 
     private fun isFavorite(restaurantId: Int): Boolean {
-        val sharedPref = getSharedPreferences("FAVORITES", Context.MODE_PRIVATE)
-        val jsonString = sharedPref.getString("FAVORITE_LIST", "[]")
-        val jsonArray = JSONArray(jsonString)
+        var isFavorite = false
+        val db = FavoriteDatabase.getInstance(this)
+        val favoriteDao = db.favoriteDao()
 
-        for (i in 0 until jsonArray.length()) {
-            val idString = jsonArray.getJSONObject(i).getString("id")
-            val id = idString.toIntOrNull()
-            if (id == restaurantId) {
-                return true
+        lifecycleScope.launch(Dispatchers.IO) {
+            val favoriteItem = favoriteDao.getFavoriteById(restaurantId)
+            isFavorite = favoriteItem != null
+
+            launch(Dispatchers.Main) {
+                val isFav = isFavorite
+                if (isFav) {
+                    binding.imgFavorite.setImageResource(R.drawable.favorite_bold)
+                } else {
+                    binding.imgFavorite.setImageResource(R.drawable.favorite_line)
+                }
             }
         }
-        return false
+
+        return isFavorite
     }
+
 
     private fun toggleFavorite(restaurant: Restaurant) {
         val db = FavoriteDatabase.getInstance(this)
@@ -231,8 +239,17 @@ class DetailRestoActivity : AppCompatActivity() {
                 favoriteDao.addFavorite(newFavorite)
 
                 runOnUiThread {
-                    Toast.makeText(this@DetailRestoActivity, "Ditambahkan ke Favorit", Toast.LENGTH_SHORT).show()
+                    val isFav = isFavorite(restaurant.id)
+                    if (isFav) {
+                        binding.imgFavorite.setImageResource(R.drawable.favorite_bold)
+                    } else {
+                        binding.imgFavorite.setImageResource(R.drawable.favorite_line)
+                    }
+                    Toast.makeText(this@DetailRestoActivity,
+                        if (isFav) "Ditambahkan ke Favorit" else "Dihapus dari Favorit",
+                        Toast.LENGTH_SHORT).show()
                 }
+
             } else {
                 // Hapus dari favorit
                 favoriteDao.removeFavorite(existingFavorite)
