@@ -64,5 +64,26 @@ val articles = listOf(
         description = "Di tengah meningkatnya kesadaran akan isu lingkungan...",
         url = "https://www.idntimes.com/life/inspiration/salma-syifa-azizah/cara-menerapkan-gaya-hidup-eco-friendly-c1c2",
         time = sdf.parse("27 Oct 2024")!!
+    ),
+    Article(
+        img = R.drawable.news8,
+        title = "Eco-friendly ‘Jelly Ice Cube’ Could Transform Cold Storage: No Plastic and Doesn’t Melt",
+        description = "Researchers at the University of California, Davis,...",
+        url = "https://www.goodnewsnetwork.org/eco-friendly-jelly-ice-cube-uc-davis/",
+        time = sdf.parse("8 Dec 2021")!!
+    ),
+    Article(
+        img = R.drawable.news9,
+        title = "5 Eco-Friendly Reasons Why Custom Compostable Packaging is the Future of Sustainable Business",
+        description = "In today's increasingly eco-conscious world,...",
+        url = "https://zerowasteco.com.au/blogs/latest-eco-friendly-news/5-eco-friendly-reasons-why-custom-compostable-packaging-is-the-future-of-sustainable-business",
+        time = sdf.parse("13 Nov 2024")!!
+    ),
+    Article(
+        img = R.drawable.news10,
+        title = "Make a Difference: Start Your Zero Waste Journey Today with These Simple Steps",
+        description = "Embarking on a zero waste journey might seem daunting at first, but with the right approach...",
+        url = "https://zerowasteco.com.au/blogs/going-zero-waste/make-a-difference-start-your-zero-waste-journey-today-with-these-simple-steps",
+        time = sdf.parse("9 Sep 2024")!!
     )
 ).sortedByDescending { it.time }

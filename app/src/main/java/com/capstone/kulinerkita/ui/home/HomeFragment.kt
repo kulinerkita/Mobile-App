@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -82,13 +83,38 @@ class HomeFragment : Fragment() {
         binding.itemRestoran.adapter = restaurantAdapter
 
         val newsList = listOf(
-            NewsHome("1", "Kuliner Tradisional Nusantara", R.drawable.news_home),
-            NewsHome("2", "Kuliner Kekinian", R.drawable.news_home)
+            NewsHome(
+                id = "1",
+                title = "Makanan Khas Surakarta",
+                imageRes = R.drawable.news_home1,
+                url = "https://budayanesia.com/makanan-khas-surakarta/"
+            ),
+            NewsHome(
+                id = "2",
+                title = "Lenjongan Pasar Gede, Kuliner Legendaris Surakarta",
+                imageRes = R.drawable.news_home2,
+                url = "https://kumparan.com/seputar-solo/lenjongan-pasar-gede-kuliner-legendaris-surakarta-23uwpW71gKo"
+            ),
+            NewsHome(
+                id = "3",
+                title = "Menjelajahi Potensi Pemanfaatan Sisa Pangan Berlebih Dari Pasar Jebres di Kota Surakarta",
+                imageRes = R.drawable.news_home3,
+                url = "https://aliansizerowaste.id/2024/10/27/menjelajahi-potensi-pemanfaatan-sisa-pangan-berlebih-dari-pasar-jebres-di-kota-surakarta/"
+            )
         )
-        newsAdapter = NewsHomeAdapter(newsList) {}
+
+        newsAdapter = NewsHomeAdapter(newsList) { url ->
+            openUrl(url)
+        }
         binding.itemKulinerNews.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.itemKulinerNews.adapter = newsAdapter
+    }
+    private fun openUrl(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(url)
+        }
+        startActivity(intent)
     }
 
     private fun setupListeners() {
