@@ -224,6 +224,7 @@ class HomeFragment : Fragment() {
     }
 
     // Handle result of enabling location services
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == LOCATION_SETTINGS_REQUEST_CODE) {

@@ -3,6 +3,7 @@ package com.capstone.kulinerkita.ui.profile
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -81,24 +82,48 @@ class ProfileFragment : Fragment() {
 
         // Ambil Token dari SessionManager
         val token = sessionManager.getToken()
+        Log.d("ProfileFragment", "Token yang ditemukan: $token")
 
-        // Cek apakah token ada, jika ada ambil informasi pengguna
+        // Inisialisasi komponen teks untuk nama dan email
         val userName = view.findViewById<TextView>(R.id.userName)
         val userEmail = view.findViewById<TextView>(R.id.userEmail)
 
         if (token != null) {
-            // Dapatkan data pengguna menggunakan FirebaseAuth atau Google Sign-In
-            val currentUser = mAuth.currentUser // Jika menggunakan Firebase
+            val currentUser = mAuth.currentUser
+            Log.d("ProfileFragment", "FirebaseAuth currentUser: $currentUser")
             if (currentUser != null) {
-                userName.text = currentUser.displayName ?: "Nama tidak tersedia"
-                userEmail.text = currentUser.email ?: "Email tidak tersedia"
+                val name = currentUser.displayName
+                val email = currentUser.email
+
+                Log.d("ProfileFragment", "Firebase Auth - Nama: $name, Email: $email")
+
+                if (name != null && email != null) {
+                    Log.d("ProfileFragment", "Menyimpan data pengguna ke SharedPreferences: Nama: $name, Email: $email")
+                    sessionManager.saveUser(name, email)
+                    userName.text = name
+                    userEmail.text = email
+                } else {
+                    Log.d("ProfileFragment", "Nama atau email dari FirebaseAuth null, tidak dapat menyimpan ke SharedPreferences")
+                    userName.text = "Nama tidak tersedia"
+                    userEmail.text = "Email tidak tersedia"
+                }
             } else {
-                // Handle jika pengguna tidak ditemukan
-                userName.text = "Nama tidak ditemukan"
-                userEmail.text = "Email tidak ditemukan"
+                Log.d("ProfileFragment", "Pengguna FirebaseAuth null. Ambil dari SharedPreferences.")
+                val savedName = sessionManager.getUserName()
+                val savedEmail = sessionManager.getUserEmail()
+
+                Log.d("ProfileFragment", "SharedPreferences - Nama: $savedName, Email: $savedEmail")
+
+                if (savedName != null && savedEmail != null) {
+                    userName.text = savedName
+                    userEmail.text = savedEmail
+                } else {
+                    userName.text = "Nama tidak ditemukan"
+                    userEmail.text = "Email tidak ditemukan"
+                }
             }
         } else {
-            // Handle jika token tidak ditemukan (user belum login)
+            Log.d("ProfileFragment", "Token tidak ditemukan. User belum login.")
             userName.text = "User belum login"
             userEmail.text = "User belum login"
         }
