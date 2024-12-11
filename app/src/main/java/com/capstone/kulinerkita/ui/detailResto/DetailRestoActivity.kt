@@ -75,7 +75,7 @@ class DetailRestoActivity : AppCompatActivity() {
                     putExtra("RESTAURANT_ECO_FRIENDLY", restaurant.eco_friendly)
                     putExtra("CATEGORY_ID", restaurant.category_id)
                     putExtra("RESTAURANT_WEATHER", restaurant.categorize_weather)
-                    putExtra("RESTAURANT_RATING", restaurant.rating.toString())
+                    putExtra("RESTAURANT_RATING", restaurant.rating)
                 }
                 startActivity(intent)
             } ?: Toast.makeText(this, "Lokasi tidak tersedia!", Toast.LENGTH_SHORT).show()

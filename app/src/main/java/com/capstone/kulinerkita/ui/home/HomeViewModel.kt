@@ -20,9 +20,6 @@ class HomeViewModel : ViewModel() {
     private val _weatherData = MutableLiveData<WeatherResponse>()
     val weatherData: LiveData<WeatherResponse> get() = _weatherData
 
-    private val _restaurantRecommendations = MutableLiveData<List<Restaurant>>()
-    val restaurantRecommendations: LiveData<List<Restaurant>> get() = _restaurantRecommendations
-
     fun fetchWeather(city: String, apiKey: String) {
         viewModelScope.launch {
             try {
@@ -34,23 +31,4 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    // Fungsi untuk mengambil rekomendasi restoran
-    fun fetchRestaurantRecommendations(latitude: Double, longitude: Double) {
-        viewModelScope.launch {
-            try {
-                // Membuat map lokasi untuk dikirim ke API
-                val location = mapOf("latitude" to latitude, "longitude" to longitude)
-                val response = MLApiClient.retrofitService.getRecommendedRestaurants(location)
-                println("ErrorResponse: $response")
-                if (response.isSuccessful) {
-                    _restaurantRecommendations.value = response.body() ?: emptyList()
-                } else {
-                    // Menangani error jika response tidak berhasil
-                    println("Error: ${response.code()} - ${response.message()}")
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
 }

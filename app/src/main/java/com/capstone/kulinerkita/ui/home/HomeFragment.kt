@@ -21,7 +21,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.capstone.kulinerkita.API.RestaurantApiClient
 import com.capstone.kulinerkita.R
 import com.capstone.kulinerkita.data.KulinerKitaDatabase
 import com.capstone.kulinerkita.data.model.NewsHome
@@ -40,7 +39,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 import android.provider.Settings
+import com.capstone.kulinerkita.API.MLApiClient
 import com.capstone.kulinerkita.ui.notification.NotificationActivity
+import com.google.android.gms.location.FusedLocationProviderClient
 
 class HomeFragment : Fragment() {
 
@@ -53,6 +54,7 @@ class HomeFragment : Fragment() {
     private var restaurantList: List<Restaurant> = listOf()
     private lateinit var progressBar: ProgressBar
     private val viewModel: HomeViewModel by viewModels()
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -76,7 +78,7 @@ class HomeFragment : Fragment() {
         Log.d("HomeFragment", "setupAdapters: Inisialisasi adapters")
         restaurantAdapter = HomeAdapter(restaurantList.toMutableList()) { selectedRestaurant ->
             val intent = Intent(context, DetailRestoActivity::class.java)
-            intent.putExtra("SELECTED_RESTAURANT_ID", selectedRestaurant.id)
+            intent.putExtra("SELECTED_RESTAURANT_ID", selectedRestaurant)
             startActivity(intent)
         }
 
@@ -244,35 +246,60 @@ class HomeFragment : Fragment() {
         requestLocationPermission()
     }
 
+    @SuppressLint("MissingPermission")
     private fun fetchRestaurantData() {
-        // Menentukan lokasi tetap
-        val latitude = -7.56217192454353
-        val longitude = 110.83948552592317
+        // Initialize FusedLocationProviderClient
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                // Pass the fixed location to the ViewModel
-                viewModel.fetchRestaurantRecommendations(latitude, longitude)
+        // Get the current location
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            if (location != null) {
+                val latitude = location.latitude
+                val longitude = location.longitude
 
-                // Observe the restaurant recommendations from the ViewModel
-                viewModel.restaurantRecommendations.observe(viewLifecycleOwner) { recommendedRestaurants ->
-                    if (recommendedRestaurants.isNotEmpty()) {
-                        restaurantList = recommendedRestaurants.take(10)
-                        restaurantAdapter.updateData(restaurantList)
+                Log.d("HomeFragment", "Kirim lokasi: Latitude: $latitude, Longitude: $longitude")
+
+                val locationMap = mapOf("latitude" to latitude, "longitude" to longitude)
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        // Use the correct method `getRecommendedRestaurants`
+                        val response = MLApiClient.retrofitService.getRecommendedRestaurants(locationMap)
+
+                        if (response.isSuccessful) {
+                            val restaurantResponse = response.body()
+                            Log.d("HomeFragment", "Respons API: ${response.body()}")
+                            val recommendedRestaurants = restaurantResponse?.data ?: emptyList()
+                            Log.d("HomeFragment", "Data restoran diterima: ${recommendedRestaurants.size} restoran ditemukan")
+                            withContext(Dispatchers.Main) {
+                                if (recommendedRestaurants.isNotEmpty()) {
+                                    restaurantList = recommendedRestaurants
+                                    restaurantAdapter.updateData(restaurantList)
+                                } else {
+                                    Log.d("HomeFragment", "Tidak ada restoran yang ditemukan")
+                                }
+                                progressBar.visibility = View.GONE
+                            }
+                        } else {
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(requireContext(), "Tidak ada restoran yang ditemukan di area ini", Toast.LENGTH_SHORT).show()
+                                progressBar.visibility = View.GONE
+                            }
+                        }
+                    } catch (e: Exception) {
+                        Log.e("HomeFragment", "Error fetching restaurant data", e)
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(requireContext(), "Terjadi kesalahan saat memuat data!", Toast.LENGTH_SHORT).show()
+                            progressBar.visibility = View.GONE
+                        }
                     }
-                    progressBar.visibility = View.GONE
                 }
-            } catch (e: Exception) {
-                Log.e("HomeFragment", "Error fetching restaurant data", e)
-                withContext(Dispatchers.Main) {
-                    // Using requireContext() to get the non-null context
-                    Toast.makeText(requireContext(), "Terjadi kesalahan saat memuat data!", Toast.LENGTH_SHORT).show()
-                    progressBar.visibility = View.GONE
-                }
+            } else {
+                Log.d("HomeFragment", "Lokasi saat ini tidak tersedia")
+                Toast.makeText(requireContext(), "Lokasi tidak ditemukan", Toast.LENGTH_SHORT).show()
             }
         }
     }
-
 
     @SuppressLint("SetTextI18n")
     private fun fetchWeatherData() {

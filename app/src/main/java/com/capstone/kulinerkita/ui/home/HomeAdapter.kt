@@ -62,7 +62,6 @@ class HomeAdapter(
 
     override fun getItemCount(): Int = restaurantList.size
 
-    @SuppressLint("NotifyDataSetChanged")
     fun updateData(newData: List<Restaurant>) {
         restaurantList = newData
         notifyDataSetChanged()
