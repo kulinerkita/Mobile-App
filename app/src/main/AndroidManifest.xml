@@ -63,6 +63,14 @@
         <activity android:name=".ui.login.SignInActivity" />
         <activity android:name=".ui.search.SearchActivity" />
         <activity android:name=".ui.notification.NotificationActivity"/>
+
+        <receiver android:name=".NavigationBroadcastReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.capstone.kulinerkita.ACTION_NAVIGATION_STARTED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

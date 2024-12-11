@@ -1,6 +1,7 @@
 package com.capstone.kulinerkita.ui.maps
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import android.location.Location
 import android.location.Geocoder
+import android.net.Uri
 import java.util.Locale
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.PolylineOptions
@@ -42,6 +44,22 @@ class MapsNavigationActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map_navigation) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        binding.ButtonMulaiLokasi.setOnClickListener {
+            val restaurantLocation = intent.getParcelableExtra<LatLng>("RESTAURANT_LOCATION")
+            restaurantLocation?.let {
+                val gmmIntentUri = Uri.parse("google.navigation:q=${it.latitude},${it.longitude}")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                if (mapIntent.resolveActivity(packageManager) != null) {
+                    sendBroadcast(Intent("com.capstone.kulinerkita.ACTION_NAVIGATION_STARTED")) // Broadcast
+                    startActivity(mapIntent)
+                } else {
+                    // Tampilkan pesan kepada pengguna bahwa Google Maps tidak tersedia
+                }
+            }
+        }
+
     }
 
     @SuppressLint("MissingPermission")
