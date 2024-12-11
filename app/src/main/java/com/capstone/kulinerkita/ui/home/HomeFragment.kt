@@ -40,6 +40,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 import android.provider.Settings
+import com.capstone.kulinerkita.ui.notification.NotificationActivity
 
 class HomeFragment : Fragment() {
 
@@ -135,6 +136,11 @@ class HomeFragment : Fragment() {
         binding.drinkImage.setOnClickListener {
             navigateToCategory("Minuman")
         }
+
+        binding.ivNotification.setOnClickListener{
+            val intent = Intent(requireContext(), NotificationActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun navigateToCategory(category: String) {
@@ -224,6 +230,7 @@ class HomeFragment : Fragment() {
     }
 
     // Handle result of enabling location services
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == LOCATION_SETTINGS_REQUEST_CODE) {
@@ -238,35 +245,34 @@ class HomeFragment : Fragment() {
     }
 
     private fun fetchRestaurantData() {
-        Log.d("HomeFragment", "fetchRestaurantData: Mengambil data restoran dari API")
+        // Menentukan lokasi tetap
+        val latitude = -7.56217192454353
+        val longitude = 110.83948552592317
+
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = RestaurantApiClient.RestaurantApi.getRestaurants()
-                if (response.isSuccessful) {
-                    val restaurants = response.body() ?: listOf()
-                    Log.d("HomeFragment", "fetchRestaurantData: Data berhasil diambil, menyimpan ke cache")
-                    saveRestaurantsToCache(restaurants)
-                    withContext(Dispatchers.Main) {
-                        restaurantList = restaurants
+                // Pass the fixed location to the ViewModel
+                viewModel.fetchRestaurantRecommendations(latitude, longitude)
+
+                // Observe the restaurant recommendations from the ViewModel
+                viewModel.restaurantRecommendations.observe(viewLifecycleOwner) { recommendedRestaurants ->
+                    if (recommendedRestaurants.isNotEmpty()) {
+                        restaurantList = recommendedRestaurants.take(10)
                         restaurantAdapter.updateData(restaurantList)
-                        progressBar.visibility = View.GONE
                     }
-                } else {
-                    Log.e("HomeFragment", "fetchRestaurantData: Gagal mengambil data, response code ${response.code()}")
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(context, "Gagal memuat data restoran!", Toast.LENGTH_SHORT)
-                            .show()
-                    }
+                    progressBar.visibility = View.GONE
                 }
             } catch (e: Exception) {
-                Log.e("HomeFragment", "fetchRestaurantData: Terjadi kesalahan", e)
+                Log.e("HomeFragment", "Error fetching restaurant data", e)
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(context, "Terjadi kesalahan saat memuat data!", Toast.LENGTH_SHORT)
-                        .show()
+                    // Using requireContext() to get the non-null context
+                    Toast.makeText(requireContext(), "Terjadi kesalahan saat memuat data!", Toast.LENGTH_SHORT).show()
+                    progressBar.visibility = View.GONE
                 }
             }
         }
     }
+
 
     @SuppressLint("SetTextI18n")
     private fun fetchWeatherData() {

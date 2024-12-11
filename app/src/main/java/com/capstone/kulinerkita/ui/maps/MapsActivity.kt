@@ -94,7 +94,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun setupRecyclerView() {
         homeAdapter = HomeAdapter(emptyList()) { restaurant ->
             val intent = Intent(this, DetailRestoActivity::class.java)
-            intent.putExtra("SELECTED_RESTAURANT_ID", restaurant.id)
+            intent.putExtra("SELECTED_RESTAURANT_ID", restaurant)
             startActivity(intent)
         }
 

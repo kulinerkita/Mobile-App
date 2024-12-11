@@ -22,8 +22,8 @@
     <string name="agree_with_terms_conditions">Setuju dengan</string>
     <string name="terms_conditions">Terms &amp; Conditions</string>
     <string name="fill_your_information_below">Isi informasi Anda di bawah ini</string>
-    <string name="name">Nama</string>
-    <string name="name_hint">Masukkan Nama Lengkap</string>
+    <string name="name">Username</string>
+    <string name="name_hint">Masukkan Username</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="sign_up">Daftar</string>

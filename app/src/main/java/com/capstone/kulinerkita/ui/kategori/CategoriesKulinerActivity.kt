@@ -111,7 +111,7 @@ class CategoriesKulinerActivity : AppCompatActivity() {
     private fun setupRecyclerView(restaurants: List<Restaurant>) {
         restaurantAdapter = HomeAdapter(restaurants) { restaurant ->
             val intent = Intent(this, DetailRestoActivity::class.java)
-            intent.putExtra("SELECTED_RESTAURANT_ID", restaurant.id)
+            intent.putExtra("SELECTED_RESTAURANT_ID", restaurant)
             startActivity(intent)
         }
 

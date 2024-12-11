@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.kulinerkita.R
@@ -30,7 +31,7 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
         }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewFavorite)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         recyclerView.adapter = favoriteAdapter
 
         loadFavorites()
