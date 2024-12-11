@@ -16,8 +16,7 @@
 
 ## Preview
 ### 🎨 Desain UI/UX
-![Figma](https://img.shields.io/badge/Figma-F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)
-[Figma Link](https://www.figma.com/design/lhM7Vur3XxAoA4IyrA2TQR/KulinerKita?node-id=0-1&t=RBdEiPMdSUIhMuuP-1)
+You can view at [here](https://www.figma.com/design/lhM7Vur3XxAoA4IyrA2TQR/KulinerKita?node-id=0-1&t=RBdEiPMdSUIhMuuP-1) on Figma
 
 ### 📱 Screenshots
 <div>
