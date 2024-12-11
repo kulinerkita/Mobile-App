@@ -1,8 +1,8 @@
 <div align="center">
 
-# 🍽️ KulinerKita 😋 (Team C242-PS155)
+# 🍲 KulinerKita - Mobile Development
+## 🍴 KulinerKita (Team C242-PS155) - MD Repository
 
-this is [KulinerKita](https://github.com/kulinerkita/Mobile-App) MD Repository <br/><br/>
 ![Android Studio](https://img.shields.io/badge/Android%20Studio-3DDC84.svg?style=for-the-badge&logo=android-studio&logoColor=white)
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
 ![Kotlin](https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white)
@@ -14,9 +14,27 @@ this is [KulinerKita](https://github.com/kulinerkita/Mobile-App) MD Repository <
 
 </div>
 
+## Preview
+### 🎨 Desain UI/UX
+![Figma](https://img.shields.io/badge/Figma-F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)
+[Figma Link](https://www.figma.com/design/lhM7Vur3XxAoA4IyrA2TQR/KulinerKita?node-id=0-1&t=RBdEiPMdSUIhMuuP-1)
 
-### 🎨 Design UI/UX
-[![Figma](https://img.shields.io/badge/Figma-F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/design/lhM7Vur3XxAoA4IyrA2TQR/KulinerKita?node-id=0-1&t=RBdEiPMdSUIhMuuP-1)
+### 📱 Screenshots
+<div>
+  <img src="https://github.com/kulinerkita/.github/blob/main/profile/splash.jpeg" alt="Screenshot 1" width="180" />
+  <img src="https://github.com/kulinerkita/.github/blob/main/profile/onboarding_1.jpeg" alt="Screenshot 4" width="180" />
+  <img src="https://github.com/kulinerkita/.github/blob/main/profile/onboarding_2.jpeg" alt="Screenshot 5" width="180" />
+  <img src="https://github.com/kulinerkita/.github/blob/main/profile/onboarding_3.jpeg" alt="Screenshot 6" width="180" />
+  <img src="https://github.com/kulinerkita/.github/blob/main/profile/onboarding_4.jpeg" alt="Screenshot 7" width="180" />
+  <img src="https://github.com/kulinerkita/.github/blob/main/profile/onboarding_5.jpeg" alt="Screenshot 8" width="180" />
+  <img src="https://github.com/kulinerkita/.github/blob/main/profile/signup.jpeg" alt="Screenshot 2" width="180" />
+  <img src="https://github.com/kulinerkita/.github/blob/main/profile/signin.jpeg" alt="Screenshot 3" width="180" />
+  <img src="https://github.com/kulinerkita/.github/blob/main/profile/home.jpeg" alt="Screenshot 9" width="180" />
+  <img src="https://github.com/kulinerkita/.github/blob/main/profile/kategori.jpeg" alt="Screenshot 10" width="180" />
+  <img src="https://github.com/kulinerkita/.github/blob/main/profile/detail.jpeg" alt="Screenshot 11" width="180" />
+  <img src="https://github.com/kulinerkita/.github/blob/main/profile/maps.jpeg" alt="Screenshot 12" width="180" />
+  <img src="https://github.com/kulinerkita/.github/blob/main/profile/maps_navigation.jpeg" alt="Screenshot 12" width="180"/>
+</div>
 
 ## Our KulinerKita MD Edition
 | Member | Student ID | Path | Role | Contacts |
