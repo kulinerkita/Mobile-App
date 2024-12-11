@@ -89,4 +89,8 @@ dependencies {
     implementation(libs.play.services.location)
     implementation (libs.android.maps.utils)
     implementation (libs.play.services.tasks)
+
+    //Animasi
+    implementation (libs.github.glide)
+    annotationProcessor (libs.compiler)
 }

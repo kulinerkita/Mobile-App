@@ -1,6 +1,7 @@
 package com.capstone.kulinerkita.ui.maps
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -19,6 +20,11 @@ import com.google.android.gms.location.LocationServices
 import android.location.Location
 import android.location.Geocoder
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import android.widget.ImageView
+import android.widget.Toast
 import java.util.Locale
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.PolylineOptions
@@ -45,19 +51,64 @@ class MapsNavigationActivity : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.map_navigation) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        // Menambahkan animasi
+        val loadingAnimation = findViewById<ImageView>(R.id.loading_animation)
+
         binding.ButtonMulaiLokasi.setOnClickListener {
-            val restaurantLocation = intent.getParcelableExtra<LatLng>("RESTAURANT_LOCATION")
-            restaurantLocation?.let {
-                val gmmIntentUri = Uri.parse("google.navigation:q=${it.latitude},${it.longitude}")
-                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-                mapIntent.setPackage("com.google.android.apps.maps")
-                if (mapIntent.resolveActivity(packageManager) != null) {
-                    sendBroadcast(Intent("com.capstone.kulinerkita.ACTION_NAVIGATION_STARTED")) // Broadcast
-                    startActivity(mapIntent)
-                } else {
-                    // Tampilkan pesan kepada pengguna bahwa Google Maps tidak tersedia
-                }
+            Log.d("NavigationFlow", "ButtonMulaiLokasi ditekan.")
+
+            // Buat dialog loading
+            val dialog = Dialog(this)
+            dialog.setContentView(R.layout.popup_loading)
+            dialog.setCancelable(false)
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            dialog.show()
+            Log.d("NavigationFlow", "Dialog loading ditampilkan.")
+
+            // Inisialisasi loadingAnimation dari dialog
+            val loadingAnimation = dialog.findViewById<ImageView>(R.id.loading_animation)
+            if (loadingAnimation == null) {
+                Log.e("NavigationFlow", "loadingAnimation tidak ditemukan di layout popup_loading.")
+                return@setOnClickListener
             }
+
+            // Animasi
+            loadingAnimation.animate()
+                .translationX(500f)
+                .setDuration(1000)
+                .withEndAction {
+                    Log.d("NavigationFlow", "Animasi pertama selesai. Reset posisi animasi.")
+                    loadingAnimation.translationX = 0f
+                    loadingAnimation.animate()
+                        .translationX(500f)
+                        .setDuration(1000)
+                        .start()
+                    Log.d("NavigationFlow", "Animasi kedua dimulai.")
+                }
+                .start()
+            Log.d("NavigationFlow", "Animasi dimulai.")
+
+            // Tunda dan tutup dialog, lalu navigasi
+            Handler(Looper.getMainLooper()).postDelayed({
+                dialog.dismiss()
+                Log.d("NavigationFlow", "Dialog loading ditutup.")
+
+                val restaurantLocation = intent.getParcelableExtra<LatLng>("RESTAURANT_LOCATION")
+                if (restaurantLocation != null) {
+                    val gmmIntentUri = Uri.parse("google.navigation:q=${restaurantLocation.latitude},${restaurantLocation.longitude}")
+                    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                    mapIntent.setPackage("com.google.android.apps.maps")
+
+                    if (mapIntent.resolveActivity(packageManager) != null) {
+                        sendBroadcast(Intent("com.capstone.kulinerkita.ACTION_NAVIGATION_STARTED"))
+                        startActivity(mapIntent)
+                    } else {
+                        Toast.makeText(this, "Google Maps tidak tersedia", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this, "Lokasi tujuan tidak ditemukan", Toast.LENGTH_SHORT).show()
+                }
+            }, 3000)
         }
 
     }

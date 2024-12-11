@@ -117,4 +117,7 @@
     <string name="title_activity_maps_navigation">MapsNavigationActivity</string>
     <string name="koneksi_internet">Tidak Ada Koneksi Internet</string>
     <string name="mulai_lokasi">Mulai Perjalanan</string>
+
+    <!-- Broadcast String -->
+    <string name="loading_navigation">Selamat menikmati perjalanan kuliner di kota Solo❤️</string>
 </resources>
