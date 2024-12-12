@@ -153,17 +153,8 @@ class HomeFragment : Fragment() {
 
     private fun loadData() {
         progressBar.visibility = View.VISIBLE
-        CoroutineScope(Dispatchers.IO).launch {
-            val cachedRestaurants = loadRestaurantsFromCache()
-            withContext(Dispatchers.Main) {
-                if (cachedRestaurants.isNotEmpty()) {
-                    restaurantAdapter.updateData(cachedRestaurants)
-                    progressBar.visibility = View.GONE
-                } else {
-                    fetchRestaurantData()
-                }
-            }
-        }
+        // Hapus pemanggilan loadRestaurantsFromCache
+        fetchRestaurantData() // Langsung ambil data dari API
         fetchWeatherData()
         fetchUserData()
     }
@@ -350,36 +341,6 @@ class HomeFragment : Fragment() {
             }
         } else {
             _binding?.TvNameUsers?.text = "Hello, Guest!"
-        }
-    }
-
-    private fun saveRestaurantsToCache(restaurants: List<Restaurant>) {
-        val sharedPreferences = requireContext().getSharedPreferences("AppCache", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        val gson = Gson()
-        val restaurantListJson = gson.toJson(restaurants)
-        editor.putString("RESTAURANT_LIST", restaurantListJson)
-        editor.apply()
-        Log.d("HomeFragment", "saveRestaurantsToCache: Data berhasil disimpan ke cache")
-    }
-
-    // Simpan data ke cache sebelum membuka SearchActivity
-    private fun openSearchActivity() {
-        saveRestaurantsToCache(restaurantList)
-        val intent = Intent(requireContext(), SearchActivity::class.java)
-        startActivity(intent)
-    }
-
-    // Ambil data dari cache di SearchActivity
-    private fun loadRestaurantsFromCache(): List<Restaurant> {
-        val sharedPreferences = requireContext().getSharedPreferences("AppCache", Context.MODE_PRIVATE)
-        val gson = Gson()
-        val restaurantListJson = sharedPreferences.getString("RESTAURANT_LIST", null)
-        return if (restaurantListJson != null) {
-            val type = object : TypeToken<List<Restaurant>>() {}.type
-            gson.fromJson(restaurantListJson, type)
-        } else {
-            listOf()
         }
     }
 
